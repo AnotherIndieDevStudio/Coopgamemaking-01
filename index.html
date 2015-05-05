@@ -1,0 +1,56 @@
+<!doctype html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>My Character</title>
+        <link rel="stylesheet" href="style/main.css">
+        <!-- Importing google fonts to make shit fancy -->
+        <link href='http://fonts.googleapis.com/css?family=Roboto+Condensed:400,300,700' rel='stylesheet' type='text/css'>
+    </head>
+
+    <body>
+    	<div id="content-container">
+        	<h1>My Character</h1>
+            
+            <!-- Where stats are shown to the player -->
+            <div id="stats_container">
+            
+            	<!-- LEVEL -->
+                <div id="level_s" class="stat">
+                	<h2>LvL <span id="level"></span></h2>
+                </div>
+            	<!-- HEALTH -->
+            	<div id="health_s" class="stat"> 
+                    Health: <span id="health">460</span> 
+                    <span id="health_add" class="add_stat">+</span>
+                </div>
+                <!-- STRENGTH -->
+                <div id="strength_s" class="stat">
+                	Strength: <span id="strength"></span>
+                  <span id="strength_add" class="add_stat">+</span>
+                </div>
+                <!-- INTELLECT -->
+                <div id="intellect_s" class="stat">
+                	Intellect: <span id="intellect"></span>
+                  <span id="intellect_add" class="add_stat">+</span>
+                </div>
+                <!-- DEXTERITY -->
+                <div id="dexterity_s" class="stat">
+                	Dexterity: <span id="dexterity"></span>
+                  <span id="dexterity_add" class="add_stat">+</span>
+              </div>
+                <!-- EXPERIENCE -->
+                <div id="exp_s" class="stat">
+                	EXP: <span id="exp"></span>/<span id="exp_tnl"></span>
+                </div>
+                
+            </div>
+            
+        </div>
+    </body>
+
+	<!-- Importing JQuery -->
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+    <!-- Importing Game JS -->
+    <script src="js/game.js"></script>
+</html>
