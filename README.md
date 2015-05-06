@@ -9,3 +9,28 @@ The game will be made entirely with HTML, CSS, Javascript and MySQL (but we'll h
 
 #Who Can Participate?
 This project is intended for everyone from the programming scrubs to the graphics designers to the neckbearded tryhards.
+
+#How to Host!
+You might want to host this server on your very own computer, so you can test changes you make.  If you'd like to do this, then read here!
+
+First, clone the repository, in the terminal you'd write:
+
+    git clone git@github.com:AnotherIndieDevStudio/Coopgamemaking-01.git
+
+Although, if you fork the repository first, you'd replace that link with your own.
+
+Next, you'll need some software to run the server.  On a Debian-based machine, you would run the following with root priveleges:
+
+    sudo apt-get install nodejs npm
+
+This will install the 'nodejs' package, which allows you to run the app.js file, and the 'npm' package, which allows you to install node modules, such as express.
+
+Ensuring you're in the directory of the project, you can simply run this command to install the project's dependencies:
+
+    npm install
+
+After the dependencies are installed, you can run the server with this command (you'll need root priveleges to run it on a port under :1000):
+
+    nodejs app.js
+
+And that's it! The console should tell you what port the server is running on, and you should be able to access the game at [http://localhost](http://localhost), or at your local IP address.  If you change the port value in app.js, then the URL will be different, [http://localhost:1234](http://localhost:1234) for example.
