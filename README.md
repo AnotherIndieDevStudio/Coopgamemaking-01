@@ -29,7 +29,7 @@ Ensuring you're in the directory of the project, you can simply run this command
 
     npm install
 
-After the dependencies are installed, you can run the server with this command (you'll need root priveleges to run it on a port under :1000):
+After the dependencies are installed, you can run the server with this command (you'll need sudo to run it on a port under :1024):
 
     nodejs app.js
 
