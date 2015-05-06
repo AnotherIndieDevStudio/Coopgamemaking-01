@@ -1,5 +1,5 @@
 {
-  "name": "CoopGameMaking", 
+	"name": "CoopGameMaking", 
 	"version": "0.0.1", 
 	"private": false, 
 	"repository": {
@@ -8,5 +8,5 @@
 	},
 	"dependencies": {
 		"express": "latest"
-  }
+	}
 }
