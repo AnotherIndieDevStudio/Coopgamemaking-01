@@ -18,3 +18,36 @@ html{
 #content-container{
 	text-align: center;	
 }
+
+/* Button */
+#save-button{
+	position: absolute;
+	bottom: 10px;
+	left: 10px;	
+}
+
+#load-button{
+	position: absolute;
+	bottom: 10px;
+	left: 100px;	
+}
+
+#load-box{
+	position: absolute;
+	bottom: 10px;
+	left: 190px;
+	display: none;
+}
+
+/* Information */
+#information{
+	position: absolute;
+	right: 10px;
+	bottom: 5px;	
+}
+
+/* Advert */
+#advert{
+	width: 728px;
+	margin: 0 auto;	
+}
