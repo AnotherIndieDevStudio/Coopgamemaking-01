@@ -1,5 +1,7 @@
 // Setitng Up AJAX
 var xmlhttp;
+var id_displayed = false;
+var userID;
 
 function getObject(){
 	
@@ -23,18 +25,20 @@ function saveGame(){
 	xmlhttp.onreadystatechange = function(){
 		if(xmlhttp.readyState == 4){
 			if(xmlhttp.status == 200){
-				$("#load_id").val(xmlhttp.responseText);
-				prompt("Your save ID. Keep it safe!", xmlhttp.responseText);
+				var userID = xmlhttp.responseText;
+				$("#load_id").val(userID);
+				$("#id-text").html("Save ID: " + userID);
+				$("#id-display").show(1000);
+				id_displaed = true;
 			}
 		}
 	}
 	
 	// Generates UID in javascript first just for keks if one doesn't already exist. Else, update save.
 	var need_save_ID = true
-	if($("#load_id").val() == ""){
+	if(!userID){
 		userID = create_UUID();	
 	}else{
-		userID = $("#load_id").val();
 		var need_save_ID = false;
 	}
 	
@@ -54,6 +58,10 @@ function loadGame(){
 		if(xmlhttp.readyState == 4){
 			if(xmlhttp.status == 200){
 				$("#update_variables").html(xmlhttp.responseText);
+				$("#load_id").val(userID);
+				$("#id-text").html("Save ID: " + userID);
+				$("#id-display").show(1000);
+				id_displaed = true;
 			}
 		}
 	}
@@ -100,3 +108,7 @@ $("#submit-load").click(function(){
 	loadGame();
 });
 
+$("#toggle-id").click(function(){
+	$("#id-text").toggle();
+	
+});

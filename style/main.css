@@ -19,6 +19,15 @@ html{
 	text-align: center;	
 }
 
+h1{
+	margin-bottom: 0;
+	padding-bottom: 0;	
+}
+
+#id-display{
+	display: none;	
+}
+
 /* Button */
 #save-button{
 	position: absolute;
@@ -29,13 +38,13 @@ html{
 #load-button{
 	position: absolute;
 	bottom: 10px;
-	left: 100px;	
+	left: 100px;
 }
 
 #load-box{
 	position: absolute;
-	bottom: 10px;
 	left: 190px;
+	bottom: 10px;
 	display: none;
 }
 
