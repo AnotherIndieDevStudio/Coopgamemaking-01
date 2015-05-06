@@ -34,3 +34,5 @@ After the dependencies are installed, you can run the server with this command (
     nodejs app.js
 
 And that's it! The console should tell you what port the server is running on, and you should be able to access the game at [http://localhost](http://localhost), or at your local IP address.  If you change the port value in app.js, then the URL will be different, [http://localhost:1234](http://localhost:1234) for example.
+
+When running the server in the terminal, use ctrl+c to stop running it, then use `nodejs app.js` whenever you want to start the server.
