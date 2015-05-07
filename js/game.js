@@ -51,6 +51,7 @@ $(document).ready(function(e) {
 var update_stats = function(){
 	
 	// Updating stats
+	$("#stat_points").html(stat_points);
 	$("#level").html(level);
 	$("#health").html(health);
 	$("#strength").html(strength);
