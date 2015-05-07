@@ -22,7 +22,7 @@ var passed_time = 0;
 $(document).ready(function(e) {
 	
 	// Initiate stats on screen
-	update_stats();
+   	update_stats();
 	
 	// Game Loop
 	var game_tick = setInterval(function(){
@@ -57,7 +57,7 @@ var update_stats = function(){
 	$("#intellect").html(intellect);
 	$("#dexterity").html(dexterity);
 	$("#exp").html(experience);
-	$("#exp_tnl").html(experience_tnl);
+	$("#exp-tnl").html(experience_tnl);
 	
 };
 
@@ -95,10 +95,10 @@ var check_stat_points = function(){
 	
 	if(stat_points > 0 && stat_points <= max_stat_points){
 		can_level_stats = true;
-		$(".add_stat").show();
+		$(".add-stat").show();
 	}else if(stat_points == 0 || stat_points > max_stat_points){
 		can_level_stats = false	
-		$(".add_stat").hide();
+		$(".add-stat").hide();
 	}
 	
 }
@@ -106,7 +106,7 @@ var check_stat_points = function(){
 /* Checks for clicks on stat upgrades */
 
 // Health
-$("#health_add").click(function(){
+$("#health-add").click(function(){
 	if(can_level_stats){
 		health += 10;
 		stat_points -= 1;
@@ -114,19 +114,18 @@ $("#health_add").click(function(){
 	}
 });
 
-
 // Strength
-$("#strength_add").click(function(){
+$("#strength-add").click(function(){
 	if(can_level_stats){
 		strength += 1;
 		stat_points -= 1;
-		check_stat_points();
+		check_stat_points();	
 	}
 });
 
 
 //Intellect
-$("#intellect_add").click(function(){
+$("#intellect-add").click(function(){
 	if(can_level_stats){
 		intellect += 1;
 		stat_points -= 1;
@@ -136,7 +135,7 @@ $("#intellect_add").click(function(){
 
 
 //Dexterity
-$("#dexterity_add").click(function(){
+$("#dexterity").click(function(){
 	if(can_level_stats){
 		dexterity += 1;
 		stat_points -= 1;
