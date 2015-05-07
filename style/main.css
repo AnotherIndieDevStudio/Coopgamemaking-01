@@ -1,10 +1,10 @@
 html{
-	font-family: 'Roboto Condensed', sans-serif;	
+	font-family: 'Roboto Condensed', sans-serif;
 }
 
 /* Some spacing */
 .stat{
-	padding: 5px;	
+	padding: 5px;
 }
 
 /* Hiding add stat button */
@@ -14,26 +14,35 @@ html{
 	cursor: pointer;
 }
 
+/*Menu text no selectable*/
+.unselectable {
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
 
 /* Centering content to the page */
 #content-container{
-	text-align: center;	
+	text-align: center;
 }
 
 h1{
 	margin-bottom: 0;
-	padding-bottom: 0;	
+	padding-bottom: 0;
 }
 
 #id-display{
-	display: none;	
+	display: none;
 }
 
 /* Button */
 #save-button{
 	position: absolute;
 	bottom: 10px;
-	left: 10px;	
+	left: 10px;
 }
 
 #load-button{
@@ -53,7 +62,7 @@ h1{
 #information{
 	position: absolute;
 	right: 10px;
-	bottom: 5px;	
+	bottom: 5px;
 }
 /* Bump up div when screen size forces overlap with save/load buttons */
 @media only screen and (max-width: 800px){
@@ -65,5 +74,5 @@ h1{
 /* Advert */
 #advert{
 	width: 728px;
-	margin: 0 auto;	
+	margin: 0 auto;
 }

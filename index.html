@@ -6,17 +6,17 @@
 		<link rel="stylesheet" href="style/main.css">
 		<!-- Importing google fonts to make shit fancy -->
 		<link href='http://fonts.googleapis.com/css?family=Roboto+Condensed:400,300,700' rel='stylesheet' type='text/css'>
-		
+
 		<!-- Google Analytics -->
 		<script>
 			(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
 			(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
 			m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
 			})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
-		
+
 			ga('create', 'UA-62640417-1', 'auto');
 			ga('send', 'pageview');
-		
+
 		</script>
 	</head>
 
@@ -33,21 +33,21 @@
 			(adsbygoogle = window.adsbygoogle || []).push({});
 			</script>
 		</div>
-		
-		<div id="content-container">
+
+		<div id="content-container" class="unselectable">
 			<h1>My Character</h1>
 			<div id="id-display"><span id="id-text"></span><br/><button id="toggle-id">Toggle ID</button></div>
-			
+
 			<!-- Where stats are shown to the player -->
 			<div id="stats_container">
-			
+
 				<!-- LEVEL -->
 				<div id="level_s" class="stat">
 					<h2>LvL <span id="level"></span></h2>
 				</div>
 				<!-- HEALTH -->
-				<div id="health_s" class="stat"> 
-					Health: <span id="health">460</span> 
+				<div id="health_s" class="stat">
+					Health: <span id="health">460</span>
 					<span id="health_add" class="add_stat">+</span>
 				</div>
 				<!-- STRENGTH -->
@@ -69,9 +69,9 @@
 				<div id="exp_s" class="stat">
 					EXP: <span id="exp"></span>/<span id="exp_tnl"></span>
 				</div>
-				
+
 			</div>
-			
+
 		</div>
 		<div id="buttons">
 			<button id="save-button">Save Game</button>
@@ -94,5 +94,5 @@
 		<div id="update_variables"></div>
 	</body>
 
-	
+
 </html>
