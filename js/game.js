@@ -22,7 +22,10 @@ var passed_time = 0;
 $(document).ready(function(e) {
 	
 	// Initiate stats on screen
-	update_stats();
+   	update_stats();
+	
+	// Load the localStorage
+	load_game_locally();
 	
 	// Game Loop
 	var game_tick = setInterval(function(){
@@ -101,6 +104,41 @@ var check_stat_points = function(){
 		$(".add_stat").hide();
 	}
 	
+}
+
+/* Saves the game in local storage so the player can easily return to it when they feel they need to */
+var save_game_locally = function(){
+	
+	localStorage.Saved = true;
+	localStorage.Health = health;
+	localStorage.Strength = strength;
+	localStorage.Intellect = intellect;
+	localStorage.Dexterity = dexterity;
+	localStorage.Level = level;
+	localStorage.Experience = experience;
+	localStorage.Experience_TNL = experience_tnl;
+	localStorage.Stat_Points = stat_points;
+	localStorage.Max_Stat_Points = max_stat_points;
+
+}
+
+/* Load Game details from localStorage */
+var load_game_locally = function(){
+	
+	if(localStorage.Saved){
+		
+		health = parseInt(localStorage.Health);
+		stength = parseInt(localStorage.Strength);
+		intellect = parseInt(localStorage.Intellect);
+		dexterity = parseInt(localStorage.Dexterity);
+		level = parseInt(localStorage.Level);
+		experience = parseInt(localStorage.Experience);
+		experience_tnl = parseInt(localStorage.Experience_TNL);
+		stat_points = parseInt(localStorage.Stat_Points);
+		max_stat_points = parseInt(localStorage.Max_Stat_Points);
+		userID = localStorage.UserID
+		
+	}
 }
 
 /* Checks for clicks on stat upgrades */
