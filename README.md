@@ -13,15 +13,15 @@ This project is intended for everyone from the programming scrubs to the graphic
 #Development Server
 How to run the local development server.
 
-# Install Node
+## Install Node
 Downloads for various platforms at https://iojs.org/
  
-# Install dependencies
+## Install dependencies
 The development server uses the npm package 'serve-static'. You need to install this dependent module before running the server.
  
     npm install
 	
-# Start development server
+## Start development server
 To start the development server listen on http://localhost:8000/
  
     npm start
