@@ -9,3 +9,21 @@ The game will be made entirely with HTML, CSS, Javascript and MySQL (but we'll h
 
 #Who Can Participate?
 This project is intended for everyone from the programming scrubs to the graphics designers to the neckbearded tryhards.
+
+#Development Server
+How to run the local development server.
+
+## Install Node
+Downloads for various platforms at https://iojs.org/
+ 
+## Install dependencies
+The development server uses the npm package 'serve-static'. You need to install this dependent module before running the server.
+ 
+    npm install
+	
+## Start development server
+To start the development server listen on http://localhost:8000/
+ 
+    npm start
+	
+Ctrl-C to stop the server.
