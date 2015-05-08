@@ -47,6 +47,36 @@ h1{
 	display: none;
 }
 
+/* Health Bar */
+#health-bar{
+	background: hsla(0,92%,41%,1.00);
+	height: 20px;
+	width: 200px;
+	z-index: 0;
+	float:inherit;
+	margin: 0 auto;
+	padding: 0;
+	text-align: center;
+}
+
+#health-text{
+	z-index: 2;	
+	position: absolute;
+	text-align: center;
+	width: 200px;
+	display: block;
+}
+
+#health-remaining{
+	
+	background: hsla(121,100%,31%,1.00);
+	height: 20px;
+	width: 200px;	
+	float: left;
+	display: block;
+	z-index: 1;
+}
+
 /* Button */
 #save-button{
 	position: absolute;

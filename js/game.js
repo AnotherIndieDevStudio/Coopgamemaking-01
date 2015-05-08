@@ -101,6 +101,26 @@
 
 	};
 	
+	var take_damage = function(amount){
+		
+		if(Game.player.health - amount > 0){
+			Game.player.health -= amount;
+			adjust_health_bar();
+		}
+		
+	};
+	
+	
+	var adjust_health_bar = function(){
+		
+		var health_remaining = $("#health-remaining");
+		var health_bar = $("#health-bar");
+		
+		var width = (Game.player.health / Game.player.max_health) * health_bar.width();
+		
+		health_remaining.width(width)
+		
+	};
 	
 	// Checks if stats can be upgraded and shows + symbols if player can level stats
 	var check_player_can_level = function () {
@@ -129,6 +149,7 @@
 			Game.player.health += 10;
 			Game.player.max_health = Game.player.health;
 			Game.player.stat_points -= 1;
+			adjust_health_bar();
 			check_player_can_level();
 
 		}
@@ -172,6 +193,10 @@
 
 		}
 
+	});
+	
+	$("#take-damage").click(function(){
+		take_damage(10);
 	});
 
 } ());
