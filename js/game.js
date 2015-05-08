@@ -1,147 +1,178 @@
-/* Creating global Vars */
-
-// Stats
-var health = 100;
-var strength = 1;
-var intellect = 1;
-var dexterity = 1;
-// Level control
-var level = 1;
-var experience = 0;
-var experience_tnl = 50;
-var stat_points = 0;
-var max_stat_points = 0;
-var can_level_stats = false;
-
-// Time
-var game_time = 250;
-var prev_time = new Date();
-var passed_time = 0;
-
-/* Updating variables on page when the document loads */
-$(document).ready(function(e) {
+(function () {
 	
-	// Initiate stats on screen
-	update_stats();
+	var Game = window.Game = window.Game || {};
 	
-	// Game Loop
-	var game_tick = setInterval(function(){
+	if (!Game.player) {
 		
+		// Initialise Player on load to a character with default stats
+		Game.player = Game.Character();
+		
+	}
+	
+	
+	if (!Game.time) {
+		
+		// Initialise Game.Time
+		Game.time = {
+			frequency: 250,
+			previous: new Date(),
+			passed: 0
+		};
+		
+	}
+	
+
+	/* Updating variables on page when the document loads */
+	$(document).ready(function (e) {
+	
+		// Initiate stats on screen
+		update_stats();
+	
+		// Game Loop
+		var game_tick = setInterval(function () {
+			
 			// Ensures that the game still functions when the tab is closed
 			var current_time = new Date();
-			var time_difference = (current_time.getTime() - prev_time.getTime());
+			var time_difference = (current_time.getTime() - Game.time.previous.getTime());
 			
 			// Calculates the difference in time and returns multiplier
-			if(time_difference > game_time){
-				if(Math.floor(time_difference/game_time > 1)){
-					passed_time = Math.floor(time_difference/game_time);
-				}else{
-					passed_time = 1;	
+			if (time_difference > Game.time.frequency) {
+
+				if (Math.floor(time_difference / Game.time.frequency > 1)) {
+
+					Game.time.passed = Math.floor(time_difference / Game.time.frequency);
+
+				} else {
+
+					Game.time.passed = 1;
+
 				}
-			}else{
-				passed_time = 1;	
+
+			} else {
+
+				Game.time.passed = 1;
+
 			}
-			prev_time = new Date();
-			update_game(passed_time);
 			
-		}, game_time);
-	
-});
+			Game.time.previous = new Date();
+			update_game();
 
-var update_stats = function(){
-	
-	// Updating stats
-	$("#stat_points").html(stat_points);
-	$("#level").html(level);
-	$("#health").html(health);
-	$("#strength").html(strength);
-	$("#intellect").html(intellect);
-	$("#dexterity").html(dexterity);
-	$("#exp").html(experience);
-	$("#exp_tnl").html(experience_tnl);
-	
-};
+		}, Game.time.frequency);
 
-var update_game = function(passed_time){
+	});
+	
+
+	var update_stats = function () {
 		
-	// Adds exp each game tick
-	experience += 10*passed_time;
-	if(experience > experience_tnl){
-		experience -= experience_tnl;
-		experience_tnl = get_experience_tnl();
-		level += 1;
-		stat_points += 2;
-		max_stat_points += 2;
-	}
+		// Updating stats
+		$("#stat_points").html(Game.player.stat_points);
+		$("#level").html(Game.player.level);
+		$("#health").html(Game.player.health);
+		$("#strength").html(Game.player.strength);
+		$("#intellect").html(Game.player.intellect);
+		$("#dexterity").html(Game.player.dexterity);
+		$("#exp").html(Game.player.experience);
+		$("#exp_tnl").html(Game.player.experience_tnl);
+
+	};
 	
-	// Updates stats on the screen
-	update_stats();
+
+	var update_game = function () {
+		
+		// Adds exp each game tick
+		Game.player.experience += 10 * Game.time.passed;
+		
+		if (Game.player.experience > Game.player.experience_tnl) {
+
+			Game.player.experience -= Game.player.experience_tnl;
+			Game.player.experience_tnl = Game.Character.get_experience_tnl(Game.player);
+			Game.player.level += 1;
+			Game.player.stat_points += 2;
+			Game.player.max_stat_points += 2;
+
+		}
 	
-	// Checks if stats can be upgraded
-	check_stat_points();
+		// Updates stats on the screen
+		update_stats();
 	
-};
+		// Checks if stats can be upgraded
+		check_player_can_level();
 
-// Gets the exp until next level based on advanced algorithm
-var get_experience_tnl = function(){
+	};
 	
-	//Random algorithm that doesn't make sense at all
-	return (Math.pow((level*10), 2));
 	
-};
+	// Checks if stats can be upgraded and shows + symbols if player can level stats
+	var check_player_can_level = function () {
+		
+		Game.Character.check_can_level_stats(Game.player);
+		
+		if (Game.player.can_level_stats) {
 
+			$(".add_stat").show();
 
-// Checks if stats can be upgraded and shows + symbols
-var check_stat_points = function(){
+		} else {
+
+			$(".add_stat").hide();
+
+		}
+			
+	};
 	
-	if(stat_points > 0 && stat_points <= max_stat_points){
-		can_level_stats = true;
-		$(".add_stat").show();
-	}else if(stat_points === 0 || stat_points > max_stat_points){
-		can_level_stats = false;	
-		$(".add_stat").hide();
-	}
-	
-};
+	/* Checks for clicks on stat upgrades */
 
-/* Checks for clicks on stat upgrades */
+	// Health
+	$("#health_add").click(function () {
 
-// Health
-$("#health_add").click(function(){
-	if(can_level_stats){
-		health += 10;
-		stat_points -= 1;
-		check_stat_points();
-	}
-});
+		if (Game.player.can_level_stats) {
+
+			Game.player.health += 10;
+			Game.player.stat_points -= 1;
+			check_player_can_level();
+
+		}
+
+	});
 
 
-// Strength
-$("#strength_add").click(function(){
-	if(can_level_stats){
-		strength += 1;
-		stat_points -= 1;
-		check_stat_points();
-	}
-});
+	// Strength
+	$("#strength_add").click(function () {
+
+		if (Game.player.can_level_stats) {
+
+			Game.player.strength += 1;
+			Game.player.stat_points -= 1;
+			check_player_can_level();
+
+		}
+
+	});
 
 
-//Intellect
-$("#intellect_add").click(function(){
-	if(can_level_stats){
-		intellect += 1;
-		stat_points -= 1;
-		check_stat_points();
-	}
-});
+	//Intellect
+	$("#intellect_add").click(function () {
+
+		if (Game.player.can_level_stats) {
+
+			Game.player.intellect += 1;
+			Game.player.stat_points -= 1;
+			check_player_can_level();
+
+		}
+
+	});
 
 
-//Dexterity
-$("#dexterity_add").click(function(){
-	if(can_level_stats){
-		dexterity += 1;
-		stat_points -= 1;
-		check_stat_points();
-	}
-});
+	//Dexterity
+	$("#dexterity_add").click(function () {
 
+		if (Game.player.can_level_stats) {
+
+			Game.player.dexterity += 1;
+			Game.player.stat_points -= 1;
+			check_player_can_level();
+
+		}
+
+	});
+
+} ());
