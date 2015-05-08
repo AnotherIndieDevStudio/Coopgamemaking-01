@@ -54,22 +54,22 @@
 				<!-- HEALTH -->
 				<div id="health_s" class="stat">
 					Health: <span id="health"></span>/<span id="max-health"></span>
-					<span id="health_add" class="add_stat">+</span>
+					<span id="health_add" data-stat="health" class="add_stat">+</span>
 				</div>
 				<!-- STRENGTH -->
 				<div id="strength_s" class="stat">
 					Strength: <span id="strength"></span>
-					<span id="strength_add" class="add_stat">+</span>
+					<span id="strength_add" data-stat="strength" class="add_stat">+</span>
 				</div>
 				<!-- INTELLECT -->
 				<div id="intellect_s" class="stat">
 					Intellect: <span id="intellect"></span>
-					<span id="intellect_add" class="add_stat">+</span>
+					<span id="intellect_add" data-stat="intellect" class="add_stat">+</span>
 				</div>
 				<!-- DEXTERITY -->
 				<div id="dexterity_s" class="stat">
 					Dexterity: <span id="dexterity"></span>
-					<span id="dexterity_add" class="add_stat">+</span>
+					<span id="dexterity_add" data-stat="dexterity" class="add_stat">+</span>
 				</div>
 				<!-- EXPERIENCE -->
 				<div id="exp_s" class="stat">
@@ -79,11 +79,11 @@
 			</div>
 
 		</div>
-		<div id="buttons">
+		<div id="buttons" class="unselectable">
 			<button id="save-button">Save Game</button>
 			<button id="load-button">Load Game</button>
 			<div id="load-box" >
-				<input type="text" id="load-input" size="32" name="load-input" placeholder="Please enter ID">
+				<input type="text" id="load-input" size="32" name="load-input" placeholder="Please enter ID" class="selectable">
 				<button id="submit-load">Load</button>
 			</div>
 		</div>
