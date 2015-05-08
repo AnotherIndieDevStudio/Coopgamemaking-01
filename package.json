@@ -1,0 +1,15 @@
+{
+	"name": "CoopGameMaking",
+	"version": "0.0.1",
+	"private": false,
+	"scripts" : {
+		"start": "node js/developmentServer.js"
+  	},
+	"repository": {
+		"type": "git",
+		"url": "git://github.com/AnotherIndieDevStudio/Coopgamemaking-01.git"
+	},
+	"dependencies": {
+		"serve-static": "latest"
+	}
+}
