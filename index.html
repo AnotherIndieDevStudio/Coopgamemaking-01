@@ -46,6 +46,11 @@
 					<h2>LvL <span id="level"></span></h2>
 				</div>
 
+				<div id="health-bar">
+					<p id="health-text"><span id="health"></span>/<span class="max-health"></span></p>
+					<span id="health-remaining"></span>
+				</div>
+
 				<!-- Available Stat Points -->
 				<div id="stat_s" class="stat">
 					<b>Available Stat Points: <span id="stat_points"></span></b>
@@ -53,23 +58,23 @@
 
 				<!-- HEALTH -->
 				<div id="health_s" class="stat">
-					Health: <span id="health"></span>/<span id="max-health"></span>
-					<span id="health_add" data-stat="health" class="add_stat">+</span>
+					<p class="float-left">Health: <span class="max-health"></span></p>
+					<span id="health_add" data-stat="health" class="add_stat">+10</span>
 				</div>
 				<!-- STRENGTH -->
 				<div id="strength_s" class="stat">
-					Strength: <span id="strength"></span>
-					<span id="strength_add" data-stat="strength" class="add_stat">+</span>
+					<p class="float-left">Strength: <span id="strength"></span></p>
+					<span id="strength_add" data-stat="strength" class="add_stat">+1</span>
 				</div>
 				<!-- INTELLECT -->
 				<div id="intellect_s" class="stat">
-					Intellect: <span id="intellect"></span>
-					<span id="intellect_add" data-stat="intellect" class="add_stat">+</span>
+					<p class="float-left">Intellect: <span id="intellect"></span></p>
+					<span id="intellect_add" data-stat="intellect" class="add_stat">+1</span>
 				</div>
 				<!-- DEXTERITY -->
 				<div id="dexterity_s" class="stat">
-					Dexterity: <span id="dexterity"></span>
-					<span id="dexterity_add" data-stat="dexterity" class="add_stat">+</span>
+					<p class="float-left">Dexterity: <span id="dexterity"></span></p>
+					<span id="dexterity_add" data-stat="dexterity" class="add_stat">+1</span>
 				</div>
 				<!-- EXPERIENCE -->
 				<div id="exp_s" class="stat">
@@ -77,6 +82,8 @@
 				</div>
 
 			</div>
+
+			<button id="take-damage">Feel The Pain</button>
 
 		</div>
 		<div id="buttons" class="unselectable">
