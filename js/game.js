@@ -120,19 +120,34 @@
 	};
 
 	/* Checks for clicks on stat upgrades */
-	$(".add_stat").click(function () {
+	$(".add_stat").click(function (e) {
 		/* Check button's data-stat */
-		var stat = $(this).data('stat');
+		var stat = $(this).data('stat'),
+			amount = (stat === "health") ? 10 : 1;
 		if (Game.player.can_level_stats) {
 			/* if stat is 'health', update by 10, if not, then 1 */
-			Game.player[stat] += (stat === "health") ? 10 : 1;
+			Game.player[stat] += amount;
 			/* Setting player's max health */
 			if (stat === "health") {
+
 				Game.player.max_health = Game.player.health;
 			}
 			Game.player.stat_points -= 1;
 			check_player_can_level();
 		}
+
+		var pageY = e.pageY - 15,
+			pageX = e.pageX - 10,
+			effect = $("<span class='plusone' style='left:"+pageX+"px;top:"+pageY+"px;'>+"+amount+"</span>").insertAfter('body');
+
+			effect.show();
+			effect.animate({
+				opacity:0,
+				top: pageY - 50,
+			}, 1000, function(){
+				effect.remove();
+			});
+
 	});
 
 } ());
