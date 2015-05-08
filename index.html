@@ -1,99 +1,104 @@
 <!doctype html>
 <html>
-    <head>
-        <meta charset="utf-8">
-        <title id="tab-title">My Character</title>
-        <link rel="stylesheet" href="style/main.css">
-        <!-- Importing google fonts to make shit fancy -->
-        <link href='http://fonts.googleapis.com/css?family=Roboto+Condensed:400,300,700' rel='stylesheet' type='text/css'>
-        
-        <!-- Google Analytics -->
-        <script>
-		  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-		  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-		  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-		  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
-		
-		  ga('create', 'UA-62640417-1', 'auto');
-		  ga('send', 'pageview');
-		
+	<head>
+		<meta charset="utf-8">
+		<title>My Character</title>
+		<link rel="stylesheet" href="style/main.css">
+		<!-- Importing google fonts to make shit fancy -->
+		<link href='http://fonts.googleapis.com/css?family=Roboto+Condensed:400,300,700' rel='stylesheet' type='text/css'>
+
+		<!-- Google Analytics -->
+		<script>
+			(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+			(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+			m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+			})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+			ga('create', 'UA-62640417-1', 'auto');
+			ga('send', 'pageview');
+
 		</script>
-    </head>
+	</head>
 
-    <body>
-  		<input type="hidden" id="load-id" value="">
-        <div id="advert">
+	<body>
+			<input type="hidden" id="load_id" value="">
+		<div id="advert">
 			<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
-            <!-- GameMaking -->
-            <ins class="adsbygoogle"
-                 style="display:inline-block;width:728px;height:90px"
-                 data-ad-client="ca-pub-9866343712140984"
-                 data-ad-slot="2535597386"></ins>
-            <script>
-            (adsbygoogle = window.adsbygoogle || []).push({});
-            </script>
-        </div>
-        
-        <div id="content-container">
-        	<h1>My Character</h1>
-            <div id="id-display"><span id="id-text"></span><br/><button id="toggle-id">Toggle ID</button></div>
-            
-            <!-- Where stats are shown to the player -->
-            <div id="stats-container">
-            
-            	<!-- LEVEL -->
-                <div id="level-s" class="stat">
-                	<h2>LvL <span id="level"></span></h2>
-                </div>
-            	<!-- HEALTH -->
-            	<div id="health-s" class="stat"> 
-                    Health: <span id="health">460</span> 
-                    <span id="health-add" class="add-stat">+</span>
-                </div>
-                <!-- STRENGTH -->
-                <div id="strength-s" class="stat">
-                	Strength: <span id="strength"></span>
-                  <span id="strength-add" class="add-stat">+</span>
-                </div>
-                <!-- INTELLECT -->
-                <div id="intellect-s" class="stat">
-                	Intellect: <span id="intellect"></span>
-                  <span id="intellect-add" class="add-stat">+</span>
-                </div>
-                <!-- DEXTERITY -->
-                <div id="dexterity-s" class="stat">
-                	Dexterity: <span id="dexterity"></span>
-                  <span id="dexterity-add" class="add-stat">+</span>
-              </div>
-                <!-- EXPERIENCE -->
-                <div id="exp-s" class="stat">
-                	EXP: <span id="exp"></span>/<span id="exp-tnl"></span>
-                </div>
-                
-            </div>
-            
-        </div>
-        <div id="buttons">
-            <button id="save-button">Save Game</button>
-            <button id="load-button">Load Game</button>
-            <div id="load-box" >
-                <input type="text" id="load-input" size="32" name="load-input" placeholder="Please enter ID">
-                <button id="submit-load">Load</button>
-            </div>
-        </div>
-        <!-- Powered by REDDIT -->
-        <div id="information">
-        	<p>This game is being made by the community. For more information, visit <a href="http://www.reddit.com/r/CoopGameMaking" target="_blank">/r/CoopGameMaking</a></p>
-        </div>
-        
-        <!-- Importing JQuery -->
-		<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
-        <!-- Importing Game JS -->
-        <script src="js/game.js"></script>
-        <!-- AJAX -->
-        <script src="js/server_handle.js"></script>
-        <div id="update-variables"></div>
-    </body>
+			<!-- GameMaking -->
+			<ins class="adsbygoogle"
+				 style="display:inline-block;width:728px;height:90px"
+				 data-ad-client="ca-pub-9866343712140984"
+				 data-ad-slot="2535597386"></ins>
+			<script>
+			(adsbygoogle = window.adsbygoogle || []).push({});
+			</script>
+		</div>
 
-	
+		<div id="content-container" class="unselectable">
+			<h1>My Character</h1>
+			<div id="id-display"><span id="id-text"></span><br/><button id="toggle-id">Toggle ID</button></div>
+
+			<!-- Where stats are shown to the player -->
+			<div id="stats_container">
+
+				<!-- LEVEL -->
+				<div id="level_s" class="stat">
+					<h2>LvL <span id="level"></span></h2>
+				</div>
+
+				<!-- Available Stat Points -->
+				<div id="stat_s" class="stat">
+					<h3>Available Stat Points: <span id="stat_points"></span></h3>
+				</div>
+
+				<!-- HEALTH -->
+				<div id="health_s" class="stat">
+					Health: <span id="health">460</span>
+					<span id="health_add" class="add_stat">+</span>
+				</div>
+				<!-- STRENGTH -->
+				<div id="strength_s" class="stat">
+					Strength: <span id="strength"></span>
+					<span id="strength_add" class="add_stat">+</span>
+				</div>
+				<!-- INTELLECT -->
+				<div id="intellect_s" class="stat">
+					Intellect: <span id="intellect"></span>
+					<span id="intellect_add" class="add_stat">+</span>
+				</div>
+				<!-- DEXTERITY -->
+				<div id="dexterity_s" class="stat">
+					Dexterity: <span id="dexterity"></span>
+					<span id="dexterity_add" class="add_stat">+</span>
+				</div>
+				<!-- EXPERIENCE -->
+				<div id="exp_s" class="stat">
+					EXP: <span id="exp"></span>/<span id="exp_tnl"></span>
+				</div>
+
+			</div>
+
+		</div>
+		<div id="buttons">
+			<button id="save-button">Save Game</button>
+			<button id="load-button">Load Game</button>
+			<div id="load-box" >
+				<input type="text" id="load-input" size="32" name="load-input" placeholder="Please enter ID">
+				<button id="submit-load">Load</button>
+			</div>
+		</div>
+		<!-- Powered by REDDIT -->
+		<div id="information">
+			<p>This game is being made by the community. For more information, visit <a href="http://www.reddit.com/r/CoopGameMaking" target="_blank">/r/CoopGameMaking</a></p>
+		</div>
+		<!-- Importing JQuery -->
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+		<!-- Importing Game JS -->
+		<script src="js/game.js"></script>
+		<!-- AJAX -->
+		<script src="js/server_handle.js"></script>
+		<div id="update_variables"></div>
+	</body>
+
+
 </html>

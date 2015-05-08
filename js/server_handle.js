@@ -25,9 +25,8 @@ function saveGame(){
 	xmlhttp.onreadystatechange = function(){
 		if(xmlhttp.readyState == 4){
 			if(xmlhttp.status == 200){
-				userID = xmlhttp.responseText;
-				// Updates the ID Display
-				$("#load-id").val(userID);
+				var userID = xmlhttp.responseText;
+				$("#load_id").val(userID);
 				$("#id-text").html("Save ID: " + userID);
 				$("#id-display").show(1000);
 				id_displaed = true;
@@ -43,8 +42,8 @@ function saveGame(){
 		var need_save_ID = false;
 	}
 	
-	// Retrieving information from PHP file\
-	xmlhttp.open("GET", "savegame.php?id=" + userID + "&level=" + level + "&exp=" +  experience + "&exp_tnl=" + experience_tnl + "&health=" + health + "&strength=" + strength + "&dex=" + dexterity + "&intellect=" + intellect + "&statpoints=" + stat_points + "&maxstatpoints=" + max_stat_points + "&need_id=" + need_save_ID, true);
+	// Retrieving information from PHP file
+	xmlhttp.open("GET", "savegame.php?id=" + userID + "&level=" + level + "&exp=" + experience + "&exp_tnl=" + experience_tnl + "&health=" + health + "&strength=" + strength + "&dex=" + dexterity + "&intellect=" + intellect + "&statpoints=" + stat_points + "&maxstatpoints=" + max_stat_points + "&need_id=" + need_save_ID, true);
 	xmlhttp.send();
 }
 
@@ -58,8 +57,8 @@ function loadGame(){
 	xmlhttp.onreadystatechange = function(){
 		if(xmlhttp.readyState == 4){
 			if(xmlhttp.status == 200){
-				$("#update-variables").html(xmlhttp.responseText);
-				$("#load-id").val(userID);
+				$("#update_variables").html(xmlhttp.responseText);
+				$("#load_id").val(userID);
 				$("#id-text").html("Save ID: " + userID);
 				$("#id-display").show(1000);
 				id_displaed = true;
@@ -76,18 +75,18 @@ function loadGame(){
 
 /* Creates a Unique User ID. NOT MY CODE - FOUND ON STACKOVERFLOW A LONG TIME AGO */
 var create_UUID = function() {
-    // http://www.ietf.org/rfc/rfc4122.txt
-    var s = [];
-    var hexDigits = "0123456789abcdef";
-    for (var i = 0; i < 36; i++) {
-        s[i] = hexDigits.substr(Math.floor(Math.random() * 0x10), 1);
-    }
-    s[14] = "4";  // bits 12-15 of the time_hi_and_version field to 0010
-    s[19] = hexDigits.substr((s[19] & 0x3) | 0x8, 1);  // bits 6-7 of the clock_seq_hi_and_reserved to 01
-    s[8] = s[13] = s[18] = s[23] = "-";
+	// http://www.ietf.org/rfc/rfc4122.txt
+	var s = [];
+	var hexDigits = "0123456789abcdef";
+	for (var i = 0; i < 36; i++) {
+		s[i] = hexDigits.substr(Math.floor(Math.random() * 0x10), 1);
+	}
+	s[14] = "4";	// bits 12-15 of the time_hi_and_version field to 0010
+	s[19] = hexDigits.substr((s[19] & 0x3) | 0x8, 1);		// bits 6-7 of the clock_seq_hi_and_reserved to 01
+	s[8] = s[13] = s[18] = s[23] = "-";
 
-    var uuid = s.join("");
-    return uuid;
+	var uuid = s.join("");
+	return uuid;
 }
 
 /* Checks if the buttons that control the game were pressed */
@@ -113,4 +112,3 @@ $("#toggle-id").click(function(){
 	$("#id-text").toggle();
 	
 });
-
