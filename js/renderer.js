@@ -4,6 +4,8 @@
 	
 	Game.renderer = Game.renderer || {};
 	
+	var ring_angle = 0;
+	
 	/**
 	 * Called once per frame to update pixels.
 	 * 
@@ -35,7 +37,8 @@
 		Game.renderer.context.drawImage(Game.asset.placeholder, 390, 50, 200, 300);
 		Game.renderer.context.drawImage(Game.asset.helmet, 30, 300);
 		Game.renderer.context.drawImage(Game.asset.sword, 97, 335);
-		Game.renderer.context.drawImage(Game.asset.ring, 310, 230);
+		
+		Game.renderer.drawImageWithRotation(Game.asset.ring, 370, 290, ring_angle -= 0.07);
 		
 		Game.renderer.context.drawImage(Game.asset.coin, 40, 200);
 		Game.renderer.context.drawImage(Game.asset.coin, 50, 190);
@@ -51,6 +54,25 @@
 	Z = 255; while (Z--) G.push((Math.random() * 255) << 8);
 	Z = 255; while (Z--) B.push((Math.random() * 255) << 16);
 	
+	
+	
+	/**
+	 * Draws an Image at the specified position with an angle of rotation.
+	 * 
+	 * @param {Image} image 
+	 * @param {number} x 
+	 * @param {number} y
+	 * @param {number} angle
+	 */
+	Game.renderer.drawImageWithRotation = function (image, x, y, angle) {
+		
+		Game.renderer.context.translate(x, y);
+  		Game.renderer.context.rotate(angle);
+		Game.renderer.context.drawImage(image, -image.width * 0.5, -image.height * 0.5);
+  		Game.renderer.context.rotate(-angle);
+		Game.renderer.context.translate(-x, -y);
+		
+	};
 	
 	
 
