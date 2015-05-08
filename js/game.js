@@ -138,7 +138,7 @@
 
 		var pageY = e.pageY - 15,
 			pageX = e.pageX - 10,
-			effect = $("<span class='plusone' style='left:"+pageX+"px;top:"+pageY+"px;'>+"+amount+"</span>").insertAfter('body');
+			effect = $("<span class='plusone unselectable' style='left:"+pageX+"px;top:"+pageY+"px;'>+"+amount+"</span>").insertAfter('body');
 
 			effect.show();
 			effect.animate({
