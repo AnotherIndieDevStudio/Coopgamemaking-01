@@ -15,8 +15,8 @@ var can_level_stats = false;
 
 // Time
 var game_time = 250;
-var prev_time = new Date();
 var passed_time = 0;
+var gameLoopActive = false;
 
 /* Updating variables on page when the document loads */
 $(document).ready(function(e) {
@@ -26,11 +26,18 @@ $(document).ready(function(e) {
 	
 	// Game Loop
 	var game_tick = setInterval(function(){
-		
+		//effectively pauses the game when user activates "Pause Game" button
+		if(gameLoopActive === true) {
+
+			//Gets first instance of previous time, will only run once
+			if(prev_time === undefined){
+				var prev_time = new Date();
+			}
+
 			// Ensures that the game still functions when the tab is closed
 			var current_time = new Date();
 			var time_difference = (current_time.getTime() - prev_time.getTime());
-			
+		
 			// Calculates the difference in time and returns multiplier
 			if(time_difference > game_time){
 				if(Math.floor(time_difference/game_time > 1)){
@@ -39,12 +46,13 @@ $(document).ready(function(e) {
 					passed_time = 1;	
 				}
 			}else{
-				passed_time = 1;	
-			}
+				passed_time = 1;
+			}	
 			prev_time = new Date();
 			update_game(passed_time);
-			
-		}, game_time);
+		}
+	}, game_time);
+	
 	
 });
 
@@ -143,5 +151,26 @@ $("#dexterity_add").click(function(){
 		stat_points -= 1;
 		check_stat_points();
 	}
+});
+
+//Start Game Button
+$("#start-button").click(function(){
+	$("#start-button").hide();
+	gameLoopActive = true;
+	$("#pause-button").show();
+});
+
+//Pause Game Button
+$("#pause-button").click(function(){
+	$("#pause-button").hide();
+	gameLoopActive = false;
+	$("#resume-button").show();
+});
+
+//Resume Game Button
+$("#resume-button").click(function(){
+	$("#resume-button").hide();
+	gameLoopActive = true;
+	$("#pause-button").show();
 });
 

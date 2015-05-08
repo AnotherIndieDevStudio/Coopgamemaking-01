@@ -48,36 +48,39 @@ h1{
 }
 
 /* Button */
-#save-button{
-	position: absolute;
-	bottom: 10px;
-	left: 10px;
+#footerContent {
+	position: fixed;
+    bottom: 0;
+    width: 100%;
 }
 
-#load-button{
-	position: absolute;
-	bottom: 10px;
-	left: 100px;
+
+#buttons {
+    width: 100%;
+}
+
+.bottomButtons {
+	float: left;
+	margin-right: 1em;
+}
+
+#pause-button {
+	display: none;
+}
+
+#resume-button {
+	display: none;
 }
 
 #load-box{
-	position: absolute;
-	left: 190px;
-	bottom: 10px;
 	display: none;
 }
 
 /* Information */
 #information{
-	position: absolute;
-	right: 10px;
-	bottom: 5px;
-}
-/* Bump up div when screen size forces overlap with save/load buttons */
-@media only screen and (max-width: 800px){
-	#information{
-		bottom: 25px;
-	}
+	float: left;
+	width: 100%;
+
 }
 
 /* Advert */
