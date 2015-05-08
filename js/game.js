@@ -1,6 +1,6 @@
 /* Creating global Vars */
 
-// Stats
+// Stats 
 var health = 100;
 var strength = 1;
 var intellect = 1;
@@ -34,7 +34,7 @@ $(document).ready(function(e) {
 			// Calculates the difference in time and returns multiplier
 			if(time_difference > game_time){
 				if(Math.floor(time_difference/game_time > 1)){
-					passed_time = Math.floor(time_difference/game_time);
+					passed_time = Math.floor(time_difference/game_time)
 				}else{
 					passed_time = 1;	
 				}
@@ -70,8 +70,12 @@ var update_game = function(passed_time){
 		experience -= experience_tnl;
 		experience_tnl = get_experience_tnl();
 		level += 1;
-		stat_points += 2;
+		stat_points += 1;
 		max_stat_points += 2;
+	        health += Math.floor(Math.random() * (100 - 50) + 50);
+	        strength += Math.floor(Math.random() * (3 - 0));
+	        intellect += Math.floor(Math.random() * (3 - 0));
+	        dexterity += Math.floor(Math.random() * (3 - 0));
 	}
 	
 	// Updates stats on the screen
@@ -97,12 +101,12 @@ var check_stat_points = function(){
 	if(stat_points > 0 && stat_points <= max_stat_points){
 		can_level_stats = true;
 		$(".add_stat").show();
-	}else if(stat_points === 0 || stat_points > max_stat_points){
-		can_level_stats = false;	
+	}else if(stat_points == 0 || stat_points > max_stat_points){
+		can_level_stats = false	
 		$(".add_stat").hide();
 	}
 	
-};
+}
 
 /* Checks for clicks on stat upgrades */
 
@@ -144,4 +148,3 @@ $("#dexterity_add").click(function(){
 		check_stat_points();
 	}
 });
-
