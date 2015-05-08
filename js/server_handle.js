@@ -32,14 +32,14 @@ function saveGame(){
 				id_displaed = true;
 			}
 		}
-	}
+	};
 	
 	// Generates UID in javascript first just for keks if one doesn't already exist. Else, update save.
-	var need_save_ID = true
+	var need_save_ID = true;
 	if(!userID){
 		userID = create_UUID();	
 	}else{
-		var need_save_ID = false;
+		need_save_ID = false;
 	}
 	
 	// Retrieving information from PHP file
@@ -64,7 +64,7 @@ function loadGame(){
 				id_displaed = true;
 			}
 		}
-	}
+	};
 	
 	var load_id = $("#load-input").val();
 	
@@ -87,7 +87,7 @@ var create_UUID = function() {
 
 	var uuid = s.join("");
 	return uuid;
-}
+};
 
 /* Checks if the buttons that control the game were pressed */
 
