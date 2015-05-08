@@ -40,7 +40,30 @@ var save = function (req, res) {
 	for (var param in params) {
 
 		param = params[param].split('=');
-		obj[param[0]] = param[1];
+		
+		var paramName = param[0];
+		
+		if (paramName === 'level') {
+			obj.level = param[1];
+		} else if (paramName === 'exp') {
+			obj.experience = param[1];
+		} else if (paramName === 'exp_tnl') {
+			obj.experience_tnl = param[1];
+		} else if (paramName === 'health') {
+			obj.health = param[1];
+		} else if (paramName == 'max_health') {
+			obj.max_health = param[1];	
+		} else if (paramName === 'strength') {
+			obj.strength = param[1];
+		} else if (paramName === 'dex') {
+			obj.dexterity = param[1];
+		} else if (paramName === 'intellect') {
+			obj.intellect = param[1];
+		} else if (paramName === 'statpoints') {
+			obj.stat_points = param[1];
+		} else if (paramName === 'maxstatpoints') {
+			obj.max_stat_points = param[1];
+		}
 
 	}
 
@@ -67,25 +90,25 @@ var load = function (req, res) {
 		
 		if (!err) {
 			
-			var obj = JSON.parse(data);
 			console.log('Loaded ' + UUID);
-			res.setHeader('Content-Type', 'text/javascript');
-			res.end([
-				"<script>",
-				"	level = " + obj.level + ";",
-				"	health = " + obj.health + ";", 
-				"	experience = " + obj.exp + ";",
-				"	experience_tnl = " + obj.exp_tnl + ";",
-				"	strength = " + obj.strength + ";",
-				"	dexterity = " + obj.dex + ";",
-				"	intellect = " + obj.intellect + ";",
-				"	stat_points = " + obj.statpoints + ";",
-				"	max_stat_points = " + obj.maxstatpoints + ";",
-				"	alert('Successfully loaded the game');",
-				"	$('#load-box').hide(500);",
-				"	userID = '" + UUID + "';",
-			    "</script>"
-			].join('\n'));
+			
+			data = JSON.parse(data);
+			
+			data.level = parseInt(data.level, 10);
+			data.health = parseInt(data.health, 10);
+			data.experience = parseInt(data.experience, 10);
+			data.experience_tnl = parseInt(data.experience_tnl, 10);
+			data.strength = parseInt(data.strength, 10);
+			data.dexterity = parseInt(data.dexterity, 10);
+			data.intellect = parseInt(data.intellect, 10);
+			data.stat_points = parseInt(data.stat_points, 10);
+			data.max_stat_points = parseInt(data.max_stat_points, 10);
+			data.health = parseInt(data.health, 10);
+			
+			data.userID = UUID;
+			
+			res.setHeader('Content-Type', 'application/json');
+			res.end(JSON.stringify(data));
 			
 		} else {
 			
