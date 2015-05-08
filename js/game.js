@@ -50,6 +50,8 @@ $(document).ready(function(e) {
 			}	
 			prev_time = new Date();
 			update_game(passed_time);
+		}else{
+			update_stats();
 		}
 	}, game_time);
 	
