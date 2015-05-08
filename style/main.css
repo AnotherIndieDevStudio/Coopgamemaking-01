@@ -85,3 +85,13 @@ h1{
 	width: 728px;
 	margin: 0 auto;
 }
+
+/* +1(0) on stat upgrade */
+.plusone{
+    opacity:1;
+    color:#00FF40;
+    font-weight:700;
+    position:absolute;
+    display:none;
+    cursor:pointer;
+}
