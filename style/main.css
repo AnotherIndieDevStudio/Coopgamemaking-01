@@ -2,16 +2,42 @@ html{
 	font-family: 'Roboto Condensed', sans-serif;
 }
 
+/* Stats Container */
+
+#stats_container{
+    width:200px;
+    border:1px solid #000;
+    margin:auto;
+}
+
+#stats_container .float-left {
+    float:left;
+    margin:0;
+    padding:5px;
+}
+
 /* Some spacing */
 .stat{
 	padding: 5px;
+    clear:both;
 }
 
 /* Hiding add stat button */
 .add_stat{
-	display: none;
+	background:#CD5C5C;
+    width:30px;
 	padding: 5px;
 	cursor: pointer;
+    float:right;
+    margin:0;
+    color:#fff;
+    transition:background .5s;
+    -webkit-transition:background .5s;
+    -moz-transition:background .5s;
+}
+
+.add_stat.purchase {
+    background:#2E8B57;
 }
 
 /*Menu text no selectable*/
@@ -45,6 +71,37 @@ h1{
 
 #id-display{
 	display: none;
+}
+
+/* Health Bar */
+#health-bar{
+    position:relative;
+    background: hsla(0,92%,41%,1.00);
+    height: 20px;
+    width: 100%;
+    z-index: 0;
+    padding: 0;
+    text-align: center;
+}
+
+#health-text{
+    top:-16px;
+    color:#fff;
+    z-index: 2;
+    position: absolute;
+    text-align: center;
+    width: 100%;
+    display: block;
+}
+
+#health-remaining{
+    position:absolute;
+    left:0;
+    background: hsla(121,100%,31%,1.00);
+    height: 20px;
+    width: 100%;
+    display: block;
+    z-index: 1;
 }
 
 /* Button */
@@ -89,7 +146,7 @@ h1{
 /* +1(0) on stat upgrade */
 .plusone{
     opacity:1;
-    color:#00FF40;
+    color:#0DFF2B;
     font-weight:700;
     position:absolute;
     display:none;

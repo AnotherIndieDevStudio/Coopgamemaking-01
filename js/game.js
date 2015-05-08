@@ -68,7 +68,7 @@
 		$("#stat_points").html(Game.player.stat_points);
 		$("#level").html(Game.player.level);
 		$("#health").html(Game.player.health);
-		$("#max-health").html(Game.player.max_health);
+		$(".max-health").html(Game.player.max_health);
 		$("#strength").html(Game.player.strength);
 		$("#intellect").html(Game.player.intellect);
 		$("#dexterity").html(Game.player.dexterity);
@@ -84,13 +84,11 @@
 		Game.player.experience += 10 * Game.time.passed;
 
 		if (Game.player.experience > Game.player.experience_tnl) {
-
 			Game.player.experience -= Game.player.experience_tnl;
 			Game.player.experience_tnl = Game.Character.get_experience_tnl(Game.player);
 			Game.player.level += 1;
 			Game.player.stat_points += 2;
 			Game.player.max_stat_points += 2;
-
 		}
 
 		// Updates stats on the screen
@@ -101,26 +99,43 @@
 
 	};
 
+	var take_damage = function(amount) {
+		if (Game.player.health - amount > 0) {
+			Game.player.health -= amount;
+			adjust_health_bar();
+		}
+	}
+
+	var adjust_health_bar = function(){
+
+		var health_remaining = $("#health-remaining");
+		var health_bar = $("#health-bar");
+
+		var width = (Game.player.health / Game.player.max_health) * health_bar.width();
+
+		health_remaining.width(width)
+
+	};
+
 
 	// Checks if stats can be upgraded and shows + symbols if player can level stats
 	var check_player_can_level = function () {
 
 		Game.Character.check_can_level_stats(Game.player);
-
 		if (Game.player.can_level_stats) {
-
-			$(".add_stat").show();
-
+			$(".add_stat").addClass('purchase');
 		} else {
-
-			$(".add_stat").hide();
-
+			$(".add_stat").removeClass('purchase');
 		}
 
 	};
 
 	/* Checks for clicks on stat upgrades */
 	$(".add_stat").click(function (e) {
+		/*Check if button can be pressed*/
+		if(!Game.player.can_level_stats) {
+			return alert("Sorry, not enough points!");
+		}
 		/* Check button's data-stat */
 		var stat = $(this).data('stat'),
 			amount = (stat === "health") ? 10 : 1;
@@ -133,6 +148,7 @@
 				Game.player.max_health = Game.player.health;
 			}
 			Game.player.stat_points -= 1;
+			adjust_health_bar();
 			check_player_can_level();
 		}
 
@@ -148,6 +164,10 @@
 				effect.remove();
 			});
 
+	});
+
+	$("#take-damage").click(function(){
+		take_damage(10);
 	});
 
 } ());
