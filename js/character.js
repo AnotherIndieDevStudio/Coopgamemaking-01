@@ -80,7 +80,7 @@
 			
 		}
 		
-		return Character(template);
+		return Game.Character(template);
 		
 	};
 	

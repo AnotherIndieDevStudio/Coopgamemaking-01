@@ -97,6 +97,9 @@
 					
 				} else {
 					
+					// Remove the now old by_id reference
+					delete Game.Character.by_id[Game.player.id];
+					
 					Game.player.id = data.id;
 					Game.player.name = data.name;
 					Game.player.type = data.type;
@@ -112,6 +115,9 @@
 					Game.player.experience_tnl = data.experience_tnl;
 					Game.player.stat_points = data.stat_points;
 					Game.player.max_stat_points = data.max_stat_points;
+					
+					// Add the new by_id reference
+					Game.Character.by_id[Game.player.id] = Game.player;
 					
 					$("#load_id").val(Game.player.id);
 					$("#id-text").html("Save ID: " + Game.player.id);
