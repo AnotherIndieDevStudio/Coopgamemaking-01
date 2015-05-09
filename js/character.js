@@ -60,7 +60,7 @@
 	 * 				A named template to base the Character on
 	 * @return {Character}
 	 */
-	Game.Character.templates = function (name) {
+	Game.Character.from_template = function (name) {
 		
 		var template = {name: name};
 		
