@@ -2,16 +2,42 @@ html{
 	font-family: 'Roboto Condensed', sans-serif;
 }
 
+/* Stats Container */
+
+#stats-container{
+    width:200px;
+    border:1px solid #000;
+    margin:auto;
+}
+
+#stats-container .float-left {
+    float:left;
+    margin:0;
+    padding:5px;
+}
+
 /* Some spacing */
 .stat{
 	padding: 5px;
+    clear:both;
 }
 
 /* Hiding add stat button */
-.add_stat{
-	display: none;
+.add-stat{
+	background:#CD5C5C;
+    width:30px;
 	padding: 5px;
 	cursor: pointer;
+    float:right;
+    margin:0;
+    color:#fff;
+    transition:background .5s;
+    -webkit-transition:background .5s;
+    -moz-transition:background .5s;
+}
+
+.add-stat.purchase {
+    background:#2E8B57;
 }
 
 /*Menu text no selectable*/
@@ -47,36 +73,93 @@ h1{
 	display: none;
 }
 
-/* Button */
-#save-button{
-	position: absolute;
-	bottom: 10px;
-	left: 10px;
+#toggle-id{
+	margin-bottom: 10px;	
 }
 
-#load-button{
-	position: absolute;
-	bottom: 10px;
-	left: 100px;
+/* Health Bar */
+#health-bar{
+    position:relative;
+    background: hsla(0,92%,41%,1.00);
+    height: 20px;
+    width: 100%;
+    z-index: 0;
+    padding: 0;
+    text-align: center;
 }
+
+#health-text{
+    top:-16px;
+    color:#fff;
+    z-index: 2;
+    position: absolute;
+    text-align: center;
+    width: 100%;
+    display: block;
+}
+
+#health-remaining{
+    position:absolute;
+    left:0;
+    background: hsla(121,100%,31%,1.00);
+    height: 20px;
+    width: 100%;
+    display: block;
+    z-index: 1;
+}
+
+/* Button */
+#footerContent {
+	position: fixed;
+    bottom: 10px;
+    width: 100%;
+}
+
+
+#buttons {
+    width: 100%;
+}
+
+.bottom_buttons {
+	float: left;
+	margin-right: 0.5em;
+}
+
 
 #load-box{
-	position: absolute;
-	left: 190px;
-	bottom: 10px;
 	display: none;
 }
 
-/* Information */
+
 #information{
-	position: absolute;
+	position: fixed;
+	bottom: 5px;	
 	right: 10px;
-	bottom: 5px;
 }
+
+
+/* Character image */
+#character-image{
+	position: absolute;
+	right: 15%;	
+	margin-top: 50px;
+}
+
 /* Bump up div when screen size forces overlap with save/load buttons */
 @media only screen and (max-width: 1100px){
+	#content-container{
+		padding-bottom: 75px;	
+	}
+	
 	#information{
 		bottom: 25px;
+		
+	}
+	
+	#character-image{
+		position:relative;
+		right: 0;
+		margin: 0;
 	}
 }
 
@@ -89,9 +172,10 @@ h1{
 /* +1(0) on stat upgrade */
 .plusone{
     opacity:1;
-    color:#00FF40;
+    color:#0DFF2B;
     font-weight:700;
     position:absolute;
     display:none;
     cursor:pointer;
 }
+
