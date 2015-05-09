@@ -1,88 +1,102 @@
 (function () {
-	
+
 	var Game = window.Game = window.Game || {};
-	
+
 	if (!Game.player) {
-		
+
 		// Initialise Player on load to a character with default stats
 		Game.player = Game.Character();
-		
+
 	}
-	
-	
+
+
 	if (!Game.time) {
-		
+
 		// Initialise Game.Time
 		Game.time = {
 			frequency: 250,
 			previous: new Date(),
-			passed: 0
+			passed: 0,
+			paused: false
 		};
-		
+
 	}
-	
+
 
 	/* Updating variables on page when the document loads */
 	$(document).ready(function (e) {
-	
+
 		// Initiate stats on screen
 		update_stats();
-	
+
 		// Game Loop
 		var game_tick = setInterval(function () {
 			
-			// Ensures that the game still functions when the tab is closed
-			var current_time = new Date();
-			var time_difference = (current_time.getTime() - Game.time.previous.getTime());
-			
-			// Calculates the difference in time and returns multiplier
-			if (time_difference > Game.time.frequency) {
+			// Check if the game is paused. If not, run game.
+			if(!Game.time.paused){
 
-				if (Math.floor(time_difference / Game.time.frequency > 1)) {
-
-					Game.time.passed = Math.floor(time_difference / Game.time.frequency);
-
+				// Ensures that the game still functions when the tab is closed
+				var current_time = new Date();
+				var time_difference = (current_time.getTime() - Game.time.previous.getTime());
+	
+				// Calculates the difference in time and returns multiplier
+				if (time_difference > Game.time.frequency) {
+	
+					if (Math.floor(time_difference / Game.time.frequency > 1)) {
+	
+						Game.time.passed = Math.floor(time_difference / Game.time.frequency);
+	
+					} else {
+	
+						Game.time.passed = 1;
+	
+					}
+	
 				} else {
-
+	
 					Game.time.passed = 1;
-
+	
 				}
-
-			} else {
-
-				Game.time.passed = 1;
-
-			}
+	
+				Game.time.previous = new Date();
+				update_game();
 			
-			Game.time.previous = new Date();
-			update_game();
+			// If game is paused, still allow the player to update stats
+			}else{
+				update_stats();	
+			}
 
 		}, Game.time.frequency);
 
 	});
-	
 
+	/* Grabs html stat objects and updates them */
 	var update_stats = function () {
-		
+
 		// Updating stats
-		$("#stat_points").html(Game.player.stat_points);
+		$("#stat-points").html(Game.player.stat_points);
 		$("#level").html(Game.player.level);
 		$("#health").html(Game.player.health);
-		$("#max-health").html(Game.player.max_health);
+		$(".max-health").html(Game.player.max_health);
 		$("#strength").html(Game.player.strength);
 		$("#intellect").html(Game.player.intellect);
 		$("#dexterity").html(Game.player.dexterity);
 		$("#exp").html(Game.player.experience);
-		$("#exp_tnl").html(Game.player.experience_tnl);
+		$("#exp-tnl").html(Game.player.experience_tnl);
+		
+		// Updates stat visuals
+		change_stat_button_status();
+		update_healthbar();
 
 	};
-	
 
+	/* Main game loop */
 	var update_game = function () {
-		
+
 		// Adds exp each game tick
 		Game.player.experience += 10 * Game.time.passed;
 		
+		// Checks if the player can level up
 		if (Game.player.experience > Game.player.experience_tnl) {
 
 			Game.player.experience -= Game.player.experience_tnl;
@@ -92,86 +106,87 @@
 			Game.player.max_stat_points += 2;
 
 		}
-	
-		// Updates stats on the screen
+		
+		// Updates the players stats
 		update_stats();
-	
-		// Checks if stats can be upgraded
-		check_player_can_level();
 
 	};
-	
-	
+
+
 	// Checks if stats can be upgraded and shows + symbols if player can level stats
-	var check_player_can_level = function () {
-		
+	var change_stat_button_status = function () {
+
 		Game.Character.check_can_level_stats(Game.player);
-		
 		if (Game.player.can_level_stats) {
-
-			$(".add_stat").show();
-
+			$(".add-stat").addClass('purchase');
 		} else {
-
-			$(".add_stat").hide();
-
+			$(".add-stat").removeClass('purchase');
 		}
-			
+
 	};
 	
+	/* Adjusts the players visual health bar */
+	var update_healthbar = function(){
+
+		var health_remaining = $("#health-remaining");
+		var health_bar = $("#health-bar");
+
+		var width = (Game.player.health / Game.player.max_health) * health_bar.width();
+
+		health_remaining.width(width)
+
+	};
+
 	/* Checks for clicks on stat upgrades */
-
-	// Health
-	$("#health_add").click(function () {
-
-		if (Game.player.can_level_stats) {
-
-			Game.player.health += 10;
-			Game.player.max_health = Game.player.health;
-			Game.player.stat_points -= 1;
-			check_player_can_level();
-
+	$(".add-stat").click(function (e) {
+		/*Check if button can be pressed*/
+		if(!Game.player.can_level_stats) {
+			return alert("Sorry, not enough points!");
 		}
+		/* Check button's data-stat */
+		var stat = $(this).data('stat'),
+			amount = (stat === "health") ? 10 : 1;
+		if (Game.player.can_level_stats) {
+			/* if stat is 'health', update by 10, if not, then 1 */
+			Game.player[stat] += amount;
+			/* Setting player's max health */
+			if (stat === "health") {
+
+				Game.player.max_health = Game.player.health;
+			}
+			Game.player.stat_points -= 1;
+			
+		}
+
+		var pageY = e.pageY - 15,
+			pageX = e.pageX - 10,
+			effect = $("<span class='plusone unselectable' style='left:"+pageX+"px;top:"+pageY+"px;'>+"+amount+"</span>").insertAfter('body');
+
+			effect.show();
+			effect.animate({
+				opacity:0,
+				top: pageY - 50,
+			}, 1000, function(){
+				effect.remove();
+			});
 
 	});
-
-	// Strength
-	$("#strength_add").click(function () {
-
-		if (Game.player.can_level_stats) {
-
-			Game.player.strength += 1;
-			Game.player.stat_points -= 1;
-			check_player_can_level();
-
+	
+	/* Checks if game is being paused */
+	$("#pause-button").click(function(){
+		
+		// If game is running
+		if(!Game.time.paused){
+			$("#pause-button").html("Resume Game");	
+			Game.time.paused = true;
+		}else{
+			$("#pause-button").html("Pause Game");	
+			Game.time.paused = false;
+			
+			// Ensure no progress is made when game is paused. Kind of defeats purpose of having a paused game.
+			Game.time.previous = new Date();
 		}
-
-	});
-
-	//Intellect
-	$("#intellect_add").click(function () {
-
-		if (Game.player.can_level_stats) {
-
-			Game.player.intellect += 1;
-			Game.player.stat_points -= 1;
-			check_player_can_level();
-
-		}
-
-	});
-
-	//Dexterity
-	$("#dexterity_add").click(function () {
-
-		if (Game.player.can_level_stats) {
-
-			Game.player.dexterity += 1;
-			Game.player.stat_points -= 1;
-			check_player_can_level();
-
-		}
-
+		
 	});
 
 } ());
