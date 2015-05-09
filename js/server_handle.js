@@ -4,7 +4,7 @@
 	
 	var xmlhttp;
 	var id_displayed = false;
-	var userID;
+	var saveID;
 
 
 	var getObject = function () {
@@ -29,38 +29,46 @@
 		xmlhttp.onreadystatechange = function () {
 			if (xmlhttp.readyState == 4) {
 				if (xmlhttp.status == 200) {
-					userID = xmlhttp.responseText;
-					$("#load_id").val(userID);
-					$("#id-text").html("Save ID: " + userID);
+					
+					saveID = xmlhttp.responseText;
+					
+					// Move the player Character by_id to its new ID
+					if (saveID !== Game.player.id) {
+						
+						delete Game.Character.by_id[Game.player.id];
+						Game.player.id = saveID;
+						Game.Character.by_id[Game.player.id] = Game.player;
+						
+					}
+					
+					$("#load_id").val(saveID);
+					$("#id-text").html("Save ID: " + saveID);
 					$("#id-display").show(1000);
 					id_displayed = true;
+					
 				}
 			}
 		};
 	
-		// Generates UID in javascript first just for keks if one doesn't already exist. Else, update save.
-		var need_save_ID = true;
-		
-		if (!userID) {
-			userID = create_UUID();
-		} else {
-			need_save_ID = false;
-		}
-	
 		// Retrieving information from PHP file
 		var save_params = [
-			'id=' + userID,
-			'level=' + Game.player.level,
-			'exp=' + Game.player.experience,
-			'exp_tnl=' + Game.player.experience_tnl,
+			'id=' + Game.player.id,
+			'name=' + Game.player.name,
+			'type=' + Game.player.type,
+			
 			'health=' + Game.player.health,
 			'max_health=' + Game.player.max_health,
 			'strength=' + Game.player.strength,
-			'dex=' + Game.player.dexterity,
 			'intellect=' + Game.player.intellect,
+			'dex=' + Game.player.dexterity,
+			'level=' + Game.player.level,
+			
+			'exp=' + Game.player.experience,
+			'exp_tnl=' + Game.player.experience_tnl,
 			'statpoints=' + Game.player.stat_points,
 			'maxstatpoints=' + Game.player.max_stat_points,
-			'need_id=' + need_save_ID
+			
+			'need_id=' + (saveID ? false : true)
 		].join('&');
 		
 		xmlhttp.open("GET", "savegame.php?" + save_params, true);
@@ -83,30 +91,37 @@
 				var response = xmlhttp.responseText;
 				var data = JSON.parse(response);
 				
-				if(data.loadError){
+				if (data.loadError) {
+					
 					alert(data.loadError);
-				}else{
-					Game.player.level = data.level;
+					
+				} else {
+					
+					Game.player.id = data.id;
+					Game.player.name = data.name;
+					Game.player.type = data.type;
+					
 					Game.player.health = data.health;
 					Game.player.max_health = data.max_health;
+					Game.player.strength = data.strength;
+					Game.player.intellect = data.intellect;
+					Game.player.dexterity = data.dexterity;
+					Game.player.level = data.level;
+					
 					Game.player.experience = data.experience;
 					Game.player.experience_tnl = data.experience_tnl;
-					Game.player.strength = data.strength;
-					Game.player.dexterity = data.dexterity;
-					Game.player.intellect = data.intellect;
 					Game.player.stat_points = data.stat_points;
 					Game.player.max_stat_points = data.max_stat_points;
-					Game.player.health = data.health;
-					userID = data.userID;	
 					
-					$("#load_id").val(userID);
-					$("#id-text").html("Save ID: " + userID);
+					$("#load_id").val(Game.player.id);
+					$("#id-text").html("Save ID: " + Game.player.id);
 					$("#id-display").show(1000);
 					
 					id_displayed = true;
 					
 					// Alerts the player of load successful 
 					alert("Your game has been loaded successfully");
+					
 				}
 					
 			}
@@ -120,25 +135,7 @@
 		xmlhttp.send();
 		
 	};
-	
 
-	/* Creates a Unique User ID. NOT MY CODE - FOUND ON STACKOVERFLOW A LONG TIME AGO */
-	var create_UUID = function () {
-		
-		// http://www.ietf.org/rfc/rfc4122.txt
-		var s = [];
-		var hexDigits = "0123456789abcdef";
-		for (var i = 0; i < 36; i++) {
-			s[i] = hexDigits.substr(Math.floor(Math.random() * 0x10), 1);
-		}
-		s[14] = "4";	// bits 12-15 of the time_hi_and_version field to 0010
-		s[19] = hexDigits.substr((s[19] & 0x3) | 0x8, 1);		// bits 6-7 of the clock_seq_hi_and_reserved to 01
-		s[8] = s[13] = s[18] = s[23] = "-";
-
-		var uuid = s.join("");
-		return uuid;
-		
-	};
 
 
 	/* Checks if the buttons that control the game were pressed */
