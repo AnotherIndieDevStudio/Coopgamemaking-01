@@ -4,8 +4,8 @@
 
 	if (!Game.player) {
 
-		// Initialise Player on load to a character with default stats
-		Game.player = Game.Character();
+		// Initialise Player on load to a 'My Character' templated Character
+		Game.player = Game.Character.from_template('My Character');
 
 	}
 
