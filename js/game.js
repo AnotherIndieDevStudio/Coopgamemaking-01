@@ -17,6 +17,7 @@
 			frequency: 250,
 			previous: new Date(),
 			passed: 0,
+			elapsed: 0,
 			paused: false
 		};
 
@@ -57,7 +58,8 @@
 					Game.time.passed = 1;
 	
 				}
-	
+				
+				Game.time.elapsed += Game.time.passed;
 				Game.time.previous = new Date();
 				update_game();
 			
@@ -92,7 +94,10 @@
 
 	/* Main game loop */
 	var update_game = function () {
-
+		
+		// Update the events timeline
+		Game.Events.update();
+		
 		// Adds exp each game tick
 		Game.player.experience += 10 * Game.time.passed;
 		
