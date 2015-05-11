@@ -35,6 +35,7 @@ var s4 = function () {
 var save = function (req, res) {
 
 	var obj = {};
+	var needsID = false;
 	var params = req.url.split('?')[1].split('&');
 
 	for (var param in params) {
@@ -43,38 +44,54 @@ var save = function (req, res) {
 		
 		var paramName = param[0];
 		
-		if (paramName === 'level') {
-			obj.level = param[1];
-		} else if (paramName === 'exp') {
-			obj.experience = param[1];
-		} else if (paramName === 'exp_tnl') {
-			obj.experience_tnl = param[1];
-		} else if (paramName === 'health') {
+		if (paramName === 'id') {
+			obj.id = param[1];
+		} else if (paramName == 'name') {
+			obj.name = param[1];	
+		} else if (paramName == 'type') {
+			obj.type = param[1];	
+		}
+		
+		else if (paramName === 'health') {
 			obj.health = param[1];
 		} else if (paramName == 'max_health') {
 			obj.max_health = param[1];	
 		} else if (paramName === 'strength') {
 			obj.strength = param[1];
-		} else if (paramName === 'dex') {
-			obj.dexterity = param[1];
 		} else if (paramName === 'intellect') {
 			obj.intellect = param[1];
+		} else if (paramName === 'dex') {
+			obj.dexterity = param[1];
+		} else if (paramName === 'level') {
+			obj.level = param[1];
+		}
+		
+		else if (paramName === 'exp') {
+			obj.experience = param[1];
+		} else if (paramName === 'exp_tnl') {
+			obj.experience_tnl = param[1];
 		} else if (paramName === 'statpoints') {
 			obj.stat_points = param[1];
 		} else if (paramName === 'maxstatpoints') {
 			obj.max_stat_points = param[1];
 		}
+		
+		else if (paramName === 'need_id') {
+			needsID = param[1];
+		}
 
 	}
+	
+	if (needsID) {
+		obj.id = s4() + s4() + s4() + s4() + s4() + s4() + s4() + s4();
+	}
 
-	var UUID = s4() + s4() + s4() + s4() + s4() + s4() + s4() + s4();
-
-	fs.writeFile(UUID, JSON.stringify(obj), function (err) {
+	fs.writeFile(obj.id, JSON.stringify(obj), function (err) {
 
 		if (err) return console.log(err);
-		console.log('Saved ' + UUID);
+		console.log('Saved ' + obj.id);
 		res.setHeader('Content-Type', 'text/plain');
-		res.end(UUID);
+		res.end(obj.id);
 
 	});
 
