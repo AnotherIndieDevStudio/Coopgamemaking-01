@@ -2,14 +2,14 @@
 	
 	var Game = window.Game = window.Game || {};
 	
-	Game.Item = function(obj) {
 		
-		/**
-		* A Character
-		* @struct
-		* @param {Character=} obj
-		* @return {Character}
-		*/
+	/**
+	 * An Item
+	 * @struct
+	 * @param {Character=} obj
+	 * @return {Character}
+	 */
+	Game.Item = function(obj) {
 		
 		var item = {
 			id: /** {number} **/ (!obj || !obj.id) ? 0 : obj.id,

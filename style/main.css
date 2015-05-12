@@ -183,17 +183,16 @@ h1{
 
 #events {
 	position: absolute;
-	top: 10px;
+	top: 20px;
 	bottom: 0;
 	right: 0;
 	overflow-y: auto;
+	overflow-x: hidden;
 }
 
 .event_time {
 	color: #aaf;
-	float: left;
-	padding-right: 10px;
-	font-size: 70%;
+	font-size: 80%;
 }
 
 .event_bubble {
@@ -201,12 +200,13 @@ h1{
 	border-top-right-radius: 20px;
 	border-bottom-right-radius: 20px;
 	border: 1px solid #777;
-	box-shadow: 10px 10px 20px #aaa;
+	box-shadow: 0px 0px 10px #aaa;
 	color: #333;
 	margin: 5px;
 	width: 250px;
 	text-align: left;
-	margin-top: -40px;
+	margin-top: -30px;
+	margin-right: 20px;
 	padding: 10px;
 	background: #fff;
 	transition: background 10s;
@@ -217,4 +217,32 @@ h1{
 #event-toggle{
 	padding-top: 10px;
 	z-index: 2;
+}
+
+.event_information {
+	border: 0;
+}
+
+.event_environment {
+	border: 1px solid #777;
+}
+
+.event_confrontation {
+	border: 2px solid #CD5C5C;
+}
+
+.event_exchange {
+	border: 2px solid #0DFF2B;
+}
+
+
+
+
+
+#hour_of_day {
+	position: absolute;
+	top: 10px;
+	right: 20px;
+	font-size: 80%;
+	color: #aaf;
 }
