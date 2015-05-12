@@ -18,11 +18,16 @@
 			previous: new Date(),
 			passed: 0,
 			elapsed: 0,
-			paused: false
+			paused: false,
+			day: 1,
+			hour12: '12am',
+			hour24: 0
 		};
 
 	}
-
+	
+	var elapsed_to_day = 200;
+	
 
 	/* Updating variables on page when the document loads */
 	$(document).ready(function (e) {
@@ -60,6 +65,11 @@
 				}
 
 				Game.time.elapsed += Game.time.passed;
+				Game.time.day = ~~(Game.time.elapsed / elapsed_to_day) + 1;
+				Game.time.hour24 = ~~((Game.time.elapsed % elapsed_to_day) / (elapsed_to_day / 24));
+				Game.time.hour12 = Game.time.hour24 > 12 ? Game.time.hour24 % 12 : Game.time.hour24 === 0 ? 12 : Game.time.hour24;
+				Game.time.hour12 += Game.time.hour24 > 11 ? 'pm' : 'am';
+				
 				Game.time.previous = new Date();
 				update_game();
 
@@ -96,7 +106,7 @@
 	var update_game = function () {
 
 		// Update the events timeline
-		Game.Events.update();
+		Game.Event.update();
 
 		// Adds exp each game tick
 		Game.player.experience += 10 * Game.time.passed;
