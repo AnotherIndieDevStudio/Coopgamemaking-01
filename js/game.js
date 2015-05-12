@@ -17,6 +17,7 @@
 			frequency: 250,
 			previous: new Date(),
 			passed: 0,
+			elapsed: 0,
 			paused: false
 		};
 
@@ -31,39 +32,40 @@
 
 		// Game Loop
 		var game_tick = setInterval(function () {
-			
+
 			// Check if the game is paused. If not, run game.
 			if(!Game.time.paused){
 
 				// Ensures that the game still functions when the tab is closed
 				var current_time = new Date();
 				var time_difference = (current_time.getTime() - Game.time.previous.getTime());
-	
+
 				// Calculates the difference in time and returns multiplier
 				if (time_difference > Game.time.frequency) {
-	
+
 					if (Math.floor(time_difference / Game.time.frequency > 1)) {
-	
+
 						Game.time.passed = Math.floor(time_difference / Game.time.frequency);
-	
+
 					} else {
-	
+
 						Game.time.passed = 1;
-	
+
 					}
-	
+
 				} else {
-	
+
 					Game.time.passed = 1;
-	
+
 				}
-	
+
+				Game.time.elapsed += Game.time.passed;
 				Game.time.previous = new Date();
 				update_game();
-			
+
 			// If game is paused, still allow the player to update stats
 			}else{
-				update_stats();	
+				update_stats();
 			}
 
 		}, Game.time.frequency);
@@ -83,7 +85,7 @@
 		$("#dexterity").html(Game.player.dexterity);
 		$("#exp").html(Game.player.experience);
 		$("#exp-tnl").html(Game.player.experience_tnl);
-		
+
 		// Updates stat visuals
 		change_stat_button_status();
 		update_healthbar();
@@ -93,9 +95,12 @@
 	/* Main game loop */
 	var update_game = function () {
 
+		// Update the events timeline
+		Game.Events.update();
+
 		// Adds exp each game tick
 		Game.player.experience += 10 * Game.time.passed;
-		
+
 		// Checks if the player can level up
 		if (Game.player.experience > Game.player.experience_tnl) {
 
@@ -106,7 +111,7 @@
 			Game.player.max_stat_points += 2;
 
 		}
-		
+
 		// Updates the players stats
 		update_stats();
 
@@ -124,7 +129,7 @@
 		}
 
 	};
-	
+
 	/* Adjusts the players visual health bar */
 	var update_healthbar = function(){
 
@@ -155,7 +160,7 @@
 				Game.player.max_health = Game.player.health;
 			}
 			Game.player.stat_points -= 1;
-			
+
 		}
 
 		var pageY = e.pageY - 15,
@@ -171,22 +176,39 @@
 			});
 
 	});
-	
+
 	/* Checks if game is being paused */
 	$("#pause-button").click(function(){
-		
+
 		// If game is running
 		if(!Game.time.paused){
-			$("#pause-button").html("Resume Game");	
+			$("#pause-button").html("Resume Game");
 			Game.time.paused = true;
 		}else{
-			$("#pause-button").html("Pause Game");	
+			$("#pause-button").html("Pause Game");
 			Game.time.paused = false;
-			
+
 			// Ensure no progress is made when game is paused. Kind of defeats purpose of having a paused game.
 			Game.time.previous = new Date();
 		}
-		
+
+	});
+	
+	/* Hide events */
+	$("#event-toggle").click(function(){
+		if(!Game.Event.events_hidden){
+			$(".event_bubble").hide(1000);
+			$(this).html("Show Events");
+			$("#event-count").html("(" + Game.Event.event_count + ")");
+			Game.Event.events_hidden = true;
+		}else{
+			$(".event_bubble").show(1000);
+			$(this).html("Hide Events");
+			$("#event-count").html("");
+
+			Game.Event.events_hidden = false;
+			Game.Event.event_count = 0;
+		}
 	});
 
 } ());

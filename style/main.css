@@ -74,7 +74,7 @@ h1{
 }
 
 #toggle-id{
-	margin-bottom: 10px;	
+	margin-bottom: 10px;
 }
 
 /* Health Bar */
@@ -133,7 +133,7 @@ h1{
 
 #information{
 	position: fixed;
-	bottom: 5px;	
+	bottom: 5px;
 	right: 10px;
 }
 
@@ -141,21 +141,21 @@ h1{
 /* Character image */
 #character-image{
 	position: absolute;
-	right: 15%;	
+	right: 18%;
 	margin-top: 50px;
 }
 
 /* Bump up div when screen size forces overlap with save/load buttons */
 @media only screen and (max-width: 1100px){
 	#content-container{
-		padding-bottom: 75px;	
+		padding-bottom: 75px;
 	}
-	
+
 	#information{
 		bottom: 25px;
-		
+
 	}
-	
+
 	#character-image{
 		position:relative;
 		right: 0;
@@ -179,3 +179,42 @@ h1{
     cursor:pointer;
 }
 
+
+
+#events {
+	position: absolute;
+	top: 10px;
+	bottom: 0;
+	right: 0;
+	overflow-y: auto;
+}
+
+.event_time {
+	color: #aaf;
+	float: left;
+	padding-right: 10px;
+	font-size: 70%;
+}
+
+.event_bubble {
+	border-bottom-left-radius: 20px;
+	border-top-right-radius: 20px;
+	border-bottom-right-radius: 20px;
+	border: 1px solid #777;
+	box-shadow: 10px 10px 20px #aaa;
+	color: #333;
+	margin: 5px;
+	width: 250px;
+	text-align: left;
+	margin-top: -40px;
+	padding: 10px;
+	background: #fff;
+	transition: background 10s;
+	-webkit-transition: background 10s;
+	opacity: 0;
+}
+
+#event-toggle{
+	padding-top: 10px;
+	z-index: 2;
+}

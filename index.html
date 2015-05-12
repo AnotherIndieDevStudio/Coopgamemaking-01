@@ -36,9 +36,9 @@
 
 		<div id="content-container" class="unselectable">
 			<h1>My Character</h1>
-            
+
 			<div id="id-display"><span id="id-text" class="selectable"></span><br/><button id="toggle-id">Toggle ID</button></div>
-            
+
             <img src="images/mascot.png" alt="Character Image" id="character-image">
 
 				<!-- Where stats are shown to the player -->
@@ -83,15 +83,16 @@
 				<div id="exp_s" class="stat">
 					EXP: <span id="exp"></span>/<span id="exp-tnl"></span>
 				</div>
-
 			</div>
+			<div id="events"><span id="event-toggle">Hide Events</span><span id="event-count"></span></div>
+
 		</div>
-        
+
         <!-- A note about the game -->
         <div id="information">
             <p>This game is being made by the community. For more information, visit <a href="http://www.reddit.com/r/CoopGameMaking" target="_blank">/r/CoopGameMaking</a></p>
         </div>
-            
+
 		<div id="footerContent">
 			<div id="buttons">
 
@@ -107,14 +108,15 @@
 				</div>
 
 			</div>
-            
+
         </div>
-            
+
 		<!-- Importing JQuery -->
 		<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
 		<!-- Importing Game JS -->
 		<script src="js/math.js"></script>
 		<script src="js/character.js"></script>
+		<script src="js/event.js"></script>
 		<script src="js/game.js"></script>
 		<!-- AJAX -->
 		<script src="js/server_handle.js"></script>
