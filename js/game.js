@@ -8,6 +8,15 @@
 		Game.player = Game.Character.from_template('My Character');
 
 	}
+	
+	
+	// Easily fire off events
+	Game.add_event = function(obj){
+		
+		var event = Game.Event(obj);
+		Game.Event.queue(event);
+		
+	};	
 
 
 	if (!Game.time) {

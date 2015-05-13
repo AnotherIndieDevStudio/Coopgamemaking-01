@@ -108,7 +108,7 @@
 
 			}
 
-		}
+		};
 
 		// Iterate events that are ready to be fired
 		for (var event in ordered_events) {
@@ -176,7 +176,6 @@
 	var event_frequency_min = 100;
 
 
-
 	/**
 	 * An Event Type.
 	 *
@@ -225,7 +224,6 @@
 	};
 
 
-
 	// List of all possible random events
 	Game.Event.events = [
 		Game.Event({ type: Game.Event.Type.ENVIRONMENT, description: 'The smell of a sweet chicken broth circles about', on_event: queue_random_future_event }),
@@ -238,25 +236,6 @@
 		Game.Event({ type: Game.Event.Type.EXCHANGE, description: 'Growing weary, you find the closest tavern, take a load off your feet and engage the old bartender in conversation', on_event: queue_random_future_event }),
 		Game.Event({ type: Game.Event.Type.EXCHANGE, description: 'A peddler of foreign appearances rattles his staff as he hobbles on by', on_event: queue_random_future_event })
 	];
-
-
-	Game.Event.fire_event = function(event){
-		
-		// Add the Event bubble to the timeline
-		var $bubble = $([
-			'<div class="event_bubble ' + event.type.style + '">',
-			'    <div class="event_time">' + Game.time.hour12 + ' on Day ' + Game.time.day + '</div>',
-			'    <div class="event_description">' + event.description + '</div>',
-			'</div>'
-		].join('\n'));
-		
-		$("#events").prepend($bubble);
-
-		$bubble.animate({ marginTop: 10, opacity: 1 }, 1000);
-		
-		delete_overflow_events();
-			
-	};
 	
 	/* Hide events */
 	$("#event-toggle").click(function(){
