@@ -23,6 +23,11 @@
 			hour12: '12am',
 			hour24: 0
 		};
+		
+		Game.status = {
+			idle: true,
+			fighting: false	
+		};
 
 	}
 
@@ -151,7 +156,7 @@
 		health_remaining.width(width)
 
 	};
-
+	
 	/* Checks for clicks on stat upgrades */
 	$(".add-stat").click(function (e) {
 		/*Check if button can be pressed*/

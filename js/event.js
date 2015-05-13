@@ -142,7 +142,7 @@
 			// Execute the events on_event function
 			event.on_event(event);
 
-		}
+		};
 
 
 	};
@@ -205,6 +205,7 @@
 	Game.Event.Type.ENVIRONMENT = Game.Event.Type({name: 'environment', style: 'event_environment'});
 	Game.Event.Type.CONFRONTATION = Game.Event.Type({name: 'confrontation', style: 'event_confrontation'});
 	Game.Event.Type.EXCHANGE = Game.Event.Type({name: 'exchange', style: 'event_exchange'});
+	Game.Event.Type.FIGHT_TURN = Game.Event.Type({name: 'fight_turn', style: 'event_fight_turn'});
 
 
 	/**
@@ -238,6 +239,25 @@
 		Game.Event({ type: Game.Event.Type.EXCHANGE, description: 'A peddler of foreign appearances rattles his staff as he hobbles on by', on_event: queue_random_future_event })
 	];
 
+
+	Game.Event.fire_event = function(event){
+		
+		// Add the Event bubble to the timeline
+		var $bubble = $([
+			'<div class="event_bubble ' + event.type.style + '">',
+			'    <div class="event_time">' + Game.time.hour12 + ' on Day ' + Game.time.day + '</div>',
+			'    <div class="event_description">' + event.description + '</div>',
+			'</div>'
+		].join('\n'));
+		
+		$("#events").prepend($bubble);
+
+		$bubble.animate({ marginTop: 10, opacity: 1 }, 1000);
+		
+		delete_overflow_events();
+			
+	};
+	
 	/* Hide events */
 	$("#event-toggle").click(function(){
 		if(!Game.Event.events_hidden){
