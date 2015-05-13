@@ -217,6 +217,7 @@ h1{
 #event-toggle{
 	padding-top: 10px;
 	z-index: 2;
+	cursor: pointer;
 }
 
 .event_information {
@@ -229,10 +230,12 @@ h1{
 
 .event_confrontation {
 	border: 2px solid #CD5C5C;
+	cursor: pointer;
 }
 
 .event_exchange {
 	border: 2px solid #0DFF2B;
+	cursor: pointer;
 }
 
 

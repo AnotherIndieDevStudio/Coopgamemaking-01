@@ -25,9 +25,9 @@
 		};
 
 	}
-	
+
 	var elapsed_to_day = 200;
-	
+
 
 	/* Updating variables on page when the document loads */
 	$(document).ready(function (e) {
@@ -69,7 +69,7 @@
 				Game.time.hour24 = ~~((Game.time.elapsed % elapsed_to_day) / (elapsed_to_day / 24));
 				Game.time.hour12 = Game.time.hour24 > 12 ? Game.time.hour24 % 12 : Game.time.hour24 === 0 ? 12 : Game.time.hour24;
 				Game.time.hour12 += Game.time.hour24 > 11 ? 'pm' : 'am';
-				
+
 				Game.time.previous = new Date();
 				update_game();
 
@@ -204,21 +204,5 @@
 
 	});
 	
-	/* Hide events */
-	$("#event-toggle").click(function(){
-		if(!Game.Event.events_hidden){
-			$(".event_bubble").hide(1000);
-			$(this).html("Show Events");
-			$("#event-count").html("(" + Game.Event.event_count + ")");
-			Game.Event.events_hidden = true;
-		}else{
-			$(".event_bubble").show(1000);
-			$(this).html("Hide Events");
-			$("#event-count").html("");
-
-			Game.Event.events_hidden = false;
-			Game.Event.event_count = 0;
-		}
-	});
 
 } ());
