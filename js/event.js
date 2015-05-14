@@ -226,8 +226,8 @@
 	Game.Event.queued_by_time = {};
 
 	// The frequency range (in Game.time.elapsed ticks) of which above events are picked to fire
-	var event_frequency_max = 30;
-	var event_frequency_min = 100;
+	var EVENT_FREQUENCY_MAX = 30;
+	var EVENT_FREQUENCY_MIN = 100;
 	
 	
 	
@@ -240,8 +240,8 @@
 
 		var next_event = Game.Event.events[~~(Math.random() * Game.Event.events.length - 0.1)];
 
-		next_event.time = event.time + event_frequency_max +
-		~~(Math.random() * (event_frequency_min - event_frequency_max));
+		next_event.time = event.time + EVENT_FREQUENCY_MAX +
+		~~(Math.random() * (EVENT_FREQUENCY_MIN - EVENT_FREQUENCY_MAX));
 
 		Game.Event.queue(next_event);
 

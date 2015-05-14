@@ -13,14 +13,14 @@
 		var wound = {
 
 			id: /** {string} */Game.Math.UUID(),
-			size: /** {number} */(!obj || !obj.size) ? Game.Wound.HEAL_AT_OR_UNDER_SIZE : obj.size,
+			size: /** {number} */(!obj || !obj.size) ? HEAL_AT_OR_UNDER_SIZE : obj.size,
 			character: /** {Game.Character} */(!obj || !obj.character) ? null : obj.character,
 			inflicted: /** {number} */(!obj || !obj.inflicted) ? 0 : obj.inflicted
 
 		};
 		
 		// Clamp size to allowed range
-		wound.size = Game.Math.clamp(wound.size, Game.Wound.MIN_SIZE, Game.Wound.MAX_SIZE);
+		wound.size = Game.Math.clamp(wound.size, MIN_SIZE, MAX_SIZE);
 		
 		Game.Wound.by_id[wound.id] = wound;
 
@@ -32,13 +32,16 @@
 	// All Wounds keyed by id
 	Game.Wound.by_id = {};
 	
-	Game.Wound.MAX_SIZE = 1;
-	Game.Wound.MIN_SIZE = 0.001;
-	Game.Wound.GROW_AT_OR_OVER_SIZE = 0.7;
-	Game.Wound.HEAL_AT_OR_UNDER_SIZE = 0.3;
+	// Size range
+	var MAX_SIZE = 1;
+	var MIN_SIZE = 0.001;
+	
+	// Grow and self-heal limits
+	var GROW_AT_OR_OVER_SIZE = 0.7;
+	var HEAL_AT_OR_UNDER_SIZE = 0.3;
 	
 	// Rate of -health that Wound at MAX_SIZE will apply to character in one Game day  
-	Game.Wound.MAX_INFLICTED_PER_DAY = 100;
+	var MAX_INFLICTED_PER_DAY = 100;
 	
 	
 	/**
@@ -73,7 +76,7 @@
 			}
 			
 			// Apply Wound to Characters health
-			wound.inflicted += wound.size * (Game.Wound.MAX_INFLICTED_PER_DAY / Game.time.ELAPSED_PER_DAY);
+			wound.inflicted += wound.size * (MAX_INFLICTED_PER_DAY / Game.time.ELAPSED_PER_DAY);
 			console.log('Wound {' + wound.id + '} size: ' + wound.size + ', inflict: -' + wound.inflicted);
 			
 			if (wound.inflicted >= 1) {
@@ -91,11 +94,11 @@
 			}
 			
 			// Shrink or grow wound based on severity
-			if (wound.size <= Game.Wound.HEAL_AT_OR_UNDER_SIZE) {
+			if (wound.size <= HEAL_AT_OR_UNDER_SIZE) {
 				
 				wound.size -= 1 / Game.time.ELAPSED_PER_DAY;
 				
-			} else if (wound.size > Game.Wound.GROW_AT_OR_OVER_SIZE && wound.size < Game.Wound.MAX_SIZE) {
+			} else if (wound.size > GROW_AT_OR_OVER_SIZE && wound.size < MAX_SIZE) {
 				
 				wound.size += 1 / Game.time.ELAPSED_PER_DAY;
 				
