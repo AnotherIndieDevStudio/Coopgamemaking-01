@@ -19,16 +19,8 @@
 
 		};
 		
-		// Clip size to allowed range
-		if (wound.size < Game.Wound.MIN_SIZE) {
-			
-			wound.size = Game.Wound.MIN_SIZE;
-			
-		} else if (wound.size > Game.Wound.MAX_SIZE) {
-			
-			wound.size = Game.Wound.MAX_SIZE;
-			
-		}
+		// Clamp size to allowed range
+		wound.size = Game.Math.clamp(wound.size, Game.Wound.MIN_SIZE, Game.Wound.MAX_SIZE);
 		
 		Game.Wound.by_id[wound.id] = wound;
 
@@ -41,9 +33,12 @@
 	Game.Wound.by_id = {};
 	
 	Game.Wound.MAX_SIZE = 1;
-	Game.Wound.MIN_SIZE = 0.01;
+	Game.Wound.MIN_SIZE = 0.001;
 	Game.Wound.GROW_AT_OR_OVER_SIZE = 0.7;
 	Game.Wound.HEAL_AT_OR_UNDER_SIZE = 0.3;
+	
+	// Rate of -health that Wound at MAX_SIZE will apply to character in one Game day  
+	Game.Wound.MAX_INFLICTED_PER_DAY = 100;
 	
 	
 	/**
@@ -78,7 +73,7 @@
 			}
 			
 			// Apply Wound to Characters health
-			wound.inflicted += wound.size * (wound.character.max_health / Game.time.ELAPSED_PER_DAY);
+			wound.inflicted += wound.size * (Game.Wound.MAX_INFLICTED_PER_DAY / Game.time.ELAPSED_PER_DAY);
 			console.log('Wound {' + wound.id + '} size: ' + wound.size + ', inflict: -' + wound.inflicted);
 			
 			if (wound.inflicted >= 1) {

@@ -24,6 +24,34 @@
 			return uuid;
 
 		};
+		
+		
+		/**
+		 * Returns val clamped within the range [min, max].
+		 * 
+		 * @param {number} val
+		 * @param {number} min
+		 * @param {number} max
+		 * @return {number}
+		 */
+		Game.Math.clamp = function (val, min, max) {
+			
+			if (val < min) {
+				
+				return min;
+				
+			}
+			
+			if (val > max) {
+				
+				return max;
+				
+			}
+			
+			return val;
+			
+		};
+		
 
 		Game.Math.window_height = $(window).height();
 

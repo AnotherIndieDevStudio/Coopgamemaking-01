@@ -143,7 +143,6 @@ h1{
 	position: absolute;
 	right: 18%;
 	margin-top: 50px;
-	height: 0;
 }
 
 /* Bump up div when screen size forces overlap with save/load buttons */
