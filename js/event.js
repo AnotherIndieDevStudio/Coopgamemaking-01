@@ -4,7 +4,7 @@
 
 
 	/**
-	 * An Event.
+	 * Game.Event
 	 *
 	 * Examples of use:
 	 * 		Game.Event({type: 'information', description: 'This is a an example'});
@@ -36,6 +36,38 @@
 	};
 
 
+	/**
+	 * Game.Event.Type
+	 *
+	 * Examples of use:
+	 * 		Game.Event.Type({name: 'information'});
+	 *
+	 * 		Game.Event.Type({name: 'environment', style: 'event_environment'});
+	 *
+	 * @struct
+	 * @param {Game.Event.Type=} obj
+	 * @return {Game.Event.Type}
+	 */
+	Game.Event.Type = function (obj) {
+
+		var type = {
+			name: /** {string} */(!obj || !obj.name) ? 'undefined' : obj.name,
+			style: /** {string} */(!obj || !obj.style) ? 'event_information' : obj.style
+		};
+
+		return type;
+
+	};
+
+	
+	// Predefined Game.Event.Type's
+	Game.Event.Type.INFORMATION = Game.Event.Type({name: 'information', style: 'event_information'});
+	Game.Event.Type.ENVIRONMENT = Game.Event.Type({name: 'environment', style: 'event_environment'});
+	Game.Event.Type.CONFRONTATION = Game.Event.Type({name: 'confrontation', style: 'event_confrontation'});
+	Game.Event.Type.EXCHANGE = Game.Event.Type({name: 'exchange', style: 'event_exchange'});
+	Game.Event.Type.FIGHT_TURN = Game.Event.Type({name: 'fight_turn', style: 'event_fight_turn'});
+	
+
 
 	/**
 	 * Queues an Event to be fired when its time is older or at the current Game elapsed time.
@@ -58,24 +90,44 @@
 	};
 
 
-	var welcome_message_shown = false;
 
-
+	var last_sunset_time;
+	var last_sunrise_time;
+	
+	
 	/**
-	 * Updates the events timeline.
+	 * Game.Event.update
+	 * 
+	 * Dequeues Game.Event's that are due or overdue, adds them to the events timeline, and calls their on_event().
 	 *
-	 * Internal use only. Called by main game loop, once per loop.
+	 * The main game loop should be the only caller of this function, calling it once per loop.
 	 */
 	Game.Event.update = function () {
-
+		
+		// Update hour_of_day display
 		$("#hour_of_day").html(Game.time.hour12 + ' on Day ' + Game.time.day);
-
-		if (!welcome_message_shown) {
-
+		
+		// Queue a welcome informational message
+		if (Game.time.elapsed === 1) {
+			
 			Game.Event.queue(Game.Event({ type: Game.Event.Type.INFORMATION, description: 'Welcome to CoopGameMaking.', on_event: queue_random_future_event }));
-			welcome_message_shown = true;
-
+			
 		}
+		
+		// Hour of day environmental Events
+		if (Game.time.hour12 === '5am' && (!last_sunrise_time || last_sunrise_time <= Game.time.elapsed - Game.time.ELAPSED_PER_DAY)) {
+			
+			Game.Event.queue(Game.Event({ type: Game.Event.Type.ENVIRONMENT, description: 'The sun rises, a new day begins' }));
+			last_sunrise_time = Game.time.elapsed;
+			
+		} else if (Game.time.hour12 === '7pm' && (!last_sunset_time || last_sunset_time <= Game.time.elapsed - Game.time.ELAPSED_PER_DAY)) {
+			
+			Game.Event.queue(Game.Event({ type: Game.Event.Type.ENVIRONMENT, description: 'The streets grow quieter as dusk approaches' }));
+			last_sunset_time = Game.time.elapsed;
+			
+		}
+		
+		
 
 		// Find queued events that are ready to fire at or before current elapsed time
 		var ordered_events = [];
@@ -146,7 +198,9 @@
 
 
 	};
-
+	
+	
+	
 	// Deletes overflowing event bubbles from the page
 	var delete_overflow_events = function(){
 
@@ -174,41 +228,11 @@
 	// The frequency range (in Game.time.elapsed ticks) of which above events are picked to fire
 	var event_frequency_max = 30;
 	var event_frequency_min = 100;
-
-
+	
+	
+	
 	/**
-	 * An Event Type.
-	 *
-	 * Examples of use:
-	 * 		Game.Event.Type({name: 'information', border: 0});
-	 *
-	 * 		Game.Event.Type({name: 'environment', border: '1px solid gray'});
-	 *
-	 * @struct
-	 * @param {Game.Event.Type=} obj
-	 * @return {Game.Event.Type}
-	 */
-	Game.Event.Type = function (obj) {
-
-		var type = {
-			name: /** {string} */(!obj || !obj.name) ? 'undefined' : obj.name,
-			style: /** {string} */(!obj || !obj.style) ? 'event_information' : obj.style
-		};
-
-		return type;
-
-	};
-
-
-	Game.Event.Type.INFORMATION = Game.Event.Type({name: 'information', style: 'event_information'});
-	Game.Event.Type.ENVIRONMENT = Game.Event.Type({name: 'environment', style: 'event_environment'});
-	Game.Event.Type.CONFRONTATION = Game.Event.Type({name: 'confrontation', style: 'event_confrontation'});
-	Game.Event.Type.EXCHANGE = Game.Event.Type({name: 'exchange', style: 'event_exchange'});
-	Game.Event.Type.FIGHT_TURN = Game.Event.Type({name: 'fight_turn', style: 'event_fight_turn'});
-
-
-	/**
-	 * Template on_event for random events to use as a "queue next random event".
+	 * Template on_event for random events to use as a "queue next random event" function.
 	 *
 	 * @param {Game.Event} event
 	 */
@@ -224,11 +248,9 @@
 	};
 
 
-	// List of all possible random events
+	// List of random events
 	Game.Event.events = [
 		Game.Event({ type: Game.Event.Type.ENVIRONMENT, description: 'The smell of a sweet chicken broth circles about', on_event: queue_random_future_event }),
-		Game.Event({ type: Game.Event.Type.ENVIRONMENT, description: 'The streets grow quieter as dusk approaches', on_event: queue_random_future_event }),
-		Game.Event({ type: Game.Event.Type.ENVIRONMENT, description: 'The sun rises, a new day begins', on_event: queue_random_future_event }),
 		Game.Event({ type: Game.Event.Type.ENVIRONMENT, description: 'A foul wind blows from the west', on_event: queue_random_future_event }),
 		Game.Event({ type: Game.Event.Type.CONFRONTATION, description: 'A mischief of rats darts towards you from behind a pile of garbage', on_event: queue_random_future_event }),
 		Game.Event({ type: Game.Event.Type.CONFRONTATION, description: 'You feel the touch of a thiefs delicate fingers slipping into your back pocket', on_event: queue_random_future_event }),
@@ -238,24 +260,28 @@
 	];
 	
 	/* Hide events */
-	$("#event-toggle").click(function(){
-		if(!Game.Event.events_hidden){
+	$("#event-toggle").click(function () {
+		
+		if (!Game.Event.events_hidden) {
+			
 			$(".event_bubble").hide(1000);
 			$(this).html("Show Events");
 			$("#event-count").html("(" + Game.Event.event_count + ")");
 			Game.Event.events_hidden = true;
-		}else{
-			$(".event_bubble").show(function(){
+			
+		} else {
+			
+			$(".event_bubble").show(function () {
 				delete_overflow_events();
 			});
+			
 			$(this).html("Hide Events");
 			$("#event-count").html("");
-
-
-
 			Game.Event.events_hidden = false;
 			Game.Event.event_count = 0;
 		}
+		
 	});
+	
 
 } ());

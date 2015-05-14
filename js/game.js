@@ -18,7 +18,7 @@
 		
 	};	
 
-
+	
 	if (!Game.time) {
 
 		// Initialise Game.Time
@@ -30,7 +30,8 @@
 			paused: false,
 			day: 1,
 			hour12: '12am',
-			hour24: 0
+			hour24: 0,
+			ELAPSED_PER_DAY: 500
 		};
 		
 		Game.status = {
@@ -39,8 +40,7 @@
 		};
 
 	}
-
-	var elapsed_to_day = 200;
+	
 
 
 	/* Updating variables on page when the document loads */
@@ -79,8 +79,8 @@
 				}
 
 				Game.time.elapsed += Game.time.passed;
-				Game.time.day = ~~(Game.time.elapsed / elapsed_to_day) + 1;
-				Game.time.hour24 = ~~((Game.time.elapsed % elapsed_to_day) / (elapsed_to_day / 24));
+				Game.time.day = ~~(Game.time.elapsed / Game.time.ELAPSED_PER_DAY) + 1;
+				Game.time.hour24 = ~~((Game.time.elapsed % Game.time.ELAPSED_PER_DAY) / (Game.time.ELAPSED_PER_DAY / 24));
 				Game.time.hour12 = Game.time.hour24 > 12 ? Game.time.hour24 % 12 : Game.time.hour24 === 0 ? 12 : Game.time.hour24;
 				Game.time.hour12 += Game.time.hour24 > 11 ? 'pm' : 'am';
 
@@ -118,8 +118,10 @@
 
 	/* Main game loop */
 	var update_game = function () {
-
-		// Update the events timeline
+		
+		// Update systems
+		Game.Wound.update();
+		Game.Character.update();
 		Game.Event.update();
 
 		// Adds exp each game tick
