@@ -3,7 +3,7 @@
 	var Game = window.Game = window.Game || {};
 
 	/**
-	 * A Character
+	 * Game.Character
 	 * @struct
 	 * @param {Character=} obj
 	 * @return {Character}
@@ -28,7 +28,13 @@
 			experience_tnl: /** {number} */(!obj || !obj.experience_tnl) ? 50 : obj.experience_tnl,
 			stat_points: /** {number} */(!obj || !obj.stat_points) ? 0 : obj.stat_points,
 			max_stat_points: /** {number} */(!obj || !obj.max_stat_points) ? 0 : obj.max_stat_points,
-			can_level_stats: /** {boolean} */(!obj || !obj.can_level_stats) ? false : obj.can_level_stats
+			can_level_stats: /** {boolean} */(!obj || !obj.can_level_stats) ? false : obj.can_level_stats,
+			
+			attack: /** {number} */(!obj || !obj.attack) ? 10 : obj.attack,
+			defense: /** {number} */(!obj || !obj.defense) ? 10 : obj.defense,
+			
+			location: /** {Game.Location} */(!obj || !obj.location) ? Game.Location.THEVOID : obj.location
+			
 		};
 
 		Game.Character.by_id[character.id] = character;
@@ -107,6 +113,32 @@
 
 		}
 
+	};
+	
+	/**
+	 * Game.Character.update
+	 * 
+	 * NOTE: The main game loop should be the only caller of this function, calling it once per loop.
+	 */
+	Game.Character.update = function () {
+		
+		var character_ids = Object.getOwnPropertyNames(Game.Character.by_id);
+
+		for (var character_id in character_ids) {
+
+			var character = Game.Character.by_id[character_ids[character_id]];
+			
+			// Destroy Characters (other than Game.player) that have zero health
+			if (character !== Game.player && character.health <= 0) {
+				
+				Game.debug_info('Character "' + character.name + '" destroyed due to zero health');
+				delete Game.Character.by_id[character.id];
+				continue;
+				
+			}
+			
+		}
+		
 	};
 
 } ());
