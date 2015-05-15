@@ -2,12 +2,12 @@
 <html>
 	<head>
 		<meta charset="utf-8">
-		<title>My Character</title>
+		<title>CoopGameMaking | Game</title>
 		<link rel="stylesheet" href="style/main.css">
 		<!-- Importing google fonts to make shit fancy -->
 		<link href='http://fonts.googleapis.com/css?family=Roboto+Condensed:400,300,700' rel='stylesheet' type='text/css'>
 
-		<!-- Google Analytics -->
+		<!--Google Analytics -->
 		<script>
 			(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
 			(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
@@ -64,6 +64,11 @@
 					<p class="float-left">Health: <span class="max-health"></span></p>
 					<span id="health-add" data-stat="health" class="add-stat">+10</span>
 				</div>
+				<!-- DEFENCE -->
+				<div id="defence-s" class="stat">
+					<p class="float-left">Defence: <span id="defence"></span></p>
+					<span id="defence-add" data-stat="defence" class="add-stat">+1</span>
+				</div>
 				<!-- STRENGTH -->
 				<div id="strength-s" class="stat">
 					<p class="float-left">Strength: <span id="strength"></span></p>
@@ -84,7 +89,7 @@
 					EXP: <span id="exp"></span>/<span id="exp-tnl"></span>
 				</div>
 			</div>
-			
+
 			<div id="hour_of_day"></div>
 			<div id="events"><span id="event-toggle">Hide Events</span><span id="event-count"></span></div>
 
