@@ -1,11 +1,27 @@
 (function () {
 
 	var Game = window.Game = window.Game || {};
+	
+	Game.DEBUG = false;
+	
+	Game.debug_info = function (info) {
+		
+		if (Game.DEBUG) {
+			
+			console.log('[DEBUG] ' + info);
+			
+		}
+		
+	};
+	
 
 	if (!Game.player) {
 
 		// Initialise Player on load to a 'My Character' templated Character
 		Game.player = Game.Character.from_template('My Character');
+		
+		// Move the Player to a starting location
+		Game.Location.move_character(Game.player, Game.Location.TOWNCENTRE);
 
 	}
 
@@ -30,7 +46,8 @@
 			paused: false,
 			day: 1,
 			hour12: '12am',
-			hour24: 0
+			hour24: 0,
+			ELAPSED_PER_DAY: 500
 		};
 
 		Game.status = {
@@ -39,8 +56,6 @@
 		};
 
 	}
-
-	var elapsed_to_day = 200;
 
 
 	/* Updating variables on page when the document loads */
@@ -79,8 +94,8 @@
 				}
 
 				Game.time.elapsed += Game.time.passed;
-				Game.time.day = ~~(Game.time.elapsed / elapsed_to_day) + 1;
-				Game.time.hour24 = ~~((Game.time.elapsed % elapsed_to_day) / (elapsed_to_day / 24));
+				Game.time.day = ~~(Game.time.elapsed / Game.time.ELAPSED_PER_DAY) + 1;
+				Game.time.hour24 = ~~((Game.time.elapsed % Game.time.ELAPSED_PER_DAY) / (Game.time.ELAPSED_PER_DAY / 24));
 				Game.time.hour12 = Game.time.hour24 > 12 ? Game.time.hour24 % 12 : Game.time.hour24 === 0 ? 12 : Game.time.hour24;
 				Game.time.hour12 += Game.time.hour24 > 11 ? 'pm' : 'am';
 
@@ -116,12 +131,14 @@
 		update_healthbar();
 
 	};
-
-	/* Main game loop */
+/* Main game loop */
 	var update_game = function () {
-
-		// Update the events timeline
+		
+		// Update systems
+		Game.Wound.update();
+		Game.Character.update();
 		Game.Event.update();
+		Game.Location.update();
 
 		// Adds exp each game tick
 		Game.player.experience += 10 * Game.time.passed;
@@ -141,6 +158,7 @@
 		update_stats();
 
 	};
+
 
 
 	// Checks if stats can be upgraded and shows + symbols if player can level stats
@@ -174,8 +192,13 @@
 			return alert("Sorry, not enough points!");
 		}
 		/* Check button's data-stat */
-		var stat = $(this).data('stat'),
-			amount = (stat === "health") ? 10 : 1;
+		var stat = $(this).data('stat');
+		if(stat === "health"){
+			amount = 10;
+			stat = "max_health";
+		}else{
+			amount = 1;	
+		}
 		if (Game.player.can_level_stats) {
 			/* if stat is 'health', update by 10, if not, then 1 */
 			Game.player[stat] += amount;

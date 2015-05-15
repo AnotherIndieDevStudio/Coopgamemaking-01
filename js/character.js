@@ -3,7 +3,7 @@
 	var Game = window.Game = window.Game || {};
 
 	/**
-	 * A Character
+	 * Game.Character
 	 * @struct
 	 * @param {Character=} obj
 	 * @return {Character}
@@ -24,14 +24,15 @@
 			intellect: /** {number} */(!obj || !obj.intellect) ? 1 : obj.intellect,
 			dexterity: /** {number} */(!obj || !obj.dexterity) ? 1 : obj.dexterity,
 			level: /** {number} */(!obj || !obj.level) ? 1 : obj.level,
-
+			
 			inventory: /** {array} */(!obj || !obj.inventory) ? [] : obj.inventory,
 
 			experience:	/** {number} */(!obj || !obj.experience) ? 0 : obj.experience,
 			experience_tnl: /** {number} */(!obj || !obj.experience_tnl) ? 50 : obj.experience_tnl,
 			stat_points: /** {number} */(!obj || !obj.stat_points) ? 0 : obj.stat_points,
 			max_stat_points: /** {number} */(!obj || !obj.max_stat_points) ? 0 : obj.max_stat_points,
-			can_level_stats: /** {boolean} */(!obj || !obj.can_level_stats) ? false : obj.can_level_stats
+			can_level_stats: /** {boolean} */(!obj || !obj.can_level_stats) ? false : obj.can_level_stats,
+			
 		};
 
 		Game.Character.by_id[character.id] = character;
@@ -91,7 +92,7 @@
 	// Gets the exp until next level based on advanced algorithm
 	Game.Character.get_experience_tnl = function (character) {
 
-		//Random algorithm that doesn't make sense at all
+		//Reasonable algorithm to calculat experience tnl
 		return (Math.pow((character.level * 10), 2));
 
 	};
@@ -110,6 +111,32 @@
 
 		}
 
+	};
+	
+	/**
+	 * Game.Character.update
+	 * 
+	 * NOTE: The main game loop should be the only caller of this function, calling it once per loop.
+	 */
+	Game.Character.update = function () {
+		
+		var character_ids = Object.getOwnPropertyNames(Game.Character.by_id);
+
+		for (var character_id in character_ids) {
+
+			var character = Game.Character.by_id[character_ids[character_id]];
+			
+			// Destroy Characters (other than Game.player) that have zero health
+			if (character !== Game.player && character.health <= 0) {
+				
+				Game.debug_info('Character "' + character.name + '" destroyed due to zero health');
+				delete Game.Character.by_id[character.id];
+				continue;
+				
+			}
+			
+		}
+		
 	};
 	
 	/* Used to add an item to the inventory. */
