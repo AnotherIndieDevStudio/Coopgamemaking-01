@@ -1,43 +1,24 @@
 (function () {
 
 	var Game = window.Game = window.Game || {};
-	
-	
-	Game.DEBUG = true;
-	
-	Game.debug_info = function (info) {
-		
-		if (Game.DEBUG) {
-			
-			console.log('[DEBUG] ' + info);
-			
-		}
-		
-	};
-	
-	
-	// Easily fire off events
-	Game.add_event = function (obj){
-		
-		var event = Game.Event(obj);
-		Game.Event.queue(event);
-		
-	};
-	
-	
 
 	if (!Game.player) {
 
 		// Initialise Player on load to a 'My Character' templated Character
 		Game.player = Game.Character.from_template('My Character');
-		
-		// Move the Player to a starting location
-		Game.Location.move_character(Game.player, Game.Location.TOWNCENTRE);
 
 	}
 	
-
 	
+	// Easily fire off events
+	Game.add_event = function(obj){
+		
+		var event = Game.Event(obj);
+		Game.Event.queue(event);
+		
+	};	
+
+
 	if (!Game.time) {
 
 		// Initialise Game.Time
@@ -49,8 +30,7 @@
 			paused: false,
 			day: 1,
 			hour12: '12am',
-			hour24: 0,
-			ELAPSED_PER_DAY: 500
+			hour24: 0
 		};
 		
 		Game.status = {
@@ -59,7 +39,8 @@
 		};
 
 	}
-	
+
+	var elapsed_to_day = 200;
 
 
 	/* Updating variables on page when the document loads */
@@ -98,8 +79,8 @@
 				}
 
 				Game.time.elapsed += Game.time.passed;
-				Game.time.day = ~~(Game.time.elapsed / Game.time.ELAPSED_PER_DAY) + 1;
-				Game.time.hour24 = ~~((Game.time.elapsed % Game.time.ELAPSED_PER_DAY) / (Game.time.ELAPSED_PER_DAY / 24));
+				Game.time.day = ~~(Game.time.elapsed / elapsed_to_day) + 1;
+				Game.time.hour24 = ~~((Game.time.elapsed % elapsed_to_day) / (elapsed_to_day / 24));
 				Game.time.hour12 = Game.time.hour24 > 12 ? Game.time.hour24 % 12 : Game.time.hour24 === 0 ? 12 : Game.time.hour24;
 				Game.time.hour12 += Game.time.hour24 > 11 ? 'pm' : 'am';
 
@@ -137,12 +118,9 @@
 
 	/* Main game loop */
 	var update_game = function () {
-		
-		// Update systems
-		Game.Wound.update();
-		Game.Character.update();
+
+		// Update the events timeline
 		Game.Event.update();
-		Game.Location.update();
 
 		// Adds exp each game tick
 		Game.player.experience += 10 * Game.time.passed;
