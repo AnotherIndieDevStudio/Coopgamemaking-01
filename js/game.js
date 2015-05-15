@@ -8,15 +8,15 @@
 		Game.player = Game.Character.from_template('My Character');
 
 	}
-	
-	
+
+
 	// Easily fire off events
 	Game.add_event = function(obj){
-		
+
 		var event = Game.Event(obj);
 		Game.Event.queue(event);
-		
-	};	
+
+	};
 
 
 	if (!Game.time) {
@@ -32,10 +32,10 @@
 			hour12: '12am',
 			hour24: 0
 		};
-		
+
 		Game.status = {
 			idle: true,
-			fighting: false	
+			fighting: false
 		};
 
 	}
@@ -104,6 +104,7 @@
 		$("#level").html(Game.player.level);
 		$("#health").html(Game.player.health);
 		$(".max-health").html(Game.player.max_health);
+		$("#defence").html(Game.player.defence);
 		$("#strength").html(Game.player.strength);
 		$("#intellect").html(Game.player.intellect);
 		$("#dexterity").html(Game.player.dexterity);
@@ -165,7 +166,7 @@
 		health_remaining.width(width)
 
 	};
-	
+
 	/* Checks for clicks on stat upgrades */
 	$(".add-stat").click(function (e) {
 		/*Check if button can be pressed*/
@@ -217,6 +218,6 @@
 		}
 
 	});
-	
+
 
 } ());

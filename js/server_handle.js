@@ -58,10 +58,13 @@
 			
 			'health=' + Game.player.health,
 			'max_health=' + Game.player.max_health,
+			'defence=' + Game.player.defence,
 			'strength=' + Game.player.strength,
 			'intellect=' + Game.player.intellect,
 			'dex=' + Game.player.dexterity,
 			'level=' + Game.player.level,
+			
+			'inventory=' + Game.Character.prepare_inv_for_save(Game.player.inventory),
 			
 			'exp=' + Game.player.experience,
 			'exp_tnl=' + Game.player.experience_tnl,
@@ -91,6 +94,7 @@
 				var response = xmlhttp.responseText;
 				var data = JSON.parse(response);
 				
+				
 				if (data.loadError) {
 					
 					alert(data.loadError);
@@ -106,11 +110,14 @@
 					
 					Game.player.health = data.health;
 					Game.player.max_health = data.max_health;
+					Game.player.defence = data.defence;
 					Game.player.strength = data.strength;
 					Game.player.intellect = data.intellect;
 					Game.player.dexterity = data.dexterity;
 					Game.player.level = data.level;
 					
+					Game.player.inventory = data.inventory;
+
 					Game.player.experience = data.experience;
 					Game.player.experience_tnl = data.experience_tnl;
 					Game.player.stat_points = data.stat_points;
@@ -124,6 +131,8 @@
 					$("#id-display").show(1000);
 					
 					id_displayed = true;
+					
+					saveID = Game.player.id;
 					
 					// Alerts the player of load successful 
 					alert("Your game has been loaded successfully");
