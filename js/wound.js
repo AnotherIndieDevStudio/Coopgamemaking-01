@@ -32,6 +32,8 @@
 	// All Wounds keyed by id
 	Game.Wound.by_id = {};
 	
+	
+	
 	// Size range
 	var MAX_SIZE = 1;
 	var MIN_SIZE = 0.001;
@@ -72,6 +74,13 @@
 				Game.debug_info('Wound destroyed due to character being dead {' + wound.id + '} ');
 				delete Game.Wound.by_id[wound.id];
 				continue;
+				
+			}
+			
+			// Add Wound to Characters wounds if not already listed
+			if (wound.character.wounds.indexOf(wound) === -1) {
+				
+				wound.character.wounds.push(wound);
 				
 			}
 			

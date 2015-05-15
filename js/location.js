@@ -19,21 +19,14 @@
 
 		};
 		
-		if (obj && obj.characters) {
-			
-			for (var character_index = 0; character_index < obj.characters.length; ++character_index) {
-				
-				location.characters.push(obj.characters[character_index]);
-				
-			}
-			
-		}
+		// Don't copy obj's characters
 		
+		// Copy obj's items
 		if (obj && obj.items) {
 			
 			for (var item_index = 0; item_index < obj.items.length; ++item_index) {
 				
-				location.items.push(obj.items[item_index]);
+				location.items.push(Game.Item(obj.items[item_index]));
 				
 			}
 			

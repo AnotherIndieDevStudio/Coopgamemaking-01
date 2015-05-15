@@ -25,7 +25,7 @@
 			dexterity: /** {number} */(!obj || !obj.dexterity) ? 1 : obj.dexterity,
 			level: /** {number} */(!obj || !obj.level) ? 1 : obj.level,
 			
-			inventory: /** {array} */(!obj || !obj.inventory) ? [] : obj.inventory,
+			inventory: /** {Game.Item[]} */[],
 
 			experience:	/** {number} */(!obj || !obj.experience) ? 0 : obj.experience,
 			experience_tnl: /** {number} */(!obj || !obj.experience_tnl) ? 50 : obj.experience_tnl,
@@ -33,7 +33,33 @@
 			max_stat_points: /** {number} */(!obj || !obj.max_stat_points) ? 0 : obj.max_stat_points,
 			can_level_stats: /** {boolean} */(!obj || !obj.can_level_stats) ? false : obj.can_level_stats,
 			
+			wounds: /** {Game.Wound[]} */[]
+			
 		};
+		
+		// Copy obj's inventory
+		if (obj && obj.inventory) {
+			
+			for (var inventory_index = 0; inventory_index < obj.inventory.length; ++inventory_index) {
+				
+				character.inventory.push(Game.Item(obj.inventory[inventory_index]));
+				
+			}
+			
+		}
+		
+		// Copy obj's wounds
+		if (obj && obj.wounds) {
+			
+			for (var wound_index = 0; wound_index < obj.wounds.length; ++wound_index) {
+				
+				var wound = Game.Wound(obj.wounds[wound_index]);
+				wound.character = character;
+				character.wounds.push(wound);
+				
+			}
+			
+		}
 
 		Game.Character.by_id[character.id] = character;
 
@@ -55,8 +81,10 @@
 
 	// Lists of Characters by type
 	Game.Character.by_type = {};
-
-
+	
+	
+	
+	
 	/**
 	 * Returns a Character based on a templated type.
 	 *
