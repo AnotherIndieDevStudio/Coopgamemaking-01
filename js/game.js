@@ -1,22 +1,41 @@
 (function () {
 
 	var Game = window.Game = window.Game || {};
+	
+	
+	Game.DEBUG = true;
+	
+	Game.debug_info = function (info) {
+		
+		if (Game.DEBUG) {
+			
+			console.log('[DEBUG] ' + info);
+			
+		}
+		
+	};
+	
+	
+	// Easily fire off events
+	Game.add_event = function (obj){
+		
+		var event = Game.Event(obj);
+		Game.Event.queue(event);
+		
+	};
+	
+	
 
 	if (!Game.player) {
 
 		// Initialise Player on load to a 'My Character' templated Character
 		Game.player = Game.Character.from_template('My Character');
+		
+		// Move the Player to a starting location
+		Game.Location.move_character(Game.player, Game.Location.TOWNCENTRE);
 
 	}
 	
-	
-	// Easily fire off events
-	Game.add_event = function(obj){
-		
-		var event = Game.Event(obj);
-		Game.Event.queue(event);
-		
-	};	
 
 	
 	if (!Game.time) {
@@ -123,6 +142,7 @@
 		Game.Wound.update();
 		Game.Character.update();
 		Game.Event.update();
+		Game.Location.update();
 
 		// Adds exp each game tick
 		Game.player.experience += 10 * Game.time.passed;

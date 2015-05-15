@@ -31,7 +31,9 @@
 			can_level_stats: /** {boolean} */(!obj || !obj.can_level_stats) ? false : obj.can_level_stats,
 			
 			attack: /** {number} */(!obj || !obj.attack) ? 10 : obj.attack,
-			defense: /** {number} */(!obj || !obj.defense) ? 10 : obj.defense
+			defense: /** {number} */(!obj || !obj.defense) ? 10 : obj.defense,
+			
+			location: /** {Game.Location} */(!obj || !obj.location) ? Game.Location.THEVOID : obj.location
 			
 		};
 
@@ -129,7 +131,7 @@
 			// Destroy Characters (other than Game.player) that have zero health
 			if (character !== Game.player && character.health <= 0) {
 				
-				console.log('Character destroyed due to zero health {' + character.id + '} ');
+				Game.debug_info('Character "' + character.name + '" destroyed due to zero health');
 				delete Game.Character.by_id[character.id];
 				continue;
 				

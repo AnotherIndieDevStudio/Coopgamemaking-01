@@ -61,11 +61,11 @@
 
 	
 	// Predefined Game.Event.Type's
-	Game.Event.Type.INFORMATION = Game.Event.Type({name: 'information', style: 'event_information'});
-	Game.Event.Type.ENVIRONMENT = Game.Event.Type({name: 'environment', style: 'event_environment'});
-	Game.Event.Type.CONFRONTATION = Game.Event.Type({name: 'confrontation', style: 'event_confrontation'});
-	Game.Event.Type.EXCHANGE = Game.Event.Type({name: 'exchange', style: 'event_exchange'});
-	Game.Event.Type.FIGHT_TURN = Game.Event.Type({name: 'fight_turn', style: 'event_fight_turn'});
+	Game.Event.Type.INFORMATION = Game.Event.Type({ name: 'information', style: 'event_information' });
+	Game.Event.Type.ENVIRONMENT = Game.Event.Type({ name: 'environment', style: 'event_environment' });
+	Game.Event.Type.CONFRONTATION = Game.Event.Type({ name: 'confrontation', style: 'event_confrontation' });
+	Game.Event.Type.EXCHANGE = Game.Event.Type({ name: 'exchange', style: 'event_exchange' });
+	Game.Event.Type.FIGHT_TURN = Game.Event.Type({ name: 'fight_turn', style: 'event_fight_turn' });
 	
 
 
@@ -109,22 +109,22 @@
 		
 		// Queue a welcome informational message
 		if (Game.time.elapsed === 1) {
-			
+
 			Game.Event.queue(Game.Event({ type: Game.Event.Type.INFORMATION, description: 'Welcome to CoopGameMaking.', on_event: queue_random_future_event }));
-			
+
 		}
 		
 		// Hour of day environmental Events
 		if (Game.time.hour12 === '5am' && (!last_sunrise_time || last_sunrise_time <= Game.time.elapsed - Game.time.ELAPSED_PER_DAY)) {
-			
+
 			Game.Event.queue(Game.Event({ type: Game.Event.Type.ENVIRONMENT, description: 'The sun rises, a new day begins' }));
 			last_sunrise_time = Game.time.elapsed;
-			
+
 		} else if (Game.time.hour12 === '7pm' && (!last_sunset_time || last_sunset_time <= Game.time.elapsed - Game.time.ELAPSED_PER_DAY)) {
-			
+
 			Game.Event.queue(Game.Event({ type: Game.Event.Type.ENVIRONMENT, description: 'The streets grow quieter as dusk approaches' }));
 			last_sunset_time = Game.time.elapsed;
-			
+
 		}
 		
 		
@@ -202,12 +202,12 @@
 	
 	
 	// Deletes overflowing event bubbles from the page
-	var delete_overflow_events = function(){
+	var delete_overflow_events = function () {
 
-		$(".event_bubble").each(function(){
+		$(".event_bubble").each(function () {
 
 			// Checks if bottom of the event bubble is overlapping the bottom information (will change to get exact position later)
-			if( $(this).position().top + $(this).outerHeight(true) > Game.Math.window_height - 175){
+			if ($(this).position().top + $(this).outerHeight(true) > Game.Math.window_height - 175) {
 				$(this).remove();
 			};
 
@@ -226,8 +226,8 @@
 	Game.Event.queued_by_time = {};
 
 	// The frequency range (in Game.time.elapsed ticks) of which above events are picked to fire
-	var EVENT_FREQUENCY_MAX = 30;
-	var EVENT_FREQUENCY_MIN = 100;
+	var event_frequency_max = 30;
+	var event_frequency_min = 100;
 	
 	
 	
@@ -238,50 +238,76 @@
 	 */
 	var queue_random_future_event = function (event) {
 
-		var next_event = Game.Event.events[~~(Math.random() * Game.Event.events.length - 0.1)];
+		var next_event = Game.Event.random_events[~~(Math.random() * Game.Event.random_events.length - 0.1)];
 
-		next_event.time = event.time + EVENT_FREQUENCY_MAX +
-		~~(Math.random() * (EVENT_FREQUENCY_MIN - EVENT_FREQUENCY_MAX));
+		next_event.time = event.time + event_frequency_max + ~~(Math.random() * (event_frequency_min - event_frequency_max));
 
-		Game.Event.queue(next_event);
+		Game.Event.queue(Game.Event(next_event));
 
 	};
-
-
-	// List of random events
-	Game.Event.events = [
-		Game.Event({ type: Game.Event.Type.ENVIRONMENT, description: 'The smell of a sweet chicken broth circles about', on_event: queue_random_future_event }),
-		Game.Event({ type: Game.Event.Type.ENVIRONMENT, description: 'A foul wind blows from the west', on_event: queue_random_future_event }),
-		Game.Event({ type: Game.Event.Type.CONFRONTATION, description: 'A mischief of rats darts towards you from behind a pile of garbage', on_event: queue_random_future_event }),
-		Game.Event({ type: Game.Event.Type.CONFRONTATION, description: 'You feel the touch of a thiefs delicate fingers slipping into your back pocket', on_event: queue_random_future_event }),
-		Game.Event({ type: Game.Event.Type.CONFRONTATION, description: 'A woman cries out "HELP! Somebody please help me!" as a man holding her purse heads in your general direction', on_event: queue_random_future_event }),
-		Game.Event({ type: Game.Event.Type.EXCHANGE, description: 'Growing weary, you find the closest tavern, take a load off your feet and engage the old bartender in conversation', on_event: queue_random_future_event }),
-		Game.Event({ type: Game.Event.Type.EXCHANGE, description: 'A peddler of foreign appearances rattles his staff as he hobbles on by', on_event: queue_random_future_event })
-	];
+	
+	
+	
 	
 	/* Hide events */
 	$("#event-toggle").click(function () {
-		
+
 		if (!Game.Event.events_hidden) {
-			
+
 			$(".event_bubble").hide(1000);
 			$(this).html("Show Events");
 			$("#event-count").html("(" + Game.Event.event_count + ")");
 			Game.Event.events_hidden = true;
-			
+
 		} else {
-			
+
 			$(".event_bubble").show(function () {
 				delete_overflow_events();
 			});
-			
+
 			$(this).html("Hide Events");
 			$("#event-count").html("");
 			Game.Event.events_hidden = false;
 			Game.Event.event_count = 0;
 		}
-		
+
 	});
 	
+	
+	
+
+
+	// Random Events
+	Game.Event.random_events = [
+		{ type: Game.Event.Type.ENVIRONMENT, description: 'The smell of a sweet chicken broth circles about', on_event: queue_random_future_event },
+		{ type: Game.Event.Type.ENVIRONMENT, description: 'A foul wind blows from the west', on_event: queue_random_future_event },
+		{ type: Game.Event.Type.CONFRONTATION, description: 'You feel the touch of a thiefs delicate fingers slipping into your back pocket', on_event: queue_random_future_event },
+		{ type: Game.Event.Type.CONFRONTATION, description: 'A woman cries out "HELP! Somebody please help me!" as a man holding her purse heads in your general direction', on_event: queue_random_future_event },
+		{ type: Game.Event.Type.EXCHANGE, description: 'Growing weary, you find the closest tavern, take a load off your feet and engage the old bartender in conversation', on_event: queue_random_future_event },
+		{ type: Game.Event.Type.EXCHANGE, description: 'A peddler of foreign appearances rattles his staff as he hobbles on by', on_event: queue_random_future_event }
+	];
+	
+	
+	// The rats encounter
+	Game.Event.random_events.push({
+		
+		type: Game.Event.Type.CONFRONTATION,
+		description: 'A mischief of rats darts towards you from behind a pile of garbage',
+		
+		on_event: function (event) {
+			
+			// Move rats into the players location
+			Game.Location.move_character(Game.Character.from_template('Rat'), Game.player.location);
+			Game.Location.move_character(Game.Character.from_template('Rat'), Game.player.location);
+			Game.Location.move_character(Game.Character.from_template('Rat'), Game.player.location);
+			Game.Location.move_character(Game.Character.from_template('Rat'), Game.player.location);
+			
+			// Queue the next random Event
+			queue_random_future_event(event);
+			
+		}
+		
+	});
+
 
 } ());

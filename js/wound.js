@@ -60,7 +60,7 @@
 			// Destroy Wounds that don't have a valid Character assign to them or are already dead
 			if (!wound.character || !Game.Character.by_id.hasOwnProperty(wound.character.id)) {
 				
-				console.log('Wound destroyed due to invalid character {' + wound.id + '} ');
+				Game.debug_info('Wound destroyed due to invalid character {' + wound.id + '} ');
 				delete Game.Wound.by_id[wound.id];
 				continue;
 				
@@ -69,7 +69,7 @@
 			// Destroy Wounds whos character is already dead
 			if (Game.Character.by_id[wound.character.id].health <= 0) {
 				
-				console.log('Wound destroyed due to character being dead {' + wound.id + '} ');
+				Game.debug_info('Wound destroyed due to character being dead {' + wound.id + '} ');
 				delete Game.Wound.by_id[wound.id];
 				continue;
 				
@@ -77,7 +77,7 @@
 			
 			// Apply Wound to Characters health
 			wound.inflicted += wound.size * (MAX_INFLICTED_PER_DAY / Game.time.ELAPSED_PER_DAY);
-			console.log('Wound {' + wound.id + '} size: ' + wound.size + ', inflict: -' + wound.inflicted);
+			Game.debug_info('Wound {' + wound.id + '} size: ' + wound.size + ', inflict: -' + wound.inflicted);
 			
 			if (wound.inflicted >= 1) {
 				
@@ -107,7 +107,7 @@
 			// Wound is completely healed at zero size
 			if (wound.size <= 0) {
 				
-				console.log('Wound healed {' + wound.id + '}');
+				Game.debug_info('Wound healed {' + wound.id + '}');
 				delete Game.Wound.by_id[wound.id];
 				
 			}
