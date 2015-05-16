@@ -79,7 +79,7 @@
 			'dex=' + Game.player.dexterity,
 			'level=' + Game.player.level,
 			
-			'inventory=' + encodeURIComponent(Game.Character.prepare_inv_for_save(Game.player.inventory)),
+			'inventory=' + encodeURIComponent(JSON.stringify(Game.player.inventory)),
 			
 			'exp=' + Game.player.experience,
 			'exp_tnl=' + Game.player.experience_tnl,
@@ -109,8 +109,8 @@
 			if (xmlhttp.readyState === 4 && xmlhttp.status === 200) {
 				
 				var response = xmlhttp.responseText;
+				console.log(response);
 				var data = JSON.parse(response);
-				
 				
 				if (data.loadError) {
 					
@@ -125,9 +125,11 @@
 					for (var wound_index = 0; wound_index < Game.player.wounds.length; ++wound_index) {
 						
 						var wound = Game.player.wounds[wound_index];
+						$("#player-wounds").html("");
 						delete Game.Wound.by_id[wound.id];
 						
-					}
+					};
+					
 					
 					Game.player.id = data.id;
 					Game.player.name = data.name;
@@ -160,7 +162,7 @@
 						wound.character = Game.player; 
 						Game.Wound(wound);
 						
-					}
+					};
 					
 					$("#load_id").val(Game.player.id);
 					$("#id-text").html("Save ID: " + Game.player.id);

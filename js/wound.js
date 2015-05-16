@@ -126,7 +126,6 @@
 					
 					$('#player-wounds').append($([
 						'<div id="' + wound.id + '" class="wound">',
-						'  <img src="images/wound.png"/>',
 						'  <div></div>',
 						'</div>'
 					].join('')));	

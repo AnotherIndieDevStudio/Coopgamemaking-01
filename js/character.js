@@ -176,26 +176,10 @@
 		Item = (Item[0]) ? Item[0] : Item;
 		
 		if(Game.player.inventory === "[]"){
-			Game.player.inventory = Game.Character.prepare_inv_for_game(Game.player.inventory);	
+			Game.player.inventory = JSON.parse(Game.player.inventory);	
 		};
 		Game.player.inventory.push(Item);
 			
-	};
-	
-	/* In order to save to the database, needs to be converted to a string */
-	Game.Character.prepare_inv_for_save = function(inv){
-	
-		var new_inv = JSON.stringify(inv);
-		return new_inv;
-		
-	};
-	
-	/* Will probably never be used but here just in case. Also gives insight as to how the inventory system works */
-	Game.Character.prepare_inv_for_game = function(inv_str){
-		
-		var new_inv = JSON.parse(inv_str);
-		return new_inv;
-		
 	};
 
 } ());
