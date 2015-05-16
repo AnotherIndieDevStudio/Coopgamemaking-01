@@ -47,9 +47,13 @@ var save = function (req, res) {
 		if (paramName === 'id') {
 			obj.id = param[1];
 		} else if (paramName == 'name') {
-			obj.name = param[1];	
+			obj.name = decodeURIComponent(param[1]);	
 		} else if (paramName == 'type') {
-			obj.type = param[1];	
+			obj.type = decodeURIComponent(param[1]);	
+		}
+		
+		else if (paramName === 'location') {
+			obj.location = decodeURIComponent(param[1]);
 		}
 		
 		else if (paramName === 'health') {
@@ -66,6 +70,10 @@ var save = function (req, res) {
 			obj.level = param[1];
 		}
 		
+		else if (paramName === 'inventory') {
+			obj.inventory = JSON.parse(decodeURIComponent(param[1]));
+		}
+		
 		else if (paramName === 'exp') {
 			obj.experience = param[1];
 		} else if (paramName === 'exp_tnl') {
@@ -74,6 +82,10 @@ var save = function (req, res) {
 			obj.stat_points = param[1];
 		} else if (paramName === 'maxstatpoints') {
 			obj.max_stat_points = param[1];
+		}
+		
+		else if (paramName === 'wounds') {
+			obj.wounds = JSON.parse(decodeURIComponent(param[1]));
 		}
 		
 		else if (paramName === 'need_id') {
@@ -111,18 +123,25 @@ var load = function (req, res) {
 			
 			data = JSON.parse(data);
 			
-			data.level = parseInt(data.level, 10);
+			data.id = UUID;
+			data.name = data.name;
+			data.type = data.type;
+			
 			data.health = parseInt(data.health, 10);
+			data.max_health = parseInt(data.max_health, 10);
+			data.strength = parseInt(data.strength, 10);
+			data.intellect = parseInt(data.intellect, 10);
+			data.dexterity = parseInt(data.dexterity, 10);
+			data.level = parseInt(data.level, 10);
+			
+			data.inventory = data.inventory;
+			
 			data.experience = parseInt(data.experience, 10);
 			data.experience_tnl = parseInt(data.experience_tnl, 10);
-			data.strength = parseInt(data.strength, 10);
-			data.dexterity = parseInt(data.dexterity, 10);
-			data.intellect = parseInt(data.intellect, 10);
 			data.stat_points = parseInt(data.stat_points, 10);
 			data.max_stat_points = parseInt(data.max_stat_points, 10);
-			data.health = parseInt(data.health, 10);
 			
-			data.userID = UUID;
+			data.wounds = data.wounds;
 			
 			res.setHeader('Content-Type', 'application/json');
 			res.end(JSON.stringify(data));

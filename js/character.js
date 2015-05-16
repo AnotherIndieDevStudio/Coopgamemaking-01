@@ -16,6 +16,8 @@
 
 			name: /** {string} */(!obj || !obj.name) ? 'Unnamed' : obj.name,
 			type: /** {string} */(!obj || !obj.type) ? 'Generic' : obj.type,
+			
+			location: /** {Game.Location} */(!obj || !obj.location) ? Game.Location.THEVOID : obj.location,
 
 			health:	/** {number} */(!obj || !obj.health) ? 100 : obj.health,
 			max_health:/** {number} */(!obj || !obj.max_health) ? 100: obj.max_health,
@@ -25,7 +27,7 @@
 			dexterity: /** {number} */(!obj || !obj.dexterity) ? 1 : obj.dexterity,
 			level: /** {number} */(!obj || !obj.level) ? 1 : obj.level,
 			
-			inventory: /** {array} */(!obj || !obj.inventory) ? [] : obj.inventory,
+			inventory: /** {Game.Item[]} */[],
 
 			experience:	/** {number} */(!obj || !obj.experience) ? 0 : obj.experience,
 			experience_tnl: /** {number} */(!obj || !obj.experience_tnl) ? 50 : obj.experience_tnl,
@@ -33,7 +35,33 @@
 			max_stat_points: /** {number} */(!obj || !obj.max_stat_points) ? 0 : obj.max_stat_points,
 			can_level_stats: /** {boolean} */(!obj || !obj.can_level_stats) ? false : obj.can_level_stats,
 			
+			wounds: /** {Game.Wound[]} */[]
+			
 		};
+		
+		// Copy obj's inventory
+		if (obj && obj.inventory) {
+			
+			for (var inventory_index = 0; inventory_index < obj.inventory.length; ++inventory_index) {
+				
+				character.inventory.push(Game.Item(obj.inventory[inventory_index]));
+				
+			}
+			
+		}
+		
+		// Copy obj's wounds
+		if (obj && obj.wounds) {
+			
+			for (var wound_index = 0; wound_index < obj.wounds.length; ++wound_index) {
+				
+				var wound = Game.Wound(obj.wounds[wound_index]);
+				wound.character = character;
+				character.wounds.push(wound);
+				
+			}
+			
+		}
 
 		Game.Character.by_id[character.id] = character;
 
@@ -55,8 +83,10 @@
 
 	// Lists of Characters by type
 	Game.Character.by_type = {};
-
-
+	
+	
+	
+	
 	/**
 	 * Returns a Character based on a templated type.
 	 *
@@ -146,26 +176,10 @@
 		Item = (Item[0]) ? Item[0] : Item;
 		
 		if(Game.player.inventory === "[]"){
-			Game.player.inventory = Game.Character.prepare_inv_for_game(Game.player.inventory);	
+			Game.player.inventory = JSON.parse(Game.player.inventory);	
 		};
 		Game.player.inventory.push(Item);
 			
-	};
-	
-	/* In order to save to the database, needs to be converted to a string */
-	Game.Character.prepare_inv_for_save = function(inv){
-	
-		var new_inv = JSON.stringify(inv);
-		return new_inv;
-		
-	};
-	
-	/* Will probably never be used but here just in case. Also gives insight as to how the inventory system works */
-	Game.Character.prepare_inv_for_game = function(inv_str){
-		
-		var new_inv = JSON.parse(inv_str);
-		return new_inv;
-		
 	};
 
 } ());

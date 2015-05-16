@@ -2,7 +2,7 @@
 
 	var Game = window.Game = window.Game || {};
 	
-	Game.DEBUG = false;
+	Game.DEBUG = true;
 	
 	Game.debug_info = function (info) {
 		

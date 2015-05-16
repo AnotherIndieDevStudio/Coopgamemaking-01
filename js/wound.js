@@ -32,6 +32,8 @@
 	// All Wounds keyed by id
 	Game.Wound.by_id = {};
 	
+	
+	
 	// Size range
 	var MAX_SIZE = 1;
 	var MIN_SIZE = 0.001;
@@ -75,6 +77,13 @@
 				
 			}
 			
+			// Add Wound to Characters wounds if not already listed
+			if (wound.character.wounds.indexOf(wound) === -1) {
+				
+				wound.character.wounds.push(wound);
+				
+			}
+			
 			// Apply Wound to Characters health
 			wound.inflicted += wound.size * (MAX_INFLICTED_PER_DAY / Game.time.ELAPSED_PER_DAY);
 			Game.debug_info('Wound {' + wound.id + '} size: ' + wound.size + ', inflict: -' + wound.inflicted);
@@ -109,6 +118,22 @@
 				
 				Game.debug_info('Wound healed {' + wound.id + '}');
 				delete Game.Wound.by_id[wound.id];
+				$('#' + wound.id).remove();
+				
+			} else {
+				
+				if ($('#' + wound.id).length === 0) {
+					
+					$('#player-wounds').append($([
+						'<div id="' + wound.id + '" class="wound">',
+						'  <div></div>',
+						'</div>'
+					].join('')));	
+					
+				}
+				
+				$('#' + wound.id + ' img').fadeTo(1, wound.size + 0.01);
+				$('#' + wound.id + ' div').html('-' + (~~(wound.size * 100) / 100));
 				
 			}
 

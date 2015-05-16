@@ -249,3 +249,11 @@ h1{
 	font-size: 80%;
 	color: #aaf;
 }
+
+
+.wound {
+	display: inline-block;
+	color: #CD5C5C;
+	font-size: 60%;
+	text-align: center;
+}

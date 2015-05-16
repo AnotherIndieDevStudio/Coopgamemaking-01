@@ -49,12 +49,27 @@
 				}
 			}
 		};
-	
+		
+		
+		// Wounds will get reconstructed against the Character it was saved to, so
+		// we only need to serialise the important bits that need to persist
+		var wounds = [];
+		
+		for (var wound_index = 0; wound_index < Game.player.wounds.length; ++wound_index) {
+			
+			var wound = Game.player.wounds[wound_index];
+			wounds.push({size: wound.size, inflicted: wound.inflicted});
+			
+		}
+		
+		
 		// Retrieving information from PHP file
 		var save_params = [
 			'id=' + Game.player.id,
-			'name=' + Game.player.name,
-			'type=' + Game.player.type,
+			'name=' + encodeURIComponent(Game.player.name),
+			'type=' + encodeURIComponent(Game.player.type),
+			
+			'location=' + encodeURIComponent(Game.player.location.name),
 			
 			'health=' + Game.player.health,
 			'max_health=' + Game.player.max_health,
@@ -64,12 +79,14 @@
 			'dex=' + Game.player.dexterity,
 			'level=' + Game.player.level,
 			
-			'inventory=' + Game.Character.prepare_inv_for_save(Game.player.inventory),
+			'inventory=' + encodeURIComponent(JSON.stringify(Game.player.inventory)),
 			
 			'exp=' + Game.player.experience,
 			'exp_tnl=' + Game.player.experience_tnl,
 			'statpoints=' + Game.player.stat_points,
 			'maxstatpoints=' + Game.player.max_stat_points,
+			
+			'wounds=' + encodeURIComponent(JSON.stringify(wounds)),
 			
 			'need_id=' + (saveID ? false : true)
 		].join('&');
@@ -92,8 +109,8 @@
 			if (xmlhttp.readyState === 4 && xmlhttp.status === 200) {
 				
 				var response = xmlhttp.responseText;
+				console.log(response);
 				var data = JSON.parse(response);
-				
 				
 				if (data.loadError) {
 					
@@ -104,9 +121,21 @@
 					// Remove the now old by_id reference
 					delete Game.Character.by_id[Game.player.id];
 					
+					// Remove existing Wounds
+					for (var wound_index = 0; wound_index < Game.player.wounds.length; ++wound_index) {
+						
+						var wound = Game.player.wounds[wound_index];
+						$("#player-wounds").html("");
+						delete Game.Wound.by_id[wound.id];
+						
+					};
+					
+					
 					Game.player.id = data.id;
 					Game.player.name = data.name;
 					Game.player.type = data.type;
+					
+					Game.player.location = Game.Location.by_name[data.location];
 					
 					Game.player.health = data.health;
 					Game.player.max_health = data.max_health;
@@ -125,6 +154,15 @@
 					
 					// Add the new by_id reference
 					Game.Character.by_id[Game.player.id] = Game.player;
+					
+					// Reconstruct Wounds
+					for (var wound_index = 0; wound_index < data.wounds.length; ++wound_index) {
+						
+						var wound = data.wounds[wound_index];
+						wound.character = Game.player; 
+						Game.Wound(wound);
+						
+					};
 					
 					$("#load_id").val(Game.player.id);
 					$("#id-text").html("Save ID: " + Game.player.id);
