@@ -16,6 +16,8 @@
 
 			name: /** {string} */(!obj || !obj.name) ? 'Unnamed' : obj.name,
 			type: /** {string} */(!obj || !obj.type) ? 'Generic' : obj.type,
+			
+			location: /** {Game.Location} */(!obj || !obj.location) ? Game.Location.THEVOID : obj.location,
 
 			health:	/** {number} */(!obj || !obj.health) ? 100 : obj.health,
 			max_health:/** {number} */(!obj || !obj.max_health) ? 100: obj.max_health,

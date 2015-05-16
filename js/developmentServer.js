@@ -47,9 +47,13 @@ var save = function (req, res) {
 		if (paramName === 'id') {
 			obj.id = param[1];
 		} else if (paramName == 'name') {
-			obj.name = param[1];	
+			obj.name = decodeURIComponent(param[1]);	
 		} else if (paramName == 'type') {
-			obj.type = param[1];	
+			obj.type = decodeURIComponent(param[1]);	
+		}
+		
+		else if (paramName === 'location') {
+			obj.location = decodeURIComponent(param[1]);
 		}
 		
 		else if (paramName === 'health') {

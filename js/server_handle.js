@@ -66,8 +66,10 @@
 		// Retrieving information from PHP file
 		var save_params = [
 			'id=' + Game.player.id,
-			'name=' + Game.player.name,
-			'type=' + Game.player.type,
+			'name=' + encodeURIComponent(Game.player.name),
+			'type=' + encodeURIComponent(Game.player.type),
+			
+			'location=' + encodeURIComponent(Game.player.location.name),
 			
 			'health=' + Game.player.health,
 			'max_health=' + Game.player.max_health,
@@ -130,6 +132,8 @@
 					Game.player.id = data.id;
 					Game.player.name = data.name;
 					Game.player.type = data.type;
+					
+					Game.player.location = Game.Location.by_name[data.location];
 					
 					Game.player.health = data.health;
 					Game.player.max_health = data.max_health;

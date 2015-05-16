@@ -118,6 +118,23 @@
 				
 				Game.debug_info('Wound healed {' + wound.id + '}');
 				delete Game.Wound.by_id[wound.id];
+				$('#' + wound.id).remove();
+				
+			} else {
+				
+				if ($('#' + wound.id).length === 0) {
+					
+					$('#player-wounds').append($([
+						'<div id="' + wound.id + '" class="wound">',
+						'  <img src="images/wound.png"/>',
+						'  <div></div>',
+						'</div>'
+					].join('')));	
+					
+				}
+				
+				$('#' + wound.id + ' img').fadeTo(1, wound.size + 0.01);
+				$('#' + wound.id + ' div').html('-' + (~~(wound.size * 100) / 100));
 				
 			}
 
