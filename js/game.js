@@ -2,7 +2,7 @@
 
 	var Game = window.Game = window.Game || {};
 	
-	Game.DEBUG = true;
+	Game.DEBUG = false;
 	
 	Game.debug_info = function (info) {
 		
@@ -117,7 +117,7 @@
 		// Updating stats
 		$("#stat-points").html(Game.player.stat_points);
 		$("#level").html(Game.player.level);
-		$("#health").html(Game.player.health);
+		$("#health").html(Math.floor(Game.player.health));
 		$(".max-health").html(Game.player.max_health);
 		$("#defence").html(Game.player.defence);
 		$("#strength").html(Game.player.strength);
@@ -139,6 +139,8 @@
 		Game.Character.update();
 		Game.Event.update();
 		Game.Location.update();
+		
+		regen_health();
 
 		// Adds exp each game tick
 		Game.player.experience += 10 * Game.time.passed;
@@ -183,6 +185,25 @@
 
 		health_remaining.width(width)
 
+	};
+	
+	var regen_health = function(){
+		
+		var regen_amount = 1;
+		
+		if(Game.player.wounds[0]){
+			regen_amount = 0.0;	
+		};
+		
+		if(Game.player.health <= Game.player.max_health){
+			Game.player.health += regen_amount;
+			if(Game.player.health > Game.player.max_health){
+				Game.player.health = Game.player.max_health;	
+			};
+		};
+		
+		// Check if heealth is above health
+		
 	};
 
 	/* Checks for clicks on stat upgrades */
