@@ -257,3 +257,7 @@ h1{
 	font-size: 60%;
 	text-align: center;
 }
+
+.wound div {
+	margin-top: -5px;
+}

@@ -109,7 +109,6 @@
 			if (xmlhttp.readyState === 4 && xmlhttp.status === 200) {
 				
 				var response = xmlhttp.responseText;
-				console.log(response);
 				var data = JSON.parse(response);
 				
 				if (data.loadError) {
@@ -121,12 +120,10 @@
 					// Remove the now old by_id reference
 					delete Game.Character.by_id[Game.player.id];
 					
-					// Remove existing Wounds
-					for (var wound_index = 0; wound_index < Game.player.wounds.length; ++wound_index) {
+					// Remove existing Wound from player
+					while (Game.player.wounds[0]) {
 						
-						var wound = Game.player.wounds[wound_index];
-						$("#player-wounds").html("");
-						delete Game.Wound.by_id[wound.id];
+						Game.Wound.destroy(Game.player.wounds[0]);
 						
 					};
 					
