@@ -2,7 +2,10 @@ var serve = require('serve-static')('.');
 var fs = require('fs');
 
 var PORT = 8000;
+var SAVEDIR = 'saves';
 
+
+	
 require('http').createServer(function (req, res) {
 
 	if (req.url.indexOf('/savegame.php?') === 0) {
@@ -97,15 +100,26 @@ var save = function (req, res) {
 	if (needsID) {
 		obj.id = s4() + s4() + s4() + s4() + s4() + s4() + s4() + s4();
 	}
+	
+	// Attempt to make the saves directory, ignore directory already exists error
+	fs.mkdir(SAVEDIR, function(err) {
+		
+    	if (!err || err.code === 'EEXIST') {
+			
+			fs.writeFile(SAVEDIR + '/' + obj.id, JSON.stringify(obj), function (err) {
+		
+				if (err) return console.log(err);
+				console.log('Saved ' + obj.id);
+				res.setHeader('Content-Type', 'text/plain');
+				res.end(obj.id);
+		
+			});
+			
+		}
+        
+    });
 
-	fs.writeFile(obj.id, JSON.stringify(obj), function (err) {
-
-		if (err) return console.log(err);
-		console.log('Saved ' + obj.id);
-		res.setHeader('Content-Type', 'text/plain');
-		res.end(obj.id);
-
-	});
+	
 
 };
 
@@ -115,7 +129,7 @@ var load = function (req, res) {
 
 	var UUID = req.url.split('=')[1];
 
-	fs.readFile(UUID, { encoding: 'utf-8' }, function (err, data) {
+	fs.readFile(SAVEDIR + '/' + UUID, { encoding: 'utf-8' }, function (err, data) {
 		
 		if (!err) {
 			

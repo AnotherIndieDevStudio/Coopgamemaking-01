@@ -46,6 +46,38 @@
 	var MAX_INFLICTED_PER_DAY = 100;
 	
 	
+	
+	/**
+	 * Game.Wound.destroy
+	 * 
+	 * @param {Game.Wound} wound
+	 */
+	Game.Wound.destroy = function (wound) {
+		
+		// Remove wound from Game.Wound.by_id
+		delete Game.Wound.by_id[wound.id];
+		
+		// Remove wound from its characters wounds list
+		if (wound.character) {
+			
+			var wound_index = wound.character.wounds.indexOf(wound);
+			
+			if (wound_index > -1) {
+				
+				wound.character.wounds.splice(wound_index, 1);
+				
+			}
+			
+		}
+		
+		$('#' + wound.id).remove();
+		
+		Game.debug_info('Wound destroyed {' + wound.id + '} ');
+		
+	};
+	
+	
+	
 	/**
 	 * Game.Wound.update
 	 * 
@@ -62,8 +94,7 @@
 			// Destroy Wounds that don't have a valid Character assign to them or are already dead
 			if (!wound.character || !Game.Character.by_id.hasOwnProperty(wound.character.id)) {
 				
-				Game.debug_info('Wound destroyed due to invalid character {' + wound.id + '} ');
-				delete Game.Wound.by_id[wound.id];
+				Game.Wound.destroy(wound);
 				continue;
 				
 			}
@@ -71,8 +102,7 @@
 			// Destroy Wounds whos character is already dead
 			if (Game.Character.by_id[wound.character.id].health <= 0) {
 				
-				Game.debug_info('Wound destroyed due to character being dead {' + wound.id + '} ');
-				delete Game.Wound.by_id[wound.id];
+				Game.Wound.destroy(wound);
 				continue;
 				
 			}
@@ -117,8 +147,7 @@
 			if (wound.size <= 0) {
 				
 				Game.debug_info('Wound healed {' + wound.id + '}');
-				delete Game.Wound.by_id[wound.id];
-				$('#' + wound.id).remove();
+				Game.Wound.destroy(wound);
 				
 			} else {
 				
@@ -126,6 +155,7 @@
 					
 					$('#player-wounds').append($([
 						'<div id="' + wound.id + '" class="wound">',
+						'  <img src="images/wound.png"/>',
 						'  <div></div>',
 						'</div>'
 					].join('')));	
