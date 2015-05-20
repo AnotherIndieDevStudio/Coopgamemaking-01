@@ -1,7 +1,7 @@
 (function () {
 
 	var Game = window.Game = window.Game || {};
-
+	
 	/**
 	 * Game.Character
 	 * @struct
@@ -12,7 +12,7 @@
 
 		var character = {
 			// Don't copy another characters id. All Character instances should have a unique id.
-			id: /** {string} */Game.Math.UUID(),
+			id: /** {string} */ (!obj || !obj.id) ? Game.Math.UUID() : obj.id,
 
 			name: /** {string} */(!obj || !obj.name) ? 'Unnamed' : obj.name,
 			type: /** {string} */(!obj || !obj.type) ? 'Generic' : obj.type,
@@ -85,8 +85,6 @@
 	Game.Character.by_type = {};
 	
 	
-	
-	
 	/**
 	 * Returns a Character based on a templated type.
 	 *
@@ -106,13 +104,15 @@
 		} else if (name === 'Rat') {
 
 			template.type = 'Beast';
-			template.health = 0.75;
-			template.max_health = 0.75;
-			template.strength = 0.5;
+			template.health = 0.25;
+			template.max_health = 0.25;
+			template.strength = 0.2;
 			template.intellect = 0;
-			template.dexterity = 2;
+			template.dexterity = 0.5;
+			template.defence = 0.2;
+			template.experience = 50;
 
-		}
+		};
 
 		return Game.Character(template);
 
@@ -180,6 +180,7 @@
 		};
 		Game.player.inventory.push(Item);
 			
-	};
+	};	
+	
 
 } ());
