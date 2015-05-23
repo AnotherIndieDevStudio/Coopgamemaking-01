@@ -2,6 +2,46 @@ html{
 	font-family: 'Roboto Condensed', sans-serif;
 }
 
+/* Navigation */
+#game-navigation{
+	text-align: center;	
+	margin: 10px auto;
+}
+
+.navigation{
+	padding: 15px;
+	border: 1px solid black;
+	cursor: pointer;
+	display: inline-block;
+	width: 200px;
+}
+
+.navigation:hover{
+	background: #EDEDED;	
+}
+
+/* Inventory container */
+
+#inventory-container{
+	display: none;
+	margin: 0 auto;	
+}
+
+/* Battle Information Container */
+
+#battle-container{
+	margin: 0 auto;
+	width: 80%;	
+	display: none;
+}
+
+#battle-container #player-information, #enemy-information{
+	display: inline-block;
+	width: 200px;
+	border: 1px solid black;
+	margin-bottom: 10px; 
+}
+
 /* Stats Container */
 
 #stats-container{
@@ -78,17 +118,18 @@ h1{
 }
 
 /* Health Bar */
-#health-bar{
+.health-bar, .enemy-health-bar{
     position:relative;
-    background: hsla(0,92%,41%,1.00);
+    background: red;
     height: 20px;
-    width: 100%;
+    width: 200px;
     z-index: 0;
     padding: 0;
     text-align: center;
+	margin-bottom: 10px;
 }
 
-#health-text{
+.health-text, .enemy-health-text{
     top:-16px;
     color:#fff;
     z-index: 2;
@@ -98,10 +139,10 @@ h1{
     display: block;
 }
 
-#health-remaining{
+.health-remaining, .enemy-health-remaining{
     position:absolute;
     left:0;
-    background: hsla(121,100%,31%,1.00);
+    background: green;
     height: 20px;
     width: 100%;
     display: block;
@@ -142,7 +183,7 @@ h1{
 #character-image{
 	position: absolute;
 	right: 18%;
-	margin-top: 50px;
+	margin-top: 80px;
 }
 
 /* Bump up div when screen size forces overlap with save/load buttons */
@@ -178,8 +219,6 @@ h1{
     display:none;
     cursor:pointer;
 }
-
-
 
 #events {
 	position: absolute;
@@ -238,10 +277,6 @@ h1{
 	cursor: pointer;
 }
 
-
-
-
-
 #hour_of_day {
 	position: absolute;
 	top: 10px;
@@ -250,14 +285,9 @@ h1{
 	color: #aaf;
 }
 
-
 .wound {
 	display: inline-block;
 	color: #CD5C5C;
 	font-size: 60%;
 	text-align: center;
-}
-
-.wound div {
-	margin-top: -5px;
 }
