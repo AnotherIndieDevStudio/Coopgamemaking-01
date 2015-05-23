@@ -51,10 +51,13 @@
 		};
 
 		Game.status = {
-			idle: true,
+			// Fighting status
 			fighting: false, 
 			current_enemy: "",
-			fight_ticks: 0
+			fight_ticks: 0,
+			
+			// Other status
+			inventory_open: false
 		};
 
 	}
@@ -135,7 +138,7 @@
 		update_healthbar("player");
 
 	};
-/* Main game loop */
+	/* Main game loop */
 	var update_game = function () {
 		
 		// Update systems
@@ -162,7 +165,6 @@
 		
 		if(Game.status.fighting){
 			
-			update_healthbar("enemy");
 			fight_turn();
 			
 		};
@@ -205,6 +207,12 @@
 
 	};
 	
+	/* [Simple Health Regeneration] 
+		
+		Checks regeneration amount.
+		If wounded or in battle, regen = null
+		
+	*/
 	var regen_health = function(){
 		
 		var regen_amount = 1;
@@ -219,15 +227,60 @@
 		
 		if(Game.player.health <= Game.player.max_health){
 			Game.player.health += regen_amount;
-			if(Game.player.health > Game.player.max_health){
-				Game.player.health = Game.player.max_health;	
-			};
+			
 		};
 		
 		// Check if heealth is above health
+		if(Game.player.health > Game.player.max_health){
+			Game.player.health = Game.player.max_health;	
+		};
 		
 	};
 	
+	var inventory_handle = function(status){
+		
+		if(status === "open"){
+			
+			$("#defence-bonus").html(0);
+			$("#health-bonus").html(0);
+			$("#dexterity-bonus").html(0);
+			$("#intellect-bonus").html(0);
+			$("#strength-bonus").html(0);
+			
+			$("#stats-container").hide(500, function(){
+				$("#inventory-container").show(500);
+			});
+			
+			armour_list = "<option value=''></option>";
+			weapon_list = "<option value=''></option>";
+			
+			for(var i = 0; i < Game.player.inventory.length; i ++){
+				
+				if(Game.player.inventory[i].type === "Armour"){
+					armour_list += "<option value=" + Game.player.inventory[i].attributes.defence + "," + Game.player.inventory[i].attributes.health + "," + Game.player.inventory[i].attributes.dexterity + "," + Game.player.inventory[i].attributes.intellect +  "," + Game.player.inventory[i].attributes.strength + "> " + Game.player.inventory[i].name +  " </option>"	
+				};
+				
+				if(Game.player.inventory[i].type === "Weapon"){
+					weapon_list += "<option value=" + Game.player.inventory[i].attributes.defence + "," + Game.player.inventory[i].attributes.health + "," + Game.player.inventory[i].attributes.dexterity + "," + Game.player.inventory[i].attributes.intellect +  "," + Game.player.inventory[i].attributes.strength + "> " + Game.player.inventory[i].name  + " </option>"	
+				};
+				
+			};
+			
+			$("#armour-select").html(armour_list);
+			$("#weapon-select").html(weapon_list);
+			
+		}else if(status === "close"){
+			$("#inventory-container").hide(500, function(){
+				$("#stats-container").show(500);
+			});
+		};
+		
+	};
+	
+	/*
+	Multiplies the enemy stats with the player stats.
+	Will be changed later as it creates a very stale combat environment
+	*/
 	var setup_enemy = function(enemy){
 		
 		enemy["health"] *= Game.player.max_health;
@@ -237,8 +290,8 @@
 		enemy["dexterity"] *= Game.player.dexterity;
 		enemy["intellect"] *= Game.player.intellect;
 		
+		// Update displayed enemy information
 		$(".enemy-name").html(enemy['name']);
-		
 		$(".enemy-health").html(enemy['health']);		
 		$(".enemy-max-health").html(enemy['max_health']);
 		
@@ -246,6 +299,12 @@
 		
 	};
 	
+	/* [Initiates battle]
+		
+		Currently only returns one opponent.
+		Will be changed later to retrieve random enemy for more variery
+		
+	*/
 	var start_battle = function(){
 		
 		// Grabs enemy
@@ -256,27 +315,7 @@
 		
 	};
 	
-	var end_battle = function(winner){
-		
-		Game.status.fighting = false;
-		
-		if(winner === "player"){
-			Game.player.experience += Game.status.current_enemy.experience * Game.player.level;
-			Game.add_event({description: "You have won the fight"});
-		}else{
-			Game.add_event({description: "You have lost the fight"});
-		};
-		
-		$("#battle-container").hide(500, function(){
-			$("#stats-container").show(500);
-			$("#battle-show").html("Battle");
-			
-		});
-		
-		Game.fight_ticks = 0;
-		
-	};
-	
+	/* Controls the fight between the player and the current enemy */
 	var fight_turn = function(){
 		
 		if(Game.status.fight_ticks === 2){
@@ -291,38 +330,74 @@
 			var player_hit = (Math.random() * Game.player.dexterity);
 			var enemy_hit = (Math.random() * Game.status.current_enemy.dexterity);
 			
+			// Makes the enemy take a hit and check for critical strikes
 			if(player_hit != 0){
 				// Checks for critical
-				if(player_hit > (Math.floor(Game.player.dexterity/2)) + 1){
+				if(player_hit > (Math.floor(Game.player.dexterity/4)) + 1){
 					player_hit_dmg += Math.floor(Math.random() * player_hit_dmg) + 1;
 					console.log("Critical hit");
 				};
 				Game.status.current_enemy.health -= player_hit_dmg;
 			};
 			
+			update_healthbar("enemy");
+			
+			// Ends the battle if the player has killed the enemy
 			if(Game.status.current_enemy.health <= 0){
 				end_battle("player");
 			};
 			
+			// Makes the player take a hit and ckecks for critical strikes
 			if(enemy_hit != 0){
-				if(enemy_hit > (Math.floor(Game.status.current_enemy.dexterity/2)) + 1){
+				if(enemy_hit > (Math.floor(Game.status.current_enemy.dexterity/4)) + 1){
 					enemy_hit_dmg += Math.floor(Math.random() * enemy_hit_dmg) + 1;
 					console.log("Enemy Critical hit");
 				};
 				Game.player.health -= enemy_hit_dmg;
 			};
 			
+			// Update the enemy health bar. Player healthbar is updated automatically through game loop
 			update_healthbar("enemy");
 			
+			// If player is dead, end game
 			if(Game.player.health <= 0){
 				Game.player.health = 0;
 				end_battle("enemy");
 			};
-			
+		
 		}else{
 			Game.status.fight_ticks += 1;
 		};
 			
+	};
+	
+	/* [Ends Battle]
+	
+		Ends the battle and dishes out rewards based on who is the winner.
+		Will change later to hand out random item rewards.
+		
+	*/
+	var end_battle = function(winner){
+		
+		Game.status.fighting = false;
+		
+		// If winner is player, dish out the rewards
+		if(winner === "player"){
+			Game.player.experience += Game.status.current_enemy.experience * Game.player.level;
+			Game.add_event({description: "You have won the fight"});
+		}else{
+			Game.add_event({description: "You have lost the fight"});
+		};
+		
+		// Reopens the main game interface
+		$("#battle-container").hide(500, function(){
+			$("#stats-container").show(500);
+			$("#battle-show").html("Battle");
+			
+		});
+		
+		Game.fight_ticks = 0;
+		
 	};
 
 	/* Checks for clicks on stat upgrades */
@@ -382,12 +457,15 @@
 
 	});
 	
+	/* Starts a battle */
 	$("#battle-show").click(function(){
+		// If not fighting, start a fight and show battle interface
 		if(!Game.status.fighting){
 			$("#stats-container").hide(500, function(){
 				start_battle();
 				$("#battle-show").html("Run away");
 			});
+		// Else, run away from the fight
 		}else{
 			$("#battle-container").hide(500, function(){
 				$("#stats-container").show(500);
@@ -397,6 +475,105 @@
 		};
 	});
 	
+	$("#inventory-show").click(function(){
+		// Open inventory interface
+		if(!Game.status.inventory_open){
+			$("#inventory-show").html("Close Inventory");
+			Game.status.inventory_open = true;
+			inventory_handle("open");
+		// Close inventory interface
+		}else{
+			$("#inventory-show").html("Open Inventory");
+			Game.status.inventory_open = false;	
+			inventory_handle("close");
+		};
+	});
 	
+	$("#equip-items").click(function(){
+		
+		Game.Character.handle_item_bonus("remove");
+		
+		var selected_armour = $("#armour-select option:selected").val();
+		var selected_weapon = $("#weapon-select option:selected").val();
+		
+		if(selected_armour != ""){
+			selected_armour = selected_armour.split(",");
+			/* Armour retruns stats in this order:
+				Defence,
+				Health,
+				Dexterity,
+				Intellect
+			*/
+			Game.player.temp_attributes['defence'] = parseInt(selected_armour[0]);
+			Game.player.temp_attributes['health'] = parseInt(selected_armour[1]);
+			Game.player.temp_attributes['dexterity'] = parseInt(selected_armour[2]);
+			Game.player.temp_attributes['intellect'] = parseInt(selected_armour[3]);
+			Game.player.temp_attributes['strength'] = parseInt(selected_armour[4]);
+			
+			Game.Character.handle_item_bonus();
+		}else{
+			Game.Character.handle_item_bonus("remove");
+		};
+		
+		if(selected_weapon != ""){
+			selected_weapon = selected_weapon.split(",");
+			/* weapon retruns stats in this order:
+				Defence,
+				Health,
+				Dexterity,
+				Intellect
+			*/
+			Game.player.temp_attributes['defence'] = parseInt(selected_weapon[0]);
+			Game.player.temp_attributes['health'] = parseInt(selected_weapon[1]);
+			Game.player.temp_attributes['dexterity'] = parseInt(selected_weapon[2]);
+			Game.player.temp_attributes['intellect'] = parseInt(selected_weapon[3]);
+			Game.player.temp_attributes['strength'] = parseInt(selected_weapon[4]);
+			
+			Game.Character.handle_item_bonus();
+		}else{
+			Game.Character.handle_item_bonus("remove");
+		};
+		
+		inventory_handle("close");
+		
+		
+	});
+	
+	$("#armour-select, #weapon-select").on("change", function(){
+		
+		var selected_armour = $("#armour-select option:selected").val().split(",");
+		var selected_weapon = $("#weapon-select option:selected").val().split(",");
+		
+		console.log(selected_armour);
+		
+		var defence_bonus = 0;
+		var health_bonus = 0;
+		var dexterity_bonus = 0;
+		var intellect_bonus = 0;
+		var strength_bonus = 0;
+		
+		if(selected_armour != ""){
+			defence_bonus += parseInt(selected_armour[0]);
+			health_bonus += parseInt(selected_armour[1]);
+			dexterity_bonus += parseInt(selected_armour[2]);
+			intellect_bonus += parseInt(selected_armour[3]);
+			strength_bonus += parseInt(selected_armour[4]);
+		};
+		
+		if(selected_weapon != ""){
+			defence_bonus += parseInt(selected_weapon[0]);
+			health_bonus += parseInt(selected_weapon[1]);
+			dexterity_bonus += parseInt(selected_weapon[2]);
+			intellect_bonus += parseInt(selected_weapon[3]);
+			strength_bonus += parseInt(selected_weapon[4]);
+		};
+		
+		$("#defence-bonus").html(defence_bonus);
+		$("#health-bonus").html(health_bonus);
+		$("#dexterity-bonus").html(dexterity_bonus);
+		$("#intellect-bonus").html(intellect_bonus);
+		$("#strength-bonus").html(strength_bonus);
+		
+	});
 
 } ());

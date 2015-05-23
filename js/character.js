@@ -28,7 +28,9 @@
 			level: /** {number} */(!obj || !obj.level) ? 1 : obj.level,
 			
 			inventory: /** {Game.Item[]} */[],
-
+			
+			temp_attributes: /** {object} **/{defence: 0, health: 0, strength: 0, dexterity: 0, intellect: 0},
+			
 			experience:	/** {number} */(!obj || !obj.experience) ? 0 : obj.experience,
 			experience_tnl: /** {number} */(!obj || !obj.experience_tnl) ? 50 : obj.experience_tnl,
 			stat_points: /** {number} */(!obj || !obj.stat_points) ? 0 : obj.stat_points,
@@ -163,23 +165,52 @@
 				delete Game.Character.by_id[character.id];
 				continue;
 				
-			}
+			};
 			
-		}
+		};
+		
+		
+		
+	};
+	
+	Game.Character.handle_item_bonus = function(type){
+		
+		if(type === "remove"){
+			// Removes current attributes
+			Game.player.defence -= Game.player.temp_attributes.defence;
+			Game.player.max_health -= Game.player.temp_attributes.health;
+			Game.player.strength -= Game.player.temp_attributes.strength;
+			Game.player.dexterity -= Game.player.temp_attributes.dexterity;
+			Game.player.intellect -= Game.player.temp_attributes.intellect;
+			
+			// Resets temp attributes
+			Game.player.temp_attributes = {defence: 0, health: 0, strength: 0, dexterity: 0, intellect: 0};
+		};
+		
+		// Adds new attributes
+		Game.player.defence += Game.player.temp_attributes.defence;
+		Game.player.max_health += Game.player.temp_attributes.health;
+		Game.player.strength += Game.player.temp_attributes.strength;
+		Game.player.dexterity += Game.player.temp_attributes.dexterity;
+		Game.player.intellect += Game.player.temp_attributes.intellect;
 		
 	};
 	
 	/* Used to add an item to the inventory. */
 	Game.Character.add_to_inv = function(Item){
 		
-		// Check if items is being referenced by search (example: by_id) or direct from Game.Items.items
-		Item = (Item[0]) ? Item[0] : Item;
-		
-		if(Game.player.inventory === "[]"){
-			Game.player.inventory = JSON.parse(Game.player.inventory);	
-		};
-		Game.player.inventory.push(Item);
+		if(Item){
+			// Check if items is being referenced by search (example: by_id) or direct from Game.Items.items
+			Item = (Item[0]) ? Item[0] : Item;
 			
+			if(Game.player.inventory === "[]"){
+				Game.player.inventory = JSON.parse(Game.player.inventory);	
+			};
+			Game.player.inventory.push(Item);
+				
+		};
+		
+		
 	};	
 	
 

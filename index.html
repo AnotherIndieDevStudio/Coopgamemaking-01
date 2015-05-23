@@ -21,7 +21,9 @@
 	</head>
 
 	<body>
-			<input type="hidden" id="load_id" value="">
+		<input type="hidden" id="load_id" value="">
+        
+        <!-- Advertisement -->
 		<div id="advert">
 			<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
 			<!-- GameMaking -->
@@ -34,23 +36,72 @@
 			</script>
 		</div>
 		
+        <!-- Where the main game interface is kept -->
 		<div id="content-container" class="unselectable">
+        
+        	<!-- Character name - Too be worked on later -->
 			<h1>My Character</h1>
-
+			
+            <!-- Allows the user to toggle the ID display -->
 			<div id="id-display"><span id="id-text" class="selectable"></span><br/><button id="toggle-id">Toggle ID</button></div>
-
+			
+            <!-- Character image displayed on the screen -->
             <img src="images/mascot.png" alt="Character Image" id="character-image">
             
+            <!-- Navigation for opening different interfaces -->
             <div id="game-navigation">
-            	<!-- FOR LATER DEVELOPMENT <div id="inventory-show" class="navigation">Inventory</div> -->
+            	<div id="inventory-show" class="navigation">Open Inventory</div>
                 <div id="battle-show" class="navigation">Battle</div>
+            </div>
+            
+            <!-- Inventory container -->
+            <div id="inventory-container">
+            <strong>Defnece Bonus:</strong> <span id="defence-bonus">0</span>
+            <br/>
+            <strong>Health Bonus:</strong> <span id="health-bonus">0</span>
+            <br/>
+            <strong>Dexterity Bonus:</strong> <span id="dexterity-bonus">0</span>
+            <br/>
+            <strong>Intellect Bonus:</strong> <span id="intellect-bonus">0</span>
+            <br/>
+            <strong>Strength Bonus:</strong> <span id="strength-bonus">0</span>
+            <br/>
+            <br/>
+                <!-- Armour inventory selection -->
+                <div id="armour-inventory">
+                	<strong>Armour</strong><br/>
+                	<select id="armour-select">
+
+                    </select>
+                </div>
+                
+                <!-- Weapon inventory selection -->
+                <div id="weapon-inventory">
+                	<strong>Weapons</strong><br/>
+                    <select id="weapon-select">
+              		
+                    </select>
+                </div>
+                
+                <!-- Item inventory selection 
+                <div id="item-inventory">
+                	<strong>Items</strong><br/>
+                    <select id="item-select">
+                    
+                    </select>
+                </div> -->
+                <br/>
+                <button id="equip-items">Equip Items</button>
+                
             </div>
             
             <!-- Where battle information is displayed -->
             <div id="battle-container">
+            
             	<!-- Player information -->
             	<div id="player-information" class="battle-info">
                 	<h3>Player</h3>
+                    <!-- The player health bar -->
                 	<div class="health-bar">
                         <p class="health-text"><span class="health"></span>/<span class="max-health"></span></p>
                         <span class="health-remaining"></span>
@@ -59,21 +110,25 @@
                     	
                     </div>
                 </div>
-                Vs.
+                
+                <strong>Vs.</strong>
+                
                 <!-- Enemy information -->
                 <div id="enemy-information" class="battle-info">
                 	<h3 class="enemy-name">Enemy</h3>
+                    <!-- The enemy health bar -->
                 	<div class="enemy-health-bar">
                         <p class="enemy-health-text"><span class="enemy-health"></span>/<span class="enemy-max-health"></span></p>
                         <span class="enemy-health-remaining"></span>
                     </div>
                 </div>
+                
             </div>
 
 			<!-- Where stats are shown to the player -->
 			<div id="stats-container">
 
-				<!-- LEVEL -->
+				<!-- Level -->
 				<div id="level-s" class="stat">
 					<h2>LvL <span id="level"></span></h2>
 				</div>
@@ -90,67 +145,71 @@
 					<b>Available Stat Points: <span id="stat-points"></span></b>
 				</div>
 
-				<!-- HEALTH -->
+				<!-- Health-->
 				<div id="health-s" class="stat">
 					<p class="float-left">Health: <span class="max-health"></span></p>
 					<span id="health-add" data-stat="health" class="add-stat">+10</span>
 				</div>
-				<!-- DEFENCE -->
+				<!-- Defence -->
 				<div id="defence-s" class="stat">
 					<p class="float-left">Defence: <span id="defence"></span></p>
 					<span id="defence-add" data-stat="defence" class="add-stat">+1</span>
 				</div>
-				<!-- STRENGTH -->
+				<!-- Strength -->
 				<div id="strength-s" class="stat">
 					<p class="float-left">Strength: <span id="strength"></span></p>
 					<span id="strength-add" data-stat="strength" class="add-stat">+1</span>
 				</div>
-				<!-- INTELLECT -->
+				<!-- Intellect -->
 				<div id="intellect-s" class="stat">
 					<p class="float-left">Intellect: <span id="intellect"></span></p>
 					<span id="intellect-add" data-stat="intellect" class="add-stat">+1</span>
 				</div>
-				<!-- DEXTERITY -->
+				<!-- Dexterity -->
 				<div id="dexterity-s" class="stat">
 					<p class="float-left">Dexterity: <span id="dexterity"></span></p>
 					<span id="dexterity-add" data-stat="dexterity" class="add-stat">+1</span>
 				</div>
-				<!-- EXPERIENCE -->
+				<!-- Experience	 -->
 				<div id="exp_s" class="stat">
 					EXP: <span id="exp"></span>/<span id="exp-tnl"></span>
 				</div>
 			</div>
-
+			
+            <!-- Events are displayed here -->
 			<div id="hour_of_day"></div>
 			<div id="events"><span id="event-toggle">Hide Events</span><span id="event-count"></span></div>
 
 		</div>
 
-        <!-- A note about the game -->
+        <!-- A note about the game displayed at the bototm of the page -->
         <div id="information">
             <p>This game is being made by the community. For more information, visit <a href="http://www.reddit.com/r/CoopGameMaking" target="_blank">/r/CoopGameMaking</a></p>
         </div>
-
+		
+        <!-- Save/Load buttons -->
 		<div id="footerContent">
+        
 			<div id="buttons">
-
 				<!-- Start/Pause/Resume buttons will replace each other when needed -->
 				<button class="bottom_buttons" id="pause-button">Pause Game</button>
 
 				<!-- Save and Load features -->
 				<button class="bottom_buttons" id="save-button">Save Game</button>
 				<button class="bottom_buttons" id="load-button">Load Game</button>
+                
+                <!-- Input for the ID -->
 				<div id="load-box" >
 					<input class="bottom_buttons" type="text" id="load-input" size="32" name="load-input" placeholder="Please enter ID">
 					<button id="submit-load">Load</button>
 				</div>
-
 			</div>
 
         </div>
 
 		<!-- Importing JQuery -->
 		<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+        
 		<!-- Importing Game JS -->
 		<script src="js/math.js"></script>
 		<script src="js/items.js"></script>
@@ -159,6 +218,7 @@
         <script src="js/wound.js"></script>
 		<script src="js/location.js"></script>
 		<script src="js/game.js"></script>
+        
 		<!-- AJAX -->
 		<script src="js/server_handle.js"></script>
 		<div id="update_variables"></div>
