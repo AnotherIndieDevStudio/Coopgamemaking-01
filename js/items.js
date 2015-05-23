@@ -49,7 +49,7 @@
 	Game.Items = {};
 	/* Some predefined items */
 	Game.Items.items = [
-		Game.Item({id: '1', name: 'Hat', type: 'Armour', description: 'A simple hat', attributes: {health: 5, strength: 1, dexterity: 0, intellect: 1, defence: 2}}),
+		Game.Item({id: '1', name: 'Hat', type: 'Armour', description: 'A simple hat', attributes: {health: 10, strength: 0, dexterity: 1, intellect: 1, defence: 2}}),
 		Game.Item({id: '2', name: 'Wooden Sword', type: 'Weapon', description: 'A weak training sword', attributes: {health: 0, strength: 10, dexterity: 3, intellect: 0, defence: 0}})
 	];
 	
