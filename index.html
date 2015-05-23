@@ -40,8 +40,37 @@
 			<div id="id-display"><span id="id-text" class="selectable"></span><br/><button id="toggle-id">Toggle ID</button></div>
 
             <img src="images/mascot.png" alt="Character Image" id="character-image">
+            
+            <div id="game-navigation">
+            	<!-- FOR LATER DEVELOPMENT <div id="inventory-show" class="navigation">Inventory</div> -->
+                <div id="battle-show" class="navigation">Battle</div>
+            </div>
+            
+            <!-- Where battle information is displayed -->
+            <div id="battle-container">
+            	<!-- Player information -->
+            	<div id="player-information" class="battle-info">
+                	<h3>Player</h3>
+                	<div class="health-bar">
+                        <p class="health-text"><span class="health"></span>/<span class="max-health"></span></p>
+                        <span class="health-remaining"></span>
+                    </div>
+                    <div id="stats">
+                    	
+                    </div>
+                </div>
+                Vs.
+                <!-- Enemy information -->
+                <div id="enemy-information" class="battle-info">
+                	<h3 class="enemy-name">Enemy</h3>
+                	<div class="enemy-health-bar">
+                        <p class="enemy-health-text"><span class="enemy-health"></span>/<span class="enemy-max-health"></span></p>
+                        <span class="enemy-health-remaining"></span>
+                    </div>
+                </div>
+            </div>
 
-				<!-- Where stats are shown to the player -->
+			<!-- Where stats are shown to the player -->
 			<div id="stats-container">
 
 				<!-- LEVEL -->
@@ -49,9 +78,9 @@
 					<h2>LvL <span id="level"></span></h2>
 				</div>
 
-				<div id="health-bar">
-					<p id="health-text"><span id="health"></span>/<span class="max-health"></span></p>
-					<span id="health-remaining"></span>
+				<div class="health-bar">
+					<p class="health-text"><span class="health"></span>/<span class="max-health"></span></p>
+					<span class="health-remaining"></span>
 				</div>
 				
 				<div id="player-wounds"></div>
