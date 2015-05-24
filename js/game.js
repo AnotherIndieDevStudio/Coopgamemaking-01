@@ -1,25 +1,25 @@
 (function () {
 
 	var Game = window.Game = window.Game || {};
-	
+
 	Game.DEBUG = false;
-	
+
 	Game.debug_info = function (info) {
-		
+
 		if (Game.DEBUG) {
-			
+
 			console.log('[DEBUG] ' + info);
-			
+
 		}
-		
+
 	};
-	
+
 
 	if (!Game.player) {
 
 		// Initialise Player on load to a 'My Character' templated Character
 		Game.player = Game.Character.from_template('My Character');
-		
+
 		// Move the Player to a starting location
 		Game.Location.move_character(Game.player, Game.Location.TOWNCENTRE);
 
@@ -52,12 +52,12 @@
 
 		Game.status = {
 			idle: true,
-			fighting: false, 
+			fighting: false,
 			current_enemy: "",
 			fight_ticks: 0
 		};
 
-	}
+	};
 
 
 	/* Updating variables on page when the document loads */
@@ -115,7 +115,7 @@
 
 	/* Grabs html stat objects and updates them */
 	var update_stats = function () {
-		
+
 		// Updates stat visuals
 		change_stat_button_status();
 
@@ -131,19 +131,19 @@
 		$("#exp").html(Game.player.experience);
 		$("#exp-tnl").html(Game.player.experience_tnl);
 
-		
+
 		update_healthbar("player");
 
 	};
 /* Main game loop */
 	var update_game = function () {
-		
+
 		// Update systems
 		Game.Wound.update();
 		Game.Character.update();
 		Game.Event.update();
 		Game.Location.update();
-		
+
 		regen_health();
 
 		// Adds exp each game tick
@@ -159,12 +159,12 @@
 			Game.player.max_stat_points += 2;
 
 		};
-		
+
 		if(Game.status.fighting){
-			
+
 			update_healthbar("enemy");
 			fight_turn();
-			
+
 		};
 
 		// Updates the players stats
@@ -197,132 +197,153 @@
 			var health_remaining = $(".enemy-health-remaining");
 			var health_bar = $(".enemy-health-bar");
 			var width = (Game.status.current_enemy.health / Game.status.current_enemy.max_health) * health_bar.width();
-			$(".enemy-health").html(Math.floor(Game.status.current_enemy.health));		
+			$(".enemy-health").html(Math.floor(Game.status.current_enemy.health));
 			$(".enemy-max-health").html(Math.floor(Game.status.current_enemy.max_health));
 		};
 
 		health_remaining.width(width);
 
 	};
-	
+
 	var regen_health = function(){
-		
+
 		var regen_amount = 1;
-		
+
 		if(Game.player.wounds[0]){
-			regen_amount = 0.0;	
+			regen_amount = 0.0;
 		};
-		
+
 		if(Game.status.fighting){
 			regen_amount = 0.0;
 		};
-		
+
+		// Adds regen health
 		if(Game.player.health <= Game.player.max_health){
 			Game.player.health += regen_amount;
-			if(Game.player.health > Game.player.max_health){
-				Game.player.health = Game.player.max_health;	
-			};
 		};
-		
+
+		// Keeps health below max health
+		if(Game.player.health > Game.player.max_health){
+				Game.player.health = Game.player.max_health;
+		};
+
 		// Check if heealth is above health
-		
+
 	};
-	
+
 	var setup_enemy = function(enemy){
-		
+
 		enemy["health"] *= Game.player.max_health;
 		enemy["max_health"] *= Game.player.max_health;
 		enemy["defence"] *= Game.player.defence;
 		enemy["strength"] *= Game.player.strength;
 		enemy["dexterity"] *= Game.player.dexterity;
 		enemy["intellect"] *= Game.player.intellect;
-		
+
 		$(".enemy-name").html(enemy['name']);
-		
-		$(".enemy-health").html(enemy['health']);		
+
+		$(".enemy-health").html(enemy['health']);
 		$(".enemy-max-health").html(enemy['max_health']);
-		
+
 		return enemy;
-		
+
 	};
-	
+
 	var start_battle = function(){
-		
+
 		// Grabs enemy
 		Game.status.current_enemy = setup_enemy(Game.Character.from_template("Rat"));
-		
+
 		$("#battle-container").show(500);
 		Game.status.fighting = true;
-		
+
 	};
-	
+
 	var end_battle = function(winner){
-		
+
 		Game.status.fighting = false;
-		
+
 		if(winner === "player"){
 			Game.player.experience += Game.status.current_enemy.experience * Game.player.level;
 			Game.add_event({description: "You have won the fight"});
 		}else{
 			Game.add_event({description: "You have lost the fight"});
 		};
-		
+
 		$("#battle-container").hide(500, function(){
 			$("#stats-container").show(500);
 			$("#battle-show").html("Battle");
-			
+
 		});
-		
+
 		Game.fight_ticks = 0;
-		
+
 	};
-	
+
 	var fight_turn = function(){
-		
+
 		if(Game.status.fight_ticks === 2){
-			
+
 			Game.status.fight_ticks = 0;
-			
+
 			// Calculates the damage dealt based on strength
-			var player_hit_dmg = (Game.player.strength * Math.random() + 1) - (Math.random() * Game.status.current_enemy.defence);
-			var enemy_hit_dmg = (Game.status.current_enemy.strength * Math.random() + 1) - (Math.random() * Game.player.defence);
-			
+			var player_hit_dmg = (Game.player.strength * Math.random() + 1);
+
+			// Calculate enemy damage
+			var enemy_hit_dmg = (Game.status.current_enemy.strength * Math.random() + 1);
+
 			// Calculates the hit chance based on dexterity
 			var player_hit = (Math.random() * Game.player.dexterity);
 			var enemy_hit = (Math.random() * Game.status.current_enemy.dexterity);
-			
+
 			if(player_hit != 0){
 				// Checks for critical
 				if(player_hit > (Math.floor(Game.player.dexterity/2)) + 1){
 					player_hit_dmg += Math.floor(Math.random() * player_hit_dmg) + 1;
-					console.log("Critical hit");
+
+					// Calculate enemy defence and subtract it from hit
+					var enemy_defence = (Math.random() * Game.status.current_enemy.defence);
+					if(enemy_defence >= player_hit_dmg){
+						player_hit_dmg = 0;
+					}else{
+						player_hit_dmg -= enemy_defence;
+					};
+
 				};
 				Game.status.current_enemy.health -= player_hit_dmg;
 			};
-			
+
 			if(Game.status.current_enemy.health <= 0){
 				end_battle("player");
 			};
-			
+
 			if(enemy_hit != 0){
 				if(enemy_hit > (Math.floor(Game.status.current_enemy.dexterity/2)) + 1){
 					enemy_hit_dmg += Math.floor(Math.random() * enemy_hit_dmg) + 1;
-					console.log("Enemy Critical hit");
+
+					// Calculate player defence and take it away from strength
+					var player_defence = (Math.random() * Game.player.defence);
+					if(player_defence >= enemy_hit_dmg){
+						enemy_hit_dmg = 0;
+					}else{
+						enemy_hit_dmg -= player_defence;
+					};
+					
 				};
 				Game.player.health -= enemy_hit_dmg;
 			};
-			
+
 			update_healthbar("enemy");
-			
+
 			if(Game.player.health <= 0){
 				Game.player.health = 0;
 				end_battle("enemy");
 			};
-			
+
 		}else{
 			Game.status.fight_ticks += 1;
 		};
-			
+
 	};
 
 	/* Checks for clicks on stat upgrades */
@@ -337,7 +358,7 @@
 			amount = 10;
 			stat = "max_health";
 		}else{
-			amount = 1;	
+			amount = 1;
 		}
 		if (Game.player.can_level_stats) {
 			/* if stat is 'health', update by 10, if not, then 1 */
@@ -381,7 +402,7 @@
 		}
 
 	});
-	
+
 	$("#battle-show").click(function(){
 		if(!Game.status.fighting){
 			$("#stats-container").hide(500, function(){
@@ -396,7 +417,7 @@
 			});
 		};
 	});
-	
-	
+
+
 
 } ());
