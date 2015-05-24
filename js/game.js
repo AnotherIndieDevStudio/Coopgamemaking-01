@@ -300,16 +300,16 @@
 				// Checks for critical
 				if(player_hit > (Math.floor(Game.player.dexterity/2)) + 1){
 					player_hit_dmg += Math.floor(Math.random() * player_hit_dmg) + 1;
-
-					// Calculate enemy defence and subtract it from hit
-					var enemy_defence = (Math.random() * Game.status.current_enemy.defence);
-					if(enemy_defence >= player_hit_dmg){
-						player_hit_dmg = 0;
-					}else{
-						player_hit_dmg -= enemy_defence;
-					};
-
 				};
+
+				// Calculate enemy defence and subtract it from hit
+				var enemy_defence = (Math.random() * Game.status.current_enemy.defence);
+				if(enemy_defence >= player_hit_dmg){
+					player_hit_dmg = 0;
+				}else{
+					player_hit_dmg -= enemy_defence;
+				};
+				
 				Game.status.current_enemy.health -= player_hit_dmg;
 			};
 
@@ -320,16 +320,16 @@
 			if(enemy_hit != 0){
 				if(enemy_hit > (Math.floor(Game.status.current_enemy.dexterity/2)) + 1){
 					enemy_hit_dmg += Math.floor(Math.random() * enemy_hit_dmg) + 1;
-
-					// Calculate player defence and take it away from strength
-					var player_defence = (Math.random() * Game.player.defence);
-					if(player_defence >= enemy_hit_dmg){
-						enemy_hit_dmg = 0;
-					}else{
-						enemy_hit_dmg -= player_defence;
-					};
-					
 				};
+
+				// Calculate player defence and take it away from strength
+				var player_defence = (Math.random() * Game.player.defence);
+				if(player_defence >= enemy_hit_dmg){
+					enemy_hit_dmg = 0;
+				}else{
+					enemy_hit_dmg -= player_defence;
+				};
+
 				Game.player.health -= enemy_hit_dmg;
 			};
 
