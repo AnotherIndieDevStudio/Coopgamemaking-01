@@ -46,9 +46,9 @@
 				
 				character.inventory.push(Game.Item(obj.inventory[inventory_index]));
 				
-			}
+			};
 			
-		}
+		};
 		
 		// Copy obj's wounds
 		if (obj && obj.wounds) {
@@ -59,9 +59,9 @@
 				wound.character = character;
 				character.wounds.push(wound);
 				
-			}
+			};
 			
-		}
+		};
 
 		Game.Character.by_id[character.id] = character;
 
@@ -69,7 +69,7 @@
 
 			Game.Character.by_type[character.type] = [];
 
-		}
+		};
 
 		Game.Character.by_type[character.type].push(character);
 
@@ -77,13 +77,11 @@
 
 	};
 
-
 	// All Characters keyed by id
 	Game.Character.by_id = {};
 
 	// Lists of Characters by type
 	Game.Character.by_type = {};
-	
 	
 	/**
 	 * Returns a Character based on a templated type.
@@ -193,7 +191,6 @@
 
 	};
 
-
 	// Checks if stats can be upgraded
 	Game.Character.check_can_level_stats = function (character) {
 
@@ -243,10 +240,10 @@
 		
 		if(Game.player.inventory === "[]"){
 			Game.player.inventory = JSON.parse(Game.player.inventory);	
-		};
+		}
+		
 		Game.player.inventory.push(Item);
 			
 	};	
-	
 
 } ());

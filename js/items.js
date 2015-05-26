@@ -29,7 +29,7 @@
 		// Indexing items by type
 		if(!Game.Item.by_type.hasOwnProperty(item.type)){
 			Game.Item.by_type[item.type] = [];
-		};
+		}
 		
 		Game.Item.by_type[item.type].push(item);
 		

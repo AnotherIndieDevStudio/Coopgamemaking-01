@@ -14,7 +14,6 @@
 
 	};
 
-
 	if (!Game.player) {
 
 		// Initialise Player on load to a 'My Character' templated Character
@@ -23,8 +22,7 @@
 		// Move the Player to a starting location
 		Game.Location.move_character(Game.player, Game.Location.TOWNCENTRE);
 
-	}
-
+	};
 
 	// Easily fire off events
 	Game.add_event = function(obj){
@@ -33,7 +31,6 @@
 		Game.Event.queue(event);
 
 	};
-
 
 	if (!Game.time) {
 
@@ -57,8 +54,7 @@
 			fight_ticks: 0
 		};
 
-	};
-
+	}
 
 	/* Updating variables on page when the document loads */
 	$(document).ready(function (e) {
@@ -131,7 +127,6 @@
 		$("#exp").html(Game.player.experience);
 		$("#exp-tnl").html(Game.player.experience_tnl);
 
-
 		update_healthbar("player");
 
 	};
@@ -159,21 +154,19 @@
 			Game.player.stat_points += 2;
 			Game.player.max_stat_points += 2;
 
-		};
+		}
 
 		if(Game.status.fighting){
 
 			update_healthbar("enemy");
 			fight_turn();
 
-		};
+		}
 
 		// Updates the players stats
 		update_stats();
 
 	};
-
-
 
 	// Checks if stats can be upgraded and shows + symbols if player can level stats
 	var change_stat_button_status = function () {
@@ -208,7 +201,7 @@
 			$(".enemy-health").html(Math.floor(Game.status.current_enemy.health));
 			$(".enemy-max-health").html(Math.floor(Game.status.current_enemy.max_health));
 			
-		};
+		}
 		
 		health_remaining.width(width);
 
@@ -222,22 +215,22 @@
 		// Check if player has wounds and removes regen if true
 		if(Game.player.wounds[0]){
 			regen_amount = 0.0;
-		};
+		}
 		
 		// If the player is fighting, remove wounds
 		if(Game.status.fighting){
 			regen_amount = 0.0;
-		};
+		}
 
 		// Adds regen health
 		if(Game.player.health <= Game.player.max_health){
 			Game.player.health += regen_amount;
-		};
+		}
 
 		// Keeps health below max health
 		if(Game.player.health > Game.player.max_health){
 			Game.player.health = Game.player.max_health;
-		};
+		}
 
 	};
 
@@ -289,7 +282,7 @@
 			Game.add_event({description: "You have won the fight"});
 		}else{
 			Game.add_event({description: "You have lost the fight"});
-		};
+		}
 
 		// Hides the battle system and brings back the main interface
 		$("#battle-container").hide(500, function(){
@@ -325,7 +318,7 @@
 				// Checks for critical
 				if(player_hit > (Math.floor(Game.player.dexterity/2)) + 1){
 					player_hit_dmg += Math.floor(Math.random() * player_hit_dmg) + 1;
-				};
+				}
 
 				// Calculate enemy defence and subtract it from hit
 				var enemy_defence = (Math.random() * Game.status.current_enemy.defence);
@@ -333,15 +326,15 @@
 					player_hit_dmg = 0;
 				}else{
 					player_hit_dmg -= enemy_defence;
-				};
+				}
 				
 				Game.status.current_enemy.health -= player_hit_dmg;
-			};
+			}
 
 			// End battle with player as winner
 			if(Math.floor(Game.status.current_enemy.health) <= 0){
 				end_battle("player");
-			};
+			}
 			
 			// Check if enemy has hit and deal damage accordingly
 			if(enemy_hit != 0){
@@ -349,7 +342,7 @@
 				if(enemy_hit > (Math.floor(Game.status.current_enemy.dexterity/2)) + 1){
 					enemy_hit_dmg += Math.floor(Math.random() * enemy_hit_dmg) + 1;
 					
-				};
+				}
 
 				// Calculate player defence and take it away from strength
 				var player_defence = (Math.random() * Game.player.defence);
@@ -358,24 +351,23 @@
 					enemy_hit_dmg = 0;
 				}else{
 					enemy_hit_dmg -= player_defence;
-				};
+				}
 
 				Game.player.health -= enemy_hit_dmg;
-			};
+			}
 			
 			update_healthbar("enemy");
 
 			if(Game.player.health <= 0){
 				Game.player.health = 0;
 				end_battle("enemy");
-			};
+			}
 
 		}else{
 			Game.status.fight_ticks += 1;
-		};
+		}
 
 	};
-	
 	
 	// Adds stas and displays pop-off
 	var add_stat_points = function(e, stat, amount, adding_all){
@@ -387,14 +379,14 @@
 			if (stat === "max_health") {
 
 				Game.player.health += 10;
-			};
+			}
 			if(adding_all){
 				Game.player.stat_points = 0;
 			}else{
 				Game.player.stat_points -= 1;
-			};
+			}
 			
-		};
+		}
 
 		var pageY = e.pageY - 15,
 			pageX = e.pageX - 10,
@@ -420,7 +412,7 @@
 			stat = "max_health";
 		}else{
 			amount = 1;
-		};
+		}
 		
 		add_stat_points(e, stat, amount, false);
 
@@ -435,7 +427,7 @@
 			stat = "max_health";
 		}else{
 			amount = 1 * Game.player.stat_points;
-		};
+		}
 		
 		add_stat_points(e, stat, amount, true);
 		
@@ -463,16 +455,14 @@
 			$("#stats-container").hide(500, function(){
 				start_battle();
 				$("#battle-show").html("Run away");
-			});
+			})
 		}else{
 			$("#battle-container").hide(500, function(){
 				$("#stats-container").show(500);
 				Game.status.fighting = false;
 				$("#battle-show").html("Battle");
 			});
-		};
+		}
 	});
-
-
 
 } ());

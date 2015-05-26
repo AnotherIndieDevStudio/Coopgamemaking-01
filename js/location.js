@@ -40,7 +40,6 @@
 
 	};
 	
-	
 	/**
 	 * Moves a {Game.Character} to a {Game.Location}.
 	 * 
@@ -87,7 +86,6 @@
 		
 	};
 	
-	
 	/**
 	 * Moves a {Game.Item} to a {Game.Location}.
 	 * 
@@ -128,7 +126,6 @@
 		
 	};
 	
-	
 	// Map of all Game.Locations keyed by id
 	Game.Location.by_id = {};
 	
@@ -137,9 +134,6 @@
 	
 	// List of all Game.Locations
 	Game.Location.all_locations = [];
-	
-	
-	
 	
 	/**
 	 * Game.Location.update
@@ -156,11 +150,7 @@
 
 	};
 	
-	
-	
 	Game.Location.THEVOID = Game.Location({name: 'The Void'});
 	Game.Location.TOWNCENTRE = Game.Location({name: 'Town centre'});
-	
-	
 
 } ());

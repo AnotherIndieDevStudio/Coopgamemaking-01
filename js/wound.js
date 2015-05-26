@@ -26,7 +26,7 @@
 		
 		return wound;
 
-	};
+	}
 
 
 	// All Wounds keyed by id
@@ -68,7 +68,7 @@
 				
 			}
 			
-		}
+		};
 		
 		$('#' + wound.id).remove();
 		

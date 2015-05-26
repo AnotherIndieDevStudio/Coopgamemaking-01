@@ -126,8 +126,6 @@
 			last_sunset_time = Game.time.elapsed;
 
 		}
-		
-		
 
 		// Find queued events that are ready to fire at or before current elapsed time
 		var ordered_events = [];
@@ -160,7 +158,7 @@
 
 			}
 
-		};
+		}
 
 		// Iterate events that are ready to be fired
 		for (var event in ordered_events) {
@@ -209,7 +207,7 @@
 			// Checks if bottom of the event bubble is overlapping the bottom information (will change to get exact position later)
 			if ($(this).position().top + $(this).outerHeight(true) > Game.Math.window_height - 175) {
 				$(this).remove();
-			};
+			}
 
 		});
 
@@ -306,8 +304,6 @@
 			queue_random_future_event(event);
 			
 		}
-		
 	});
-
-
+	
 } ());
