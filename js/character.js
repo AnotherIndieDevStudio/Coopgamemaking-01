@@ -46,9 +46,9 @@
 				
 				character.inventory.push(Game.Item(obj.inventory[inventory_index]));
 				
-			};
+			}
 			
-		};
+		}
 		
 		// Copy obj's wounds
 		if (obj && obj.wounds) {
@@ -59,7 +59,7 @@
 				wound.character = character;
 				character.wounds.push(wound);
 				
-			};
+			}
 			
 		};
 
@@ -69,7 +69,7 @@
 
 			Game.Character.by_type[character.type] = [];
 
-		};
+		}
 
 		Game.Character.by_type[character.type].push(character);
 
@@ -97,7 +97,7 @@
 		
 		if(name === ""){
 			id = Math.floor(Math.random() * 6 + 1);
-		};
+		}
 
 		if (name === 'My Character') {
 
@@ -175,7 +175,7 @@
 			template.dexterity = 3;
 			template.defence = 0.1;
 			template.experience = 250;
-		};
+		}
 		
 		template.level = 1;
 
