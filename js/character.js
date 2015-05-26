@@ -163,7 +163,7 @@
 			template.strength = 0.9;
 			template.intellect = 1.1;
 			template.dexterity = 0.5;
-			template.defence = 1;
+			template.defence = 0.9;
 			template.experience = 500;
 			
 		} else if (name === 'Spider' || id === 6){
@@ -172,9 +172,9 @@
 			template.type = 'Beast';
 			template.health = 0.1;
 			template.max_health = 0.1;
-			template.strength = 5;
+			template.strength = 3;
 			template.intellect = 1;
-			template.dexterity = 5;
+			template.dexterity = 3;
 			template.defence = 0.1;
 			template.experience = 250;
 		};

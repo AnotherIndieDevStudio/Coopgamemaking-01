@@ -63,7 +63,7 @@ html{
 }
 
 /* Hiding add stat button */
-.add-stat{
+.add-stat, .add-all-to-stat{
 	background:#CD5C5C;
     width:30px;
 	padding: 5px;
@@ -76,7 +76,7 @@ html{
     -moz-transition:background .5s;
 }
 
-.add-stat.purchase {
+.add-stat.purchase, .add-all-to-stat.purchase{
     background:#2E8B57;
 }
 

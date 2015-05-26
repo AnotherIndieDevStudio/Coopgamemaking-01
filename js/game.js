@@ -181,8 +181,10 @@
 		Game.Character.check_can_level_stats(Game.player);
 		if (Game.player.can_level_stats) {
 			$(".add-stat").addClass('purchase');
+			$(".add-all-to-stat").addClass('purchase');
 		} else {
 			$(".add-stat").removeClass('purchase');
+			$(".add-all-to-stat").removeClass('purchase');
 		}
 
 	};
@@ -215,7 +217,7 @@
 	/* Simple health regeneration */
 	var regen_health = function(){
 
-		var regen_amount = 1;
+		var regen_amount = 1 * (Game.player.max_health/100);
 
 		// Check if player has wounds and removes regen if true
 		if(Game.player.wounds[0]){
@@ -373,21 +375,11 @@
 		};
 
 	};
-
-	/* Checks for clicks on stat upgrades */
-	$(".add-stat").click(function (e) {
-		/*Check if button can be pressed*/
-		if(!Game.player.can_level_stats) {
-			return alert("Sorry, not enough points!");
-		}
-		/* Check button's data-stat */
-		var stat = $(this).data('stat');
-		if(stat === "health"){
-			amount = 10;
-			stat = "max_health";
-		}else{
-			amount = 1;
-		}
+	
+	
+	// Adds stas and displays pop-off
+	var add_stat_points = function(e, stat, amount, adding_all){
+		
 		if (Game.player.can_level_stats) {
 			/* if stat is 'health', update by 10, if not, then 1 */
 			Game.player[stat] += amount;
@@ -396,8 +388,12 @@
 
 				Game.player.health += 10;
 			};
-			Game.player.stat_points -= 1;
-
+			if(adding_all){
+				Game.player.stat_points = 0;
+			}else{
+				Game.player.stat_points -= 1;
+			};
+			
 		};
 
 		var pageY = e.pageY - 15,
@@ -410,8 +406,39 @@
 				top: pageY - 50,
 			}, 1000, function(){
 				effect.remove();
-			});
+			});	
+	
+	};
+	
 
+	/* Checks for clicks on stat upgrades */
+	$(".add-stat").click(function (e) {
+		/* Check button's data-stat */
+		var stat = $(this).data('stat');
+		if(stat === "health"){
+			amount = 10;
+			stat = "max_health";
+		}else{
+			amount = 1;
+		};
+		
+		add_stat_points(e, stat, amount, false);
+
+	});
+	
+	$(".add-all-to-stat").click(function(e){
+		
+		// get data-set
+		var stat = $(this).data('stat');
+		if(stat === "health"){
+			amount = 10 * Game.player.stat_points;
+			stat = "max_health";
+		}else{
+			amount = 1 * Game.player.stat_points;
+		};
+		
+		add_stat_points(e, stat, amount, true);
+		
 	});
 
 	/* Checks if game is being paused */
