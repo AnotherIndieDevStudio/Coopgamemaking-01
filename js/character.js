@@ -94,15 +94,21 @@
 	 */
 	Game.Character.from_template = function (name) {
 
-		var template = {name: name};
+		var id;
+		var template = {};
+		
+		if(name === ""){
+			id = Math.floor(Math.random() * 6 + 1);
+		};
 
 		if (name === 'My Character') {
 
 			template.type = 'Hero';
 			// Default Character property values are correct for 'My Character'
 
-		} else if (name === 'Rat') {
+		} else if (name === 'Rat' || id === 1) {
 
+			template.name = 'Rat';
 			template.type = 'Beast';
 			template.health = 0.25;
 			template.max_health = 0.25;
@@ -112,12 +118,72 @@
 			template.defence = 0.2;
 			template.experience = 50;
 
+		} else if (name === 'Giant Rat' || id === 2){
+			
+			template.name = 'Giant Rat';
+			template.type = 'Beast';
+			template.health = 0.5;
+			template.max_health = 0.5;
+			template.strength = 0.4;
+			template.intellect = 0.2;
+			template.dexterity = 0.15;
+			template.defence = 0.3;
+			template.experience = 150;
+			
+		} else if (name === 'Wolf' || id === 3){
+			
+			template.name = 'Wolf';
+			template.type = 'Beast';
+			template.health = 0.6;
+			template.max_health = 0.6;
+			template.strength = 0.7;
+			template.intellect = 0.5;
+			template.dexterity = 0.5;
+			template.defence = 0.3;
+			template.experience = 175;
+			
+		} else if (name === 'Skeleton' || id === 4){
+			
+			template.name = 'Skeleton';
+			template.type = 'Undead';
+			template.health = 0.3;
+			template.max_health = 0.5;
+			template.strength = 0.8;
+			template.intellect = 0.5;
+			template.dexterity = 0.5;
+			template.defence = 0.1;
+			template.experience = 175;
+			
+		} else if (name === 'Lesser Demon' || id == 5){
+			
+			template.name = 'Lesser Demon';
+			template.type = 'Demon';
+			template.health = 0.9;
+			template.max_health = 0.9;
+			template.strength = 0.9;
+			template.intellect = 1.1;
+			template.dexterity = 0.5;
+			template.defence = 1;
+			template.experience = 500;
+			
+		} else if (name === 'Spider' || id === 6){
+			
+			template.name = 'Spider';
+			template.type = 'Beast';
+			template.health = 0.1;
+			template.max_health = 0.1;
+			template.strength = 5;
+			template.intellect = 1;
+			template.dexterity = 5;
+			template.defence = 0.1;
+			template.experience = 250;
 		};
+		
+		template.level = 1;
 
 		return Game.Character(template);
 
 	};
-
 
 	// Gets the exp until next level based on advanced algorithm
 	Game.Character.get_experience_tnl = function (character) {

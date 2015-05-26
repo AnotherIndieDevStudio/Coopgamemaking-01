@@ -135,7 +135,8 @@
 		update_healthbar("player");
 
 	};
-/* Main game loop */
+	
+	/* Main game loop */
 	var update_game = function () {
 
 		// Update systems
@@ -189,30 +190,39 @@
 	/* Adjusts the players visual health bar */
 	var update_healthbar = function(type){
 
+		// Updates the players health bear
 		if(type==="player"){
+			
 			var health_remaining = $(".health-remaining");
 			var health_bar = $(".health-bar");
 			var width = (Game.player.health / Game.player.max_health) * health_bar.width();
+			
+		// Updates the enemies health bar */
 		}else if(type === "enemy"){
+			
 			var health_remaining = $(".enemy-health-remaining");
 			var health_bar = $(".enemy-health-bar");
 			var width = (Game.status.current_enemy.health / Game.status.current_enemy.max_health) * health_bar.width();
 			$(".enemy-health").html(Math.floor(Game.status.current_enemy.health));
 			$(".enemy-max-health").html(Math.floor(Game.status.current_enemy.max_health));
+			
 		};
-
+		
 		health_remaining.width(width);
 
 	};
 
+	/* Simple health regeneration */
 	var regen_health = function(){
 
 		var regen_amount = 1;
 
+		// Check if player has wounds and removes regen if true
 		if(Game.player.wounds[0]){
 			regen_amount = 0.0;
 		};
-
+		
+		// If the player is fighting, remove wounds
 		if(Game.status.fighting){
 			regen_amount = 0.0;
 		};
@@ -224,13 +234,12 @@
 
 		// Keeps health below max health
 		if(Game.player.health > Game.player.max_health){
-				Game.player.health = Game.player.max_health;
+			Game.player.health = Game.player.max_health;
 		};
-
-		// Check if heealth is above health
 
 	};
 
+	/* Set up enemy stats based on players level */
 	var setup_enemy = function(enemy){
 
 		enemy["health"] *= Game.player.max_health;
@@ -239,8 +248,10 @@
 		enemy["strength"] *= Game.player.strength;
 		enemy["dexterity"] *= Game.player.dexterity;
 		enemy["intellect"] *= Game.player.intellect;
+		enemy["level"] = Game.player.level;
 
-		$(".enemy-name").html(enemy['name']);
+		// Setup the HTML elements for battle
+		$(".enemy-name").html(enemy['name'] + " ( Lvl " + enemy['level'] + ")");
 
 		$(".enemy-health").html(enemy['health']);
 		$(".enemy-max-health").html(enemy['max_health']);
@@ -249,39 +260,51 @@
 
 	};
 
+	/* Begin the battle */
 	var start_battle = function(){
 
 		// Grabs enemy
-		Game.status.current_enemy = setup_enemy(Game.Character.from_template("Rat"));
+		Game.status.current_enemy = setup_enemy(Game.Character.from_template(""));
 
+		$(".player-name").html("Player (Lvl " + Game.player.level + ")");
 		$("#battle-container").show(500);
 		Game.status.fighting = true;
 
 	};
 
+	/* When batttle has ended, check for winners */
 	var end_battle = function(winner){
 
+		// Remove fighting status
 		Game.status.fighting = false;
-
+		
+		// Check winner and dish out rewawrds accordingly
 		if(winner === "player"){
+			
+			// Get max amount of items
+						
 			Game.player.experience += Game.status.current_enemy.experience * Game.player.level;
 			Game.add_event({description: "You have won the fight"});
 		}else{
 			Game.add_event({description: "You have lost the fight"});
 		};
 
+		// Hides the battle system and brings back the main interface
 		$("#battle-container").hide(500, function(){
 			$("#stats-container").show(500);
 			$("#battle-show").html("Battle");
 
 		});
 
+		// Reset fight ticks 
 		Game.fight_ticks = 0;
 
 	};
 
+	/* The main fight loop */
 	var fight_turn = function(){
 
+		// Game ticks are equal to 2 normal ticks just to keep a reasonable battle pace
 		if(Game.status.fight_ticks === 2){
 
 			Game.status.fight_ticks = 0;
@@ -313,17 +336,22 @@
 				Game.status.current_enemy.health -= player_hit_dmg;
 			};
 
-			if(Game.status.current_enemy.health <= 0){
+			// End battle with player as winner
+			if(Math.floor(Game.status.current_enemy.health) <= 0){
 				end_battle("player");
 			};
-
+			
+			// Check if enemy has hit and deal damage accordingly
 			if(enemy_hit != 0){
+				
 				if(enemy_hit > (Math.floor(Game.status.current_enemy.dexterity/2)) + 1){
 					enemy_hit_dmg += Math.floor(Math.random() * enemy_hit_dmg) + 1;
+					
 				};
 
 				// Calculate player defence and take it away from strength
 				var player_defence = (Math.random() * Game.player.defence);
+				
 				if(player_defence >= enemy_hit_dmg){
 					enemy_hit_dmg = 0;
 				}else{
@@ -332,7 +360,7 @@
 
 				Game.player.health -= enemy_hit_dmg;
 			};
-
+			
 			update_healthbar("enemy");
 
 			if(Game.player.health <= 0){
