@@ -386,20 +386,20 @@
 				Game.player.stat_points -= 1;
 			}
 			
+			var pageY = e.pageY - 15,
+				pageX = e.pageX - 10,
+				effect = $("<span class='plusone unselectable' style='left:"+pageX+"px;top:"+pageY+"px;'>+"+amount+"</span>").insertAfter('body');
+	
+				effect.show();
+				effect.animate({
+					opacity:0,
+					top: pageY - 50,
+				}, 1000, function(){
+					effect.remove();
+			});	
+			
 		}
 
-		var pageY = e.pageY - 15,
-			pageX = e.pageX - 10,
-			effect = $("<span class='plusone unselectable' style='left:"+pageX+"px;top:"+pageY+"px;'>+"+amount+"</span>").insertAfter('body');
-
-			effect.show();
-			effect.animate({
-				opacity:0,
-				top: pageY - 50,
-			}, 1000, function(){
-				effect.remove();
-			});	
-	
 	};
 	
 
